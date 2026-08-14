@@ -1,0 +1,25 @@
+// Activity UX v21: compact search/status/tier filters applied after all activity renderers.
+(function(){
+const priorRender=render;
+window.cb21Filter={q:'',status:'All',tier:'All',subtype:'All'};
+const esc=s=>(s||'').toLowerCase().trim();
+function levelOf(a){return Number(a?.reqLevel||a?.slayerReq||a?.diff||1)}
+function tierOf(a){const l=levelOf(a);return l<20?'1–19':l<40?'20–39':l<60?'40–59':l<80?'60–79':'80+'}
+function ready(a){if(!a)return false;if(!own(a.id))return false;if(a.kind==='Sailing'&&typeof cbSailingReqMet==='function')return cbSailingReqMet(a);if(a.endgame&&typeof cbRaidMissing==='function')return cbRaidMissing(a).length===0;if(typeof cb2Meets==='function')return cb2Meets(a);return true}
+function subtypeOf(a){if(!a)return'Other';if(a.endgame)return a.group||'Challenge';if(a.kind==='Combat')return a.type==='Boss'?'Boss':'Monster';if(a.kind==='Slayer')return a.type==='Boss'?'Slayer Boss':'Slayer Monster';if(a.kind==='Sailing')return a.sailingCategory||'Sailing';return a.kind||a.type||'Other'}
+function findActivity(el){const name=el.querySelector('b')?.textContent?.trim();return A.find(a=>a.name===name)||null}
+function filterList(list){const cards=[...list.children].filter(x=>x.matches('.cb2-activity-card,.cb20-raid'));
+ let visible=0;for(const el of cards){let a=findActivity(el);if(!a&&el.classList.contains('cb20-raid')){const name=el.querySelector('b')?.textContent?.trim();a=window.cbRaidActivities?.find(r=>r.name===name)||null;}
+ const txt=esc(el.textContent),f=cb21Filter;let ok=true;if(f.q&& !txt.includes(esc(f.q)))ok=false;if(f.status==='Owned'&&!a?.id)ok=false;if(f.status==='Owned'&&a&&!own(a.id))ok=false;if(f.status==='Missing'&&a&&own(a.id))ok=false;if(f.status==='Ready'&&!ready(a))ok=false;if(f.status==='Locked'&&ready(a))ok=false;if(f.tier!=='All'&&tierOf(a)!==f.tier)ok=false;if(f.subtype!=='All'&&subtypeOf(a)!==f.subtype)ok=false;el.style.display=ok?'':'none';if(ok)visible++;}
+ const empty=list.parentElement?.querySelector('.cb21-empty');if(empty)empty.style.display=visible?'none':'block';const count=list.parentElement?.querySelector('.cb21-count');if(count)count.textContent=`${visible} shown`;
+}
+function resetAndApply(){document.querySelectorAll('.cb21-filterbar').forEach(bar=>{const list=bar.nextElementSibling?.matches('.cb2-activity-list,.cb20-raid-list')?bar.nextElementSibling:bar.parentElement?.querySelector('.cb2-activity-list,.cb20-raid-list');if(list)filterList(list)})}
+window.cb21Set=function(k,v){cb21Filter[k]=v;resetAndApply()};
+window.cb21Clear=function(){cb21Filter={q:'',status:'All',tier:'All',subtype:'All'};render()};
+function enhanceList(list){if(list.dataset.cb21)return;list.dataset.cb21='1';const acts=[...list.children].map(findActivity).filter(Boolean);const subs=[...new Set(acts.map(subtypeOf))];const bar=document.createElement('div');bar.className='cb21-filterbar';bar.innerHTML=`<div class="cb21-searchrow"><input type="search" placeholder="Search activities…" value="${cb21Filter.q.replaceAll('"','&quot;')}" oninput="cb21Set('q',this.value)"><span class="cb21-count"></span></div><div class="cb21-filterrow"><select onchange="cb21Set('status',this.value)">${['All','Ready','Owned','Missing','Locked'].map(v=>`<option ${cb21Filter.status===v?'selected':''}>${v}</option>`).join('')}</select><select onchange="cb21Set('tier',this.value)">${['All','1–19','20–39','40–59','60–79','80+'].map(v=>`<option ${cb21Filter.tier===v?'selected':''}>${v}</option>`).join('')}</select>${subs.length>1?`<select onchange="cb21Set('subtype',this.value)"><option>All</option>${subs.map(v=>`<option ${cb21Filter.subtype===v?'selected':''}>${v}</option>`).join('')}</select>`:''}<button class="secondary mini" onclick="cb21Clear()">Clear</button></div>`;list.before(bar);const e=document.createElement('div');e.className='cb21-empty muted';e.textContent='No activities match these filters.';e.style.display='none';list.after(e);filterList(list)}
+function enhanceRoot(){// Add quick filter shortcuts on category screens to reduce navigation taps.
+ const root=document.querySelector('.cbcore-root-grid');if(root&&!root.previousElementSibling?.classList?.contains('cb21-root-hint')){const h=document.createElement('div');h.className='cb21-root-hint muted';h.textContent='Choose a category, then use search, readiness, level tier, and subtype filters to narrow the activity list.';root.before(h)}}
+function enhanceRaidGroups(){const list=document.querySelector('.cb20-raid-list');if(!list||list.dataset.cb21groups)return;list.dataset.cb21groups='1';for(const el of [...list.children]){const name=el.querySelector('b')?.textContent?.trim()||'';let group='Challenge';if(/Chambers|Theatre|Tombs/i.test(name))group='Raid';else if(/Fight Cave|Inferno/i.test(name))group='TzHaar';el.dataset.cb21group=group;const r=window.cbRaidActivities?.find(x=>x.name===name);if(r)r.group=group;}}
+render=function(){priorRender();if(s.tab!=='Activity')return;enhanceRaidGroups();document.querySelectorAll('.cb2-activity-list,.cb20-raid-list').forEach(enhanceList);enhanceRoot();resetAndApply()};
+render();
+})();
