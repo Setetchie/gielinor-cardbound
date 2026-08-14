@@ -24,8 +24,8 @@
 </head>
 <body>
   <div id="app"></div>
-  <div id="cardbound-build-stamp" style="position:fixed;right:6px;bottom:70px;z-index:99999;background:#241b12;color:#d9c9a4;border:1px solid #6d593f;border-radius:6px;padding:3px 6px;font:11px sans-serif;opacity:.9;pointer-events:none">Cardbound v30 • 2026-08-14 16:34 MDT</div>
-  <script>window.CARDBOUND_VERSION='v30';window.CARDBOUND_BUILD='2026-08-14.1634-MDT';</script>
+  <div id="cardbound-build-stamp" style="position:fixed;right:6px;bottom:70px;z-index:99999;background:#241b12;color:#d9c9a4;border:1px solid #6d593f;border-radius:6px;padding:3px 6px;font:11px sans-serif;opacity:.9;pointer-events:none">Cardbound v31 • 2026-08-14 16:38 MDT</div>
+  <script>window.CARDBOUND_VERSION='v31';window.CARDBOUND_BUILD='2026-08-14.1638-MDT';</script>
   <script src="app.js"></script>
   <script src="upgrade.js"></script>
   <script src="progression-v2.js"></script>
@@ -47,19 +47,14 @@
   <script src="gods-raids-ui-v20.js"></script>
   <script src="activity-filters-v21.js"></script>
   <script src="home-groups-v23.js"></script>
-  <script src="sailing-stable-v27.js"></script>
-  <script src="build-v29.js"></script>
+  <script src="build-v31.js"></script>
   <script>
     render();
-    const stamp=document.getElementById('cardbound-build-stamp');
-    if(stamp) stamp.textContent='Cardbound v30 • 2026-08-14 16:34 MDT';
     if('serviceWorker' in navigator){
       navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>{
         reg.update().catch(()=>{});
         let refreshed=false;
-        navigator.serviceWorker.addEventListener('controllerchange',()=>{
-          if(refreshed)return;refreshed=true;location.reload();
-        });
+        navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshed)return;refreshed=true;location.reload();});
       }).catch(()=>{});
     }
   </script>
