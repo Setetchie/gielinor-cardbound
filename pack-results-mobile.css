@@ -1,0 +1,14 @@
+/* Mobile-safe pack results: compact cards, scrollable results, sticky Add to Bank. */
+.pack-modal{align-items:center;justify-content:center;padding:12px;overflow:hidden}
+.pack-modal .pack-results{width:min(760px,96vw);max-height:92dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--panel,#211b16);border-radius:16px;padding:14px;box-sizing:border-box}
+.pack-modal .pack-results>h2{flex:0 0 auto;margin:0 0 10px;text-align:center}
+.pack-modal .results-grid{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:2px 2px 12px;overscroll-behavior:contain}
+.pack-modal .result-card{min-width:0;min-height:0;padding:8px!important;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;position:relative;box-sizing:border-box}
+.pack-modal .result-card .cb-img-wrap{width:56px!important;height:56px!important;min-height:56px;display:grid;place-items:center}
+.pack-modal .result-card .cb-pack-icon{width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important;object-fit:contain;image-rendering:auto}
+.pack-modal .result-card b{font-size:.82rem;line-height:1.1;text-align:center;word-break:break-word}
+.pack-modal .result-card .muted{font-size:.68rem;line-height:1.15;text-align:center}
+.pack-modal .pack-results>.primary.wide{flex:0 0 auto;position:sticky;bottom:0;z-index:20;margin-top:8px;min-height:46px;width:100%;box-shadow:0 -8px 20px rgba(0,0,0,.28)}
+.pack-modal .result-card .new-card-badge,.pack-modal .result-card .foil-badge{transform:scale(.78);transform-origin:top right}
+@media (min-width:600px){.pack-modal .results-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pack-modal .result-card .cb-img-wrap{width:68px!important;height:68px!important}.pack-modal .result-card .cb-pack-icon{width:64px!important;height:64px!important;max-width:64px!important;max-height:64px!important}}
+@media (max-height:650px){.pack-modal .pack-results{max-height:96dvh;padding:10px}.pack-modal .result-card{padding:6px!important}.pack-modal .result-card .cb-img-wrap{width:46px!important;height:46px!important;min-height:46px}.pack-modal .result-card .cb-pack-icon{width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important}}
