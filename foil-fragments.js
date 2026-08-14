@@ -1,0 +1,15 @@
+// Foil fragment economy: duplicate foils shred into dedicated fragments and can craft guaranteed foil cards.
+(function(){
+if(!s.foilFragments)s.foilFragments=0;
+const FOIL_CRAFT_COST=10;
+window.foilDuplicateCount=id=>Math.max(0,(s.foils?.[id]||0)-1);
+window.shredFoilDuplicate=function(id){const n=foilDuplicateCount(id);if(n<1)return toast('No duplicate foil copies to shred');s.foils[id]--;s.foilFragments++;save();render();toast('+1 Foil Fragment')};
+window.shredAllFoilDuplicates=function(){let gained=0;for(const c of C){const n=foilDuplicateCount(c.id);if(n>0){s.foils[c.id]-=n;gained+=n;}}if(!gained)return toast('No duplicate foils to shred');s.foilFragments+=gained;save();render();toast(`+${gained} Foil Fragments`)};
+function foilCategory(c){if(c.type==='Weapon')return'Weapon';if(c.type==='Armor'||c.type==='Accessory'||c.type==='Ammo')return'Gear';if(c.type==='Monster'||c.type==='Boss')return'Monster';if(c.type==='Skilling')return'Skilling';if(c.type==='Tool')return'Tool';return'Other'}
+window.craftFoil=function(category){if((s.foilFragments||0)<FOIL_CRAFT_COST)return toast(`${FOIL_CRAFT_COST} Foil Fragments required`);let pool=C.filter(c=>foilCategory(c)===category);if(!pool.length)return toast('No cards in that category');const c=pool[Math.floor(Math.random()*pool.length)];s.foilFragments-=FOIL_CRAFT_COST;s.owned[c.id]=(s.owned[c.id]||0)+1;s.foils[c.id]=(s.foils[c.id]||0)+1;save();render();toast(`Crafted Foil ${c.name}!`)};
+function foilPanel(){const cats=['Weapon','Gear','Monster','Skilling','Tool'];return `<div class="panel foil-fragment-panel"><div class="section-head"><div><span class="eyebrow">FOIL CRAFTING</span><h3>✨ ${s.foilFragments||0} Foil Fragments</h3></div><button class="secondary" onclick="shredAllFoilDuplicates()">Shred All Foil Dupes</button></div><p class="muted">Duplicate foil cards shred into 1 Foil Fragment each. One foil copy is always preserved. Spend ${FOIL_CRAFT_COST} Foil Fragments to craft a guaranteed random foil card from a chosen category.</p><div class="foil-craft-grid">${cats.map(cat=>`<button ${s.foilFragments<FOIL_CRAFT_COST?'disabled':''} onclick="craftFoil('${cat}')">${cat}<small>${FOIL_CRAFT_COST} ✨</small></button>`).join('')}</div></div>`}
+const previousCollection=cbCollection;
+cbCollection=function(){let html=previousCollection();html=html.replace('</div><div class="cb-collection">',`</div>${foilPanel()}<div class="cb-collection">`);html=html.replace(/(<div class="cb-collection-card[^>]*>[\s\S]*?<span class="muted">[\s\S]*?<\/span>)([\s\S]*?<\/div>)/g,(m,a,b)=>{const nameMatch=a.match(/<b>([^<]+)<\/b>/);if(!nameMatch)return m;const c=C.find(x=>x.name===nameMatch[1]);if(!c)return m;const d=foilDuplicateCount(c.id);return `${a}${d?`<button class="foil-shred-one" onclick="event.stopPropagation();shredFoilDuplicate('${c.id}')">Shred Foil Dupe ×${d}</button>`:''}${b}`});return html};
+if(typeof collectionPage==='function')collectionPage=function(){return cbCollection()};
+save();render();
+})();
