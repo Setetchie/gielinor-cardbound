@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "status": "active",
+  "purpose": "Authoritative mapping from prototype-only content to original Cardbound production content.",
+  "rules": {
+    "productionMayRenderLegacy": false,
+    "legacyIdsAllowedForMigrationOnly": true,
+    "thirdPartyProductionAssetsAllowed": false
+  },
+  "entries": [
+    {
+      "legacyId": "__prototype_inventory_pending__",
+      "legacyName": "Prototype content inventory",
+      "domain": "other",
+      "replacementId": null,
+      "replacementName": null,
+      "replacementConcept": "Populate automatically from the current C/B/A registries and source audit after architecture Stage 0 cleanup.",
+      "artStatus": "needed",
+      "codeStatus": "inventory-pending",
+      "clearanceStatus": "not-applicable",
+      "notes": "Sentinel entry. Remove after automated inventory generation is committed."
+    }
+  ],
+  "originalVerticalSlice": {
+    "region": "Greenwake Frontier",
+    "status": "design-approved-for-prototype",
+    "source": "docs/ORIGINAL_VERTICAL_SLICE.md",
+    "entities": [
+      "field_blade",
+      "ironbound_buckler",
+      "wayfarer_mail",
+      "wayfarer_greaves",
+      "ashwood_bow",
+      "field_quiver",
+      "trailhide_jerkin",
+      "trailhide_leggings",
+      "emberglass_focus",
+      "binder_rod",
+      "sigilweave_robe",
+      "sigilweave_wraps",
+      "woodcutter_hatchet",
+      "delvers_pick",
+      "reedline_rod",
+      "deckhands_kit",
+      "bramble_rat",
+      "thornback_boar",
+      "briarling",
+      "mossfang_wolf",
+      "shardcrawler",
+      "gloom_bat",
+      "stonehide_mauler",
+      "reedjaw",
+      "tideclaw",
+      "warden_of_oldwatch",
+      "greenwake_sapling",
+      "ironbark_tree",
+      "whisperwillow",
+      "gloamwood_tree",
+      "softstone_outcrop",
+      "ironvein",
+      "gloam_ore",
+      "starshard_node",
+      "silverfin_shoal",
+      "reedscale_pool",
+      "glasswater_eel",
+      "tideglass_school",
+      "salvage_winch",
+      "trawl_rig",
+      "charting_table"
+    ]
+  }
+}
