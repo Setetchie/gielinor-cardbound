@@ -12,6 +12,10 @@ async function fresh(page){
     typeof window.cbHomeGoSkill === 'function'
   );
   await expect(page.locator('#app')).toBeVisible();
+  // Give late enhancement scripts a brief stability window so the caller never
+  // starts evaluating against a document that is still being replaced.
+  await page.waitForTimeout(150);
+  await page.waitForFunction(() => document.readyState === 'complete' && window.CARDBOUND_VERSION);
 }
 
 test('app boots and exposes core globals', async ({ page }) => {
@@ -45,8 +49,9 @@ test('Activity > Skilling > Sailing navigation works', async ({ page }) => {
   const sailing = page.getByRole('button', { name: /Sailing/i }).first();
   await expect(sailing).toBeVisible();
   await sailing.click();
-  await expect(page.getByText(/Choose a Sailing method/i)).toBeVisible();
-  await expect(page.getByRole('button', { name: /Port Tasks/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Sailing', exact: true })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Port Tasks', exact: true })).toHaveCount(1);
+  await expect(page.getByText(/Courier Port Tasks/i)).toBeVisible();
 });
 
 test('Sailing has actions and starter route is represented', async ({ page }) => {
@@ -94,8 +99,8 @@ test('next unlock helper finds a higher level activity', async ({ page }) => {
 test('bank renders equipment and loadout presets', async ({ page }) => {
   await fresh(page);
   await page.getByRole('button', { name: /Bank/i }).last().click();
-  await expect(page.getByText(/Worn Equipment/i)).toBeVisible();
-  await expect(page.getByText(/Loadout Presets|Saved Equipment/i)).toBeVisible();
+  await expect(page.getByText('WORN EQUIPMENT', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Saved Equipment', exact: true })).toBeVisible();
   const fn = await page.evaluate(() => typeof window.cbSaveLoadoutPreset);
   expect(fn).toBe('function');
 });
