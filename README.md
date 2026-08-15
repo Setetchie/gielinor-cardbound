@@ -41,14 +41,13 @@ The playable build is served directly from `index.html` and stores progress loca
 16. `tzhaar-expansion-v22.js` — Fight Caves/Inferno encounter expansion
 
 ### Current UI owners
-17. `core-ui-fix.js` — primary Activity hierarchy and navigation state
+17. `core-ui-fix.js` — primary page shell plus authoritative Activity, combat, Skilling, and Sailing navigation/rendering
 18. `bank-collection-v18.js` — Bank, worn equipment, Collection search/filter UI
 19. `gods-raids-ui-v20.js` — Event and endgame encounter UI
 20. `activity-filters-v21.js` — long-list activity filters
 21. `home-groups-v23.js` — grouped Home combat/skilling dashboard
-22. `sailing-native-v33.js` — sole Sailing Activity renderer/navigation integration
-23. `sailing-idle-v34.js` — generalized live idle settlement, feedback, and next-unlock ETA
-24. `loadout-presets-v38.js` — saved equipment presets
+22. `sailing-idle-v34.js` — generalized live idle settlement, feedback, and next-unlock ETA
+23. `loadout-presets-v38.js` — saved equipment presets; consumes global build metadata instead of owning it
 
 ## Cleanup rules
 - Preserve the existing `localStorage.cardbound` save schema unless a migration is explicitly added.
@@ -59,9 +58,9 @@ The playable build is served directly from `index.html` and stores progress loca
 - Every production build must update the visible version stamp and service-worker cache key.
 
 ## Refactor plan
-The next cleanup phase should merge active render wrappers by responsibility while preserving current behavior:
-1. Consolidate Activity + Sailing navigation/rendering.
-2. Consolidate Home/Bank/Collection page routing into a single UI router.
+The cleanup phase is merging active render wrappers by responsibility while preserving current behavior:
+1. ✅ Consolidate Activity + Sailing navigation/rendering into `core-ui-fix.js`.
+2. **Next:** Consolidate Home/Bank/Collection page routing into a single UI router.
 3. Consolidate idle settlement/progress into one gameplay module.
 4. Consolidate content registration into data-focused modules.
 5. Only then add new combat mechanics/features.
