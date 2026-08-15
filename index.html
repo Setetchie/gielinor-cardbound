@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#241b12" />
-  <title>Gielinor: Cardbound</title>
+  <title>Cardbound</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="upgrade.css" />
@@ -24,8 +24,9 @@
 </head>
 <body>
   <div id="app"></div>
-  <div id="cardbound-build-stamp" style="position:fixed;right:6px;bottom:70px;z-index:99999;background:#241b12;color:#d9c9a4;border:1px solid #6d593f;border-radius:6px;padding:3px 6px;font:11px sans-serif;opacity:.9;pointer-events:none">Cardbound v40 • 2026-08-14 18:36 MDT</div>
-  <script>window.CARDBOUND_VERSION='v40';window.CARDBOUND_BUILD='2026-08-14.1836-MDT';window.CARDBOUND_BUILD_NOTE='Activity and Sailing navigation/rendering consolidated into one core owner';</script>
+  <div id="cardbound-build-stamp" style="position:fixed;right:6px;bottom:70px;z-index:99999;background:#241b12;color:#d9c9a4;border:1px solid #6d593f;border-radius:6px;padding:3px 6px;font:11px sans-serif;opacity:.9;pointer-events:none">Cardbound v41 • 2026-08-14 20:31 MDT</div>
+  <script>window.CARDBOUND_VERSION='v41';window.CARDBOUND_BUILD='2026-08-14.2031-MDT';window.CARDBOUND_BUILD_NOTE='Greenwake original-IP development mode added behind ?content=original';</script>
+  <script src="original-bootstrap.js"></script>
   <script src="app.js"></script>
   <script src="upgrade.js"></script>
   <script src="progression-v2.js"></script>
@@ -42,6 +43,7 @@
   <script src="sailing-content.js"></script>
   <script src="gods-raids-v20.js"></script>
   <script src="tzhaar-expansion-v22.js"></script>
+  <script src="original-content-v41.js"></script>
   <script src="core-ui-fix.js"></script>
   <script src="bank-collection-v18.js"></script>
   <script src="gods-raids-ui-v20.js"></script>
@@ -49,6 +51,7 @@
   <script src="home-groups-v23.js"></script>
   <script src="sailing-idle-v34.js"></script>
   <script src="loadout-presets-v38.js"></script>
+  <script src="original-ui-v41.js"></script>
   <script>
     render();
     if('serviceWorker' in navigator){
