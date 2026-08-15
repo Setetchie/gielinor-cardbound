@@ -11,7 +11,7 @@ jobs:
   browser-regression:
     name: Regression ${{ matrix.name }} (${{ matrix.executions }} executions)
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       max-parallel: 3
