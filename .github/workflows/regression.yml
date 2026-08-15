@@ -14,17 +14,44 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 9
       matrix:
         include:
-          - name: prototype
+          - name: prototype-core
             spec: tests/smoke.spec.js
-            executions: 550
-          - name: greenwake-original-ip
+            grep: 'app boots|home shows|Activity > Skilling'
+            executions: 150
+          - name: prototype-progression
+            spec: tests/smoke.spec.js
+            grep: 'Sailing has actions|idle settlement|next unlock helper'
+            executions: 150
+          - name: prototype-ui
+            spec: tests/smoke.spec.js
+            grep: 'bank renders|collection supports|pack definitions'
+            executions: 150
+          - name: prototype-integrity
+            spec: tests/smoke.spec.js
+            grep: 'raid and challenge|save survives'
+            executions: 100
+          - name: greenwake-ip
             spec: tests/original.spec.js
-            executions: 400
+            grep: 'original mode swaps|original mode renders'
+            executions: 100
+          - name: greenwake-terminology
+            spec: tests/original.spec.js
+            grep: 'original terminology|Huntsmanship starts'
+            executions: 100
+          - name: greenwake-progression
+            spec: tests/original.spec.js
+            grep: 'Greenwake Sailing|Greenwake idle'
+            executions: 100
+          - name: greenwake-content
+            spec: tests/original.spec.js
+            grep: 'Greenwake packs|Greenwake next Woodcraft'
+            executions: 100
           - name: ip-inventory
             spec: tests/inventory.spec.js
+            grep: '.*'
             executions: 50
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +61,7 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       - name: Run ${{ matrix.name }} regression 50x
-        run: npm run test:e2e -- ${{ matrix.spec }}
+        run: npm run test:e2e -- ${{ matrix.spec }} --grep "${{ matrix.grep }}"
       - name: Summarize ${{ matrix.name }} results
         if: always()
         run: node scripts/summarize-tests.js
