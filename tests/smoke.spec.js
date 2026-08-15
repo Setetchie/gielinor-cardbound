@@ -4,6 +4,13 @@ async function fresh(page){
   await page.goto('/?test=1');
   await page.evaluate(() => localStorage.removeItem('cardbound'));
   await page.reload();
+  await page.waitForLoadState('load');
+  await page.waitForFunction(() =>
+    window.CARDBOUND_VERSION &&
+    window.cbCoreUi &&
+    typeof window.cbSetActivityRoot === 'function' &&
+    typeof window.cbHomeGoSkill === 'function'
+  );
   await expect(page.locator('#app')).toBeVisible();
 }
 
