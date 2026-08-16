@@ -132,6 +132,66 @@ Direction:
 
 Exact starting capacity, progression unlock cadence, free endgame capacity, paid expansion sizes/pricing, and the final hard cap remain balancing tasks and should not be assigned final numbers prematurely.
 
+## Convenience monetization and idle capacity
+
+**Status: Accepted direction; exact economics remain open**
+
+Cardbound may monetize permanent account-wide convenience upgrades, but purchases should reduce friction or expand convenience rather than purchase superior progression efficiency.
+
+### Offline / idle capacity
+
+A permanent account upgrade may extend the maximum duration for which an idle activity continues accumulating offline rewards before reaching its offline cap.
+
+Guardrails:
+
+- free players must receive a genuinely useful baseline offline accumulation window;
+- paid idle capacity changes the maximum accumulation duration, not the reward rate during an equivalent period;
+- two otherwise identical players completing the same activity for the same amount of time should not receive different XP/Pack Point rates merely because one purchased the idle-capacity upgrade;
+- do not sell direct account-wide XP/hr, Pack Points/hr, activity-speed, pack-odds, equipment-power, or similar progression-rate multipliers as part of this convenience upgrade;
+- normal progression may also extend idle capacity where appropriate;
+- equipment may still deliberately modify idle characteristics as part of build strategy, including tradeoffs with speed, XP, Pack Points, or other activity-profile properties;
+- monetized idle capacity should complement rather than replace those equipment/build decisions.
+
+Exact free idle duration, progression-based extensions, purchased extension size, maximum cap, packaging, and pricing remain balance/economy tasks and should be chosen after activity-cycle pacing and expected player check-in cadence are better established.
+
+### Account-upgrade packaging
+
+Additional saved-loadout capacity and offline-capacity extensions may eventually be packaged as clear permanent account convenience upgrades rather than fragmented into many small purchases. Cosmetic/profile conveniences may also fit this category if developed later.
+
+Any such package must preserve the core rule: **monetization may reduce friction or expand convenience; it should not purchase superior progression efficiency.**
+
+## Rewarded ads / Daily Focus
+
+**Status: Accepted direction; exact boost economy remains open**
+
+If advertising is used, prioritize optional rewarded ads rather than forced interstitials or persistent banner advertising. Rewarded advertising should be a secondary convenience/temporary-optimization system and must not become the expected primary way to progress efficiently.
+
+The preferred product framing is a limited **Daily Focus** system. A free player may voluntarily watch a rewarded ad to activate a Focus charge and deliberately choose from a small set of temporary activity profiles. Candidate Focus identities include:
+
+- **XP Focus** — a modest temporary Skill XP modifier;
+- **Pack Point Focus** — a modest temporary Pack Point modifier;
+- **Regional Focus** — temporarily increases weighting toward the relevant/current region without directly improving pack rarity odds;
+- **Idle Focus** — temporarily extends the applicable idle/offline accumulation window.
+
+Activity-speed or rare-event Focus effects may be evaluated later but require stricter balance review because they can more directly alter progression efficiency or expected-value calculations.
+
+### Rewarded-ad guardrails
+
+- Focus activations are optional and limited; do not allow unlimited ad watching to become the optimal gameplay loop.
+- Exact daily charges, boost percentages, durations, cooldowns, and eligibility remain balance/economy tasks.
+- Prefer duration-based, easily understood effects rather than obscure action-count boosts.
+- Where technically practical, a Focus activated before an idle session may continue to apply to eligible settled activity time so the player is not encouraged to reopen the game merely because an ad boost expired.
+- Do not use forced ads after activities, during pack reveals, or as a condition for retaining rewards already earned.
+- Do not use rewarded ads to directly improve pack rarity odds, reroll disappointing packs, upgrade card rarity, double pack contents, or otherwise compromise the integrity of pack outcomes.
+- Rewarded-ad benefits must not unlock exclusive activities, cards, equipment, or permanent gameplay power.
+- The UI should present Focus as an optional strategic choice, not as an alarm-driven requirement to maintain competitive efficiency.
+
+### Ad-free account-upgrade relationship
+
+A future permanent Account Upgrade may grant the same limited Daily Focus activations without requiring the purchaser to watch rewarded ads. The preferred fairness model is that free and upgraded players have access to the same daily Focus allowance/profile choices, while the upgraded player purchases removal of the advertising friction rather than additional daily progression boosts.
+
+Do not automatically stack an upgraded player's ad-free Focus allowance with a second full allowance of rewarded-ad boosts unless a later economy review explicitly determines that doing so preserves the monetization guardrails.
+
 ## Equipment presentation and player avatar
 
 **Status: Accepted direction / progressive presentation**
@@ -168,9 +228,9 @@ Priority order is:
 
 These decisions should influence the architecture reconciliation and later data/content work, but they should not destabilize the current R2 routing consolidation.
 
-- **R2:** preserve compatibility with future Skill-owned equipment/loadout views while consolidating Home/Bank/Collection routing; do not implement the broad-Skill conversion here.
-- **R3:** keep idle settlement generic enough to operate on broad Skill/family/activity metadata.
+- **R2:** preserve compatibility with future Skill-owned equipment/loadout views while consolidating Home/Bank/Collection routing; do not implement the broad-Skill conversion or monetization systems here.
+- **R3:** keep idle settlement generic enough to operate on broad Skill/family/activity metadata, future account-level idle-capacity rules, and temporary Focus modifiers without hard-coding purchase/ad behavior into activity definitions.
 - **R4:** content registration should represent Skill, family, tier, Activity Binding, equipment applicability, equipment-slot role, utility profile, and activity profiles as data rather than proliferating specialized runtime modules.
-- **R6 original-content vertical slice:** use the broad Skill/family architecture, universal equipment direction, prestige-slot direction, and lightweight presentation hierarchy as target product structure.
+- **R6 original-content vertical slice:** use the broad Skill/family architecture, universal equipment direction, prestige-slot direction, lightweight presentation hierarchy, convenience-monetization guardrail, and Daily Focus direction as target product structure.
 
 All implementation remains subject to targeted regression testing and the full acceptance gate at stage boundaries.
