@@ -20,17 +20,24 @@ This board reconciles the product decisions discussed during the recent architec
 
 Use broad permanent Skills rather than making every specialization its own permanent Skill.
 
-Target hierarchy:
+Target hierarchy for non-combat activities:
 
 `Skill → Activity Family / Discipline → Tier → Activity Binding`
 
 Examples:
 
-- **Combat** is one broad Skill. Melee, Ranged, and Magic are Combat families/disciplines rather than separate permanent Skills.
 - **Gathering** may contain Woodcutting, Fishing, Prospecting/Mining, Foraging, and other appropriate families.
 - **Travel** contains exploration/trails and later-discovered travel families such as Sailing, caravanning, hazardous travel, and Expeditions where appropriate.
 
-Combat families retain family-specific equipment, weaknesses/resistances, encounter requirements, and tactical differences. Non-combat families do not need to imitate Combat weakness systems.
+**Combat is a deliberate exception to player-selected family/style navigation.** Combat is one broad Skill/category, and the player selects the enemy or encounter rather than selecting Melee, Ranged, or Magic as an activity family.
+
+Target Combat flow:
+
+`Activities → Combat → Enemy / Encounter → Start Combat`
+
+The equipped weapon/loadout determines the active combat style automatically. Melee, Ranged, Magic, and any future combat-style classifications remain weapon/equipment/combat-calculation metadata used for weaknesses, resistances, bonuses, encounter requirements, and tactical decisions; they are **not separate player-selected Combat activities or permanent Skills**.
+
+Combat equipment must carry explicit style metadata rather than relying on item names. The encounter UI should communicate the style derived from the current equipment and relevant enemy weaknesses/resistances/effectiveness, while allowing the player to deliberately change loadouts before starting. Changing encounters does not auto-equip a preferred style.
 
 ### A2. Region-driven family discovery — LOCKED / ACCEPTED
 
@@ -169,6 +176,8 @@ Conceptual flow:
 `Activity details/rewards → Current Loadout → Change Loadout (optional) → Start Activity`
 
 Changing activity does not automatically change equipment. The UI should warn/communicate when equipped family-specific bonuses are inapplicable and allow the player to decide whether to switch.
+
+For Combat, the selected weapon/loadout also determines the active combat style. Encounter selection must not ask the player to separately choose Melee/Ranged/Magic; instead, show the derived style and its effectiveness against the selected enemy and allow a deliberate loadout change if desired.
 
 The equipment/loadout screen and activity-loadout interaction should be redesigned functionally during the first approved UI/UX implementation pass; final original gear art comes later in the Visual Bible/content-art stage.
 
@@ -440,7 +449,7 @@ R2 is complete. Do not begin subjective UI proposal implementation merely becaus
 
 R3 idle settlement should remain generic enough for broad Skill/family/activity metadata, account-level idle-cap rules, equipment modifiers, and temporary Focus modifiers without hard-coding ad/purchase behavior into activity definitions.
 
-R4 content registration should represent Skill, family, tier, Activity Binding, equipment applicability/slot role, utility profile, activity profile, Region, Location, and content eligibility as data rather than proliferating specialized runtime modules.
+R4 content registration should represent Skill, family, tier, Activity Binding, equipment applicability/slot role, utility profile, activity profile, Region, Location, and content eligibility as data rather than proliferating specialized runtime modules. Combat content additionally needs explicit weapon/style and encounter weakness/resistance metadata without requiring separate style-selection activities.
 
 ---
 
