@@ -10,7 +10,7 @@ This board reconciles the product decisions discussed during the recent architec
 - **REVIEW PROPOSAL** — captured during hands-on review; do not implement until the UI/UX change pass is explicitly approved.
 - **BUG** — functional defect; may be fixed separately from subjective design proposals.
 - **OPEN / BALANCE** — direction exists but exact values/content are intentionally undecided.
-- **CREATIVE MILESTONE** — requires dedicated naming/world/visual work before content production.
+- **CREATIVE MILESTONE** — requires dedicated naming/world/visual/audio work before content production.
 
 ---
 
@@ -296,7 +296,7 @@ Current testing should emphasize Home information hierarchy, navigation, activit
 
 ---
 
-## I. Naming, brand, and original visual identity
+## I. Naming, brand, and original creative identity
 
 ### I1. Naming milestone — CREATIVE MILESTONE / ACCEPTED
 
@@ -355,6 +355,32 @@ Prototype a representative small card/art set before producing hundreds of asset
 
 Individual final equipment/card names and art should then be generated from mechanical + world constraints rather than one-for-one renames of prototype items.
 
+### I5. Audio Bible / Sound Direction — CREATIVE MILESTONE / ACCEPTED
+
+Audio is part of the intended final experience, but it should reinforce the idle-TCG experience rather than become a heavy production dependency.
+
+Use three primary layers:
+
+- **Regional music/ambience:** Regions may have distinct musical and ambient identities that reinforce regional UI themes. Ambient layers can use environmental texture instead of requiring continuous dense music.
+- **UI/gameplay SFX:** tactile feedback for activity start/completion, equipment/loadout changes, discovery, forging, Fragment rewards, pack acquisition, and other meaningful interactions.
+- **Pack/card reveal audio:** audio intensity follows the accepted reveal hierarchy. Common/Uncommon remain restrained; higher rarities gain increasingly distinctive cues; Legendary/Ascendant outcomes may use recognizable buildup; Perfect Bindings receive the strongest audiovisual reveal.
+
+Star Fragment targeted forging should have a distinct and more significant sonic identity than an ordinary random Fragment forge.
+
+The game must remain fully understandable and usable while muted; no essential information should be communicated by sound alone.
+
+Provide separate settings for at least **Music** and **Sound Effects**, and evaluate a separate **Ambient Audio** setting during implementation. Mobile audio behavior should avoid unnecessarily disrupting external audio where the platform allows appropriate handling.
+
+Voice acting is **not a launch requirement**. Large-scale voiced dialogue should not be assumed because of cost, localization, download-size, and content-maintenance implications. Limited voice work for exceptional future content may be evaluated later.
+
+Ascendants may use recurring sonic motifs or instrument identities to reinforce their domains without requiring a separate full soundtrack for each Ascendant.
+
+Develop the Audio Bible alongside the World and Visual Bibles once Regions, tone, Ascendants, rarity presentation, and original visual identity are sufficiently established.
+
+For the first original vertical slice, prototype a representative audio package before scaling production: one Greenwake/regional music or ambience direction, core UI sounds, activity start/completion, equipment/loadout feedback, pack opening, ordinary card reveal, high-rarity reveal, Perfect reveal, normal Fragment forge, Star Fragment targeted forge, and Location/Region discovery.
+
+Use the vertical slice to determine whether the final soundscape should lean more atmospheric, magical, tactile/TCG-like, restrained, or another coherent direction before producing audio across the full world.
+
 ---
 
 ## J. Testing, release, app stores, and marketing
@@ -364,7 +390,7 @@ Individual final equipment/card names and art should then be generated from mech
 1. Product-owner v42 UI/UX review.
 2. Approved UI/UX implementation pass.
 3. Friends & Family Alpha (~5–10).
-4. R3/R4 progression + World/Visual Bible work.
+4. R3/R4 progression + World/Visual/Audio Bible work.
 5. Original vertical slice.
 6. Closed Alpha (~25–100).
 7. Native mobile packaging/store preparation.
@@ -406,7 +432,7 @@ Studio/company vs individual publishing identity should be considered before pro
 
 ### K1. Near-term sequence — ACCEPTED
 
-`R2 complete → product-owner v42 review → collect board feedback → explicitly approve UI/UX change batch → implement/test UI changes → Friends & Family Alpha → continue R3/R4 → naming + World Bible + Visual Bible → original vertical slice → broader testing`
+`R2 complete → product-owner v42 review → collect board feedback → explicitly approve UI/UX change batch → implement/test UI changes → Friends & Family Alpha → continue R3/R4 → naming + World Bible + Visual Bible + Audio Bible → original vertical slice → broader testing`
 
 R2 is complete. Do not begin subjective UI proposal implementation merely because an item appears on this board; wait for explicit approval of the UI change pass.
 
@@ -434,6 +460,7 @@ These remain intentionally undecided and should not be silently assigned final v
 - universal Fragment tier costs and Star Fragment acquisition rate;
 - final card/pack rarity/tier economy;
 - final visual art style and production pipeline;
+- final audio style, music scope, SFX production pipeline, and implementation technology;
 - final mobile packaging technology and deployment infrastructure;
 - marketing budget, creator partners, and paid acquisition thresholds.
 
