@@ -50,10 +50,9 @@ function activityLevelReq(a,skill){
 }
 function nextActivityFor(a){
   const skill=trainingSkillFor(a), lv=s.skills?.[skill]||1;
-  const candidates=A.map(x=>({a:x,req:activityLevelReq(x,skill)}).filter?null:null);
-  const filtered=A.map(x=>({a:x,req:activityLevelReq(x,skill)})).filter(x=>x.req!=null&&x.req>lv);
-  filtered.sort((x,y)=>x.req-y.req||x.a.name.localeCompare(y.a.name));
-  return filtered[0]?{...filtered[0],skill}:null;
+  const candidates=A.map(x=>({a:x,req:activityLevelReq(x,skill)})).filter(x=>x.req!=null&&x.req>lv);
+  candidates.sort((x,y)=>x.req-y.req||x.a.name.localeCompare(y.a.name));
+  return candidates[0]?{...candidates[0],skill}:null;
 }
 function xpNeededToLevel(skill,target){
   let lv=s.skills?.[skill]||1;
