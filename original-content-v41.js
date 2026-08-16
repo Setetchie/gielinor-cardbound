@@ -44,7 +44,7 @@ add('charting_table','Charting Table','Sailing Facility',null,'Rare','🗺️',0
 
 // Huntsmanship contract cards (internal Slayer key retained only as a temporary save/runtime compatibility key).
 [
- ['hunt_frontier_vermin','Frontier Vermin','Common','🎯',1,8,10,['bramble_rat','shardcrawler']],
+ ['hunt_frontier_vermin','Frontier Vermin','Common','🎯',1,8,10,['bramble_rat']],
  ['hunt_fang_and_thorn','Fang and Thorn','Uncommon','🐾',5,14,18,['thornback_boar','mossfang_wolf']],
  ['hunt_deep_delve','Deep Delve','Rare','🕯️',12,24,35,['gloom_bat','stonehide_mauler']],
  ['hunt_oldwatch_disturbance','Oldwatch Disturbance','Rare','🏚️',20,42,70,['warden_of_oldwatch']]
