@@ -50,7 +50,9 @@ test('Activity > Skilling > Sailing navigation works', async ({ page }) => {
   await expect(sailing).toBeVisible();
   await sailing.click();
   await expect(page.getByRole('heading', { name: 'Sailing', exact: true })).toBeVisible();
-  await expect(page.getByRole('option', { name: 'Port Tasks', exact: true })).toHaveCount(1);
+  const portTasks = page.getByRole('button', { name: /Port Tasks/i }).first();
+  await expect(portTasks).toBeVisible();
+  await portTasks.click();
   await expect(page.getByText(/Courier Port Tasks/i)).toBeVisible();
 });
 
