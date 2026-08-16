@@ -1,8 +1,10 @@
 // Cardbound v37: live idle progress, settlement, gain feedback, and next-activity ETA.
 (function(){
-window.CARDBOUND_VERSION='v37';
-window.CARDBOUND_BUILD='2026-08-14.1654-MDT';
-window.CARDBOUND_BUILD_NOTE='Idle tracker now shows ETA to the next activity level unlock';
+// This enhancement module may load after newer content/build layers. Preserve
+// the current build identity instead of downgrading the app back to v37.
+if(!window.CARDBOUND_VERSION)window.CARDBOUND_VERSION='v37';
+if(!window.CARDBOUND_BUILD)window.CARDBOUND_BUILD='2026-08-14.1654-MDT';
+if(!window.CARDBOUND_BUILD_NOTE)window.CARDBOUND_BUILD_NOTE='Idle tracker now shows ETA to the next activity level unlock';
 
 const previousRender=render;
 function applyV37Info(){
@@ -10,10 +12,10 @@ function applyV37Info(){
   if(old)old.remove();
   if(s.tab==='Home'){
     const content=document.querySelector('.content');
-    if(content)content.insertAdjacentHTML('beforeend',`<div data-build-info class="panel" style="margin-top:12px"><span class="eyebrow">VERSION INFO</span><h3>Gielinor: Cardbound v37</h3><div class="muted">Build: ${CARDBOUND_BUILD}<br>${CARDBOUND_BUILD_NOTE}</div></div>`);
+    if(content)content.insertAdjacentHTML('beforeend',`<div data-build-info class="panel" style="margin-top:12px"><span class="eyebrow">VERSION INFO</span><h3>Cardbound ${CARDBOUND_VERSION}</h3><div class="muted">Build: ${CARDBOUND_BUILD}<br>${CARDBOUND_BUILD_NOTE}</div></div>`);
   }
   const stamp=document.getElementById('cardbound-build-stamp');
-  if(stamp)stamp.textContent='Cardbound v37 • 2026-08-14 16:54 MDT';
+  if(stamp)stamp.textContent=`Cardbound ${CARDBOUND_VERSION} • ${CARDBOUND_BUILD}`;
 }
 render=function(){previousRender();applyV37Info();updateNextUnlockDisplay();};
 

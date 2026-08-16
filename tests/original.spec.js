@@ -68,6 +68,9 @@ test('Greenwake Sailing starter route works', async ({ page }) => {
   await page.getByRole('button',{name:/Venture|Activity/i}).last().click();
   await page.getByRole('button',{name:/Skilling/i}).first().click();
   await page.getByRole('button',{name:/Sailing/i}).first().click();
+  const portTasks=page.getByRole('button',{name:/Port Tasks/i}).first();
+  await expect(portTasks).toBeVisible();
+  await portTasks.click();
   await expect(page.getByText(/Harbor Deliveries/i)).toBeVisible();
   const data=await page.evaluate(()=>({
     action:A.find(a=>a.id==='greenwake_harbor_deliveries'),
