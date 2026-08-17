@@ -24,8 +24,10 @@ test('v43 home exposes intended top-level structure', async ({ page }) => {
   await expect(page.getByRole('button', { name: /World & Exploration/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Region Packs/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Bank & Loadouts/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /^Raids/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Community/i })).toBeVisible();
+  // Match the authored Home card specifically; the utility bar also contains a
+  // Raids destination and its emoji is part of the accessible name.
+  await expect(page.getByRole('button', { name: /Raids.*Preparation checklists/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Community.*Friends/i })).toBeVisible();
 });
 
 test('Gathering is one parent Skill with subset mastery and participation', async ({ page }) => {
