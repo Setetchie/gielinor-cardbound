@@ -5,7 +5,7 @@
   const REGION='Greenwake';
   const TEST_TARGETS={Woodcutting:{progress:100,complete:250},Mining:{progress:100,complete:250},Fishing:{progress:80,complete:200}};
   function ensure(){
-    if(!window.s)return;
+    if(typeof s==='undefined'||!s)return false;
     s.skills=s.skills||{}; s.xp=s.xp||{};
     const legacyLevels=SUBSETS.map(k=>Number(s.skills[k]||1));
     const legacyXp=SUBSETS.map(k=>Number(s.xp[k]||0));
@@ -17,11 +17,12 @@
     SUBSETS.forEach(k=>{
       if(s.subsetProgress[k]==null)s.subsetProgress[k]=0;
       if(s.regionParticipation[REGION][k]==null)s.regionParticipation[REGION][k]=0;
-      // Compatibility mirror only: legacy modules still read these fields for requirements.
+      // Compatibility mirrors only: legacy modules still read subset level fields for requirements.
       s.skills[k]=s.skills.Gathering;
       s.xp[k]=0;
     });
     try{save()}catch{}
+    return true;
   }
   function gatheringXp(n){
     n=Math.max(0,Number(n)||0); if(!n)return;
@@ -33,7 +34,7 @@
   ensure();
   const legacyXp=window.xp;
   window.xp=function(kind,n){
-    ensure();
+    if(!ensure())return typeof legacyXp==='function'?legacyXp(kind,n):undefined;
     if(SUBSETS.includes(kind)){
       n=Math.max(0,Number(n)||0);
       s.subsetProgress[kind]=(s.subsetProgress[kind]||0)+n;
@@ -47,16 +48,15 @@
   };
   window.cbGatheringV43={
     subsets:SUBSETS.slice(),region:REGION,targets:TEST_TARGETS,
-    level:()=>Number(s?.skills?.Gathering||1),
-    xp:()=>Number(s?.xp?.Gathering||0),
-    mastery:k=>Number(s?.subsetProgress?.[k]||0),
-    participation:k=>Number(s?.regionParticipation?.[REGION]?.[k]||0)
+    level:()=>Number((typeof s!=='undefined'&&s.skills&&s.skills.Gathering)||1),
+    xp:()=>Number((typeof s!=='undefined'&&s.xp&&s.xp.Gathering)||0),
+    mastery:k=>Number((typeof s!=='undefined'&&s.subsetProgress&&s.subsetProgress[k])||0),
+    participation:k=>Number((typeof s!=='undefined'&&s.regionParticipation&&s.regionParticipation[REGION]&&s.regionParticipation[REGION][k])||0)
   };
 
   function bar(value,max){const pct=Math.max(0,Math.min(100,max?value/max*100:0));return `<div class="cb-v43-mastery-bar"><span style="width:${pct}%"></span></div>`;}
   function enhance(){
-    ensure();
-    if(!document.getElementById('app'))return;
+    if(!ensure()||!document.getElementById('app'))return;
     // Remove the temporary legacy-model warning now that v43 has a parent-Skill test model.
     document.querySelectorAll('.cb-v43-inline-note .cb-v43-pill').forEach(el=>{
       if(/data-model refactor pending/i.test(el.textContent||''))el.remove();
