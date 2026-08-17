@@ -6,6 +6,7 @@ This build moves the prototype from decision-only reconciliation into interface 
 
 - Home / Adventure Log: grouped entry points rather than legacy skill-by-skill naming.
 - Activities: Combat as the overarching Skill; Gathering with Woodcutting/Mining/Fishing subsets; Sailing; Huntsmanship; Raids.
+- Gathering testing model: one shared Gathering level/XP track, permanent subset mastery/progression for Woodcutting/Mining/Fishing, and current-Region subset participation with provisional advancement/completion thresholds. Legacy per-subset level fields are compatibility mirrors only and are not player-facing progression.
 - World & Exploration: Region overview, Locations, ordinary Exploration and Major Exploration placement.
 - Region Packs: Region-specific pack family with increasing rarity-weight tiers, backed temporarily by the existing prototype odds engine.
 - Codex: existing Collection tab is relabeled to Codex in the shell to reflect its collection-binder/player-record role.
@@ -16,6 +17,9 @@ This build moves the prototype from decision-only reconciliation into interface 
 - Community: Friends, Trading and Profile/Showcase placement.
 - Settings / Options: pack confirmation, Reveal All Perfect behavior, return summaries, Region themes, notification categories, Community privacy, and permanent premium package placement.
 - Notification Center: global utility access plus Settings controls.
+- NEW markers: newly revealed content can be marked in its normal system menu and clears when viewed.
+
+A separate `v43-decision-interface-coverage.md` audit maps the broader locked design structure to the testing interfaces so future-system placement and navigation can be checked systematically.
 
 ## Deliberately not blocking this testing pass
 
@@ -25,7 +29,7 @@ The following can remain TBD while navigation and information architecture are t
 - exact Perfect/Foil baseline chance
 - final Skill/subset names beyond already locked naming
 - exact activity XP/Pack Point/idle profile numbers
-- Region progression thresholds and completion weights
+- final Region progression thresholds and completion weights (the Gathering participation thresholds in v43 are explicitly provisional test values)
 - exact Exploration durations, event timers and active-assistance multipliers
 - Raid Power thresholds, Mastery caps and reward rates
 - Huntsmanship Special Creature odds and rare-drop tables
@@ -38,4 +42,4 @@ These should be balanced after the app can be traversed and tested with the inte
 
 ## Important implementation note
 
-The v43 shell is primarily an interface/testing layer over the current prototype. Some underlying mechanics and data are still legacy (for example individual Woodcutting/Mining/Fishing levels and the existing pack odds tables). UI labels and placement are intentionally ahead of those data-model refactors so friends/family testing can provide feedback using the intended terminology and navigation.
+The v43 shell is still primarily a structure/interaction testing layer over the current prototype, but the major Skill hierarchy should not intentionally misrepresent the intended design. Gathering therefore now uses a real parent-Skill testing model rather than exposing separate Woodcutting/Mining/Fishing levels. Some deeper mechanics remain legacy under the shell (most notably existing pack odds/content tables and other pre-reconciliation combat/skilling internals), and those are tracked as implementation follow-ups rather than reasons to postpone navigation testing.
