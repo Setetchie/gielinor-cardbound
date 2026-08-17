@@ -2,6 +2,11 @@
 
 This file is an audit checklist for friends/family UI testing. It separates **locked structural decisions that should be represented in navigation/look-and-feel now** from **numbers/content authoring that may remain provisional**.
 
+## First-pass regression baseline
+- The structure test is additive: all accepted first-pass bug fixes and UI corrections remain mandatory baseline behavior.
+- Use `docs/v43-first-test-pass-baseline.md` as the regression checklist for bootstrap/router stability, Greenwake load/save behavior, Activity/Combat fixes, Sailing routing/idle feedback, pack reveal/mobile fixes, equipment/Bank/Collection improvements, loadout/version handling, image consistency, and service-worker/cache hygiene.
+- A new v43 destination is considered defective if it reintroduces one of those already-fixed problems, even when its new navigation itself works.
+
 ## Home / global shell
 - Home is a high-level launcher, not the only place progression lives.
 - Persistent utility access includes Notification Center and Settings/Options.
