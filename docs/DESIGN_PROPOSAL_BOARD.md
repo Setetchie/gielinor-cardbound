@@ -282,7 +282,7 @@ Future test builds must preserve the accepted first-pass fixes and UI behavior d
 
 ### I3. Current manual UX test priorities — LOCKED / ACCEPTED
 
-Current/next hands-on passes should explicitly evaluate the single persistent scrollable navigation bar (including Bank persistence), Back-control placement, parent Skill → subset mastery-row navigation, concise subset/activity presentation, the standard activity information contract, active idle-status information, activity-completion notification placement/auto-dismiss behavior, filter/sort explanations, Locked/Available semantics, Codex → Stats/Card Collection, World/Exploration preview placement, player-centered equipment + Pet link, compact Loadouts, Packs, Raid progression/requirements, social/trading/showcase flows, mobile ergonomics, screen density, unnecessary tap depth, idle-return behavior, and preservation of prior regression fixes.
+Current/next hands-on passes should explicitly evaluate the single persistent scrollable navigation bar (including Bank persistence), Back-control placement, parent Skill → subset mastery-row navigation, concise subset/activity presentation, the standard activity information contract, active idle-status information, activity-completion notification placement/auto-dismiss behavior, filter/sort explanations, Locked/Available semantics, Codex → Stats/Card Collection, World/Exploration preview placement, player-centered equipment + Pet link, compact Loadouts, Packs, Raid progression/requirements, social/trading/showcase flows, Huntsmanship Tracking/Stalking/Hunt/Special Hunt flows, developer test utilities, mobile ergonomics, screen density, unnecessary tap depth, idle-return behavior, and preservation of prior regression fixes.
 
 ### I4. Automated regression baseline — CURRENT VERIFIED STATE
 
@@ -314,6 +314,37 @@ The fixture must support testing:
 - **Showcase testing in both directions**: the player can view the dummy account's configured Showcase, and the dummy fixture can simulate viewing the player's currently selected Showcase so player-side Showcase configuration/visibility can be verified.
 
 The dummy account is test infrastructure, not final player/content data.
+
+### I7. Huntsmanship creature fixture for next test — LOCKED / ACCEPTED TEST REQUIREMENT
+
+The next test build should include a small controlled set of test creatures sufficient to exercise the intended Huntsmanship progression and navigation rather than only showing placeholder menus.
+
+The fixture must cover:
+
+- **Tracking** a creature and seeing its relevant Tracking state/progress;
+- progressing from Tracking into **Stalking** where applicable;
+- progressing from Stalking into the actual **Hunt**;
+- completing Hunts and receiving the appropriate result/reward/progression presentation;
+- multiple creatures with different requirements/statuses so Available vs Locked behavior and lock reasons can be tested;
+- at least one creature whose chain can be completed from start to finish in a practical test session;
+- **Special Creature Hunts** as a distinct test case, including their special requirement presentation and completion flow;
+- persistence/state behavior when navigating away and returning during the Tracking/Stalking/Hunt lifecycle where that behavior is intended.
+
+Creature names, numbers, and reward values used for this fixture are test content unless separately approved as final world content.
+
+### I8. Developer test option: Grant All Bindings — LOCKED / ACCEPTED TEST REQUIREMENT
+
+The next test build should include a clearly separated **developer/testing option to grant the test account all currently defined Bindings**.
+
+Purpose: allow requirement-heavy systems to be exercised without repeatedly opening packs or relying on random pulls during QA. This should make it practical to test Activities, Huntsmanship, Raids, Trading eligibility, equipment/content gates, and other Binding-dependent flows immediately.
+
+Requirements:
+
+- the control is clearly labeled as a **Dev/Test** utility and is not part of normal player progression;
+- activating it grants ownership/access to all Bindings currently registered in the test build;
+- it must not silently redefine normal unlock/eligibility rules—the UI should still evaluate those rules against the now-owned Bindings;
+- it should coexist with normal testing of missing-Binding states, so testers can reset/clear test data or otherwise return to a state where `Binding not obtained` behavior can still be validated;
+- the dev grant must never be treated as production economy behavior or an intended player reward source.
 
 ---
 
