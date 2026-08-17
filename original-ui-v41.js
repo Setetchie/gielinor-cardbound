@@ -8,7 +8,11 @@ packs.Frontier.o=[35,40,25,0,0];
 
 const replacements=[
  [/Gielinor:\s*Cardbound/gi,'Cardbound'],[/GIELINOR/g,'THE REACH'],
- [/\bSlayer\b/g,'Huntsmanship'],[/\bWoodcutting\b/g,'Woodcraft'],
+ [/\bSlayer\b/g,'Huntsmanship'],
+ // Gathering is now the locked parent Skill and Woodcutting/Mining/Fishing are
+ // its player-facing subsets. Do not rename Woodcutting to the legacy
+ // original-mode "Woodcraft" label; the testing build must exercise the same
+ // hierarchy and subset names in every content mode.
  [/\bBank\b/g,'Vault'],[/\bCollection\b/g,'Codex'],[/\bForge\b/g,'Bindery'],
  [/\bActivity\b/g,'Venture'],[/\bActivities\b/g,'Ventures']
 ];
