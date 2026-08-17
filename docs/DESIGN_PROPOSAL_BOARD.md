@@ -90,6 +90,10 @@ Completing an Exploration that discovers a Location triggers a dedicated, concis
 
 Newly revealed content receives a temporary `NEW` indicator in its normal system menu and the indicator clears when the player views it.
 
+### B5. Exploration preview placement — LOCKED / ACCEPTED
+
+An Exploration preview belongs **inside the selected Exploration**, not above/before the Location or Exploration-choice list. The player first chooses a specific Exploration, then sees that Exploration's preview/details such as environmental destination hint where appropriate, duration, checkpoints, requirements, allowed pre-start information, and Start Exploration action.
+
 ---
 
 ## C. Equipment and loadouts
@@ -100,7 +104,7 @@ Equipment is not Combat-only. Major Skills/subsets can have collectible equipmen
 
 ### C2. Equipment slots — LOCKED / ACCEPTED DIRECTION
 
-Specialization slots: Head, Body, Legs, Main Hand, Off Hand. Main Hand may be one- or two-handed. Utility slots: Gloves, Boots, Jewelry. Special/prestige: Cape/back. Exact bonuses remain open.
+Final current slot set for the test structure: **Head, Body, Legs, Main Hand, Off Hand, Boots, Jewelry, Cape/Back**. **Gloves are removed.** Main Hand may be one- or two-handed; a two-handed item occupies/disables Off Hand.
 
 ### C3. Per-Skill equipped loadouts — LOCKED / ACCEPTED
 
@@ -108,11 +112,13 @@ Each broad Skill maintains its own currently equipped loadout. Subsets do not re
 
 ### C4. Saved presets — LOCKED / ACCEPTED
 
-Saved presets can specialize for a Skill, subset, activity, encounter/boss, idle strategy, XP strategy, Pack Point strategy, etc. Preset capacity is finite and account-wide; exact capacities/pricing remain balance tasks.
+The Loadouts overview should be compact. Each saved loadout shows only its **player-given name** and **tag**. Selecting it opens a dedicated loadout detail/edit screen where the equipment configuration, name, tag, and other established loadout-management actions can be inspected/edited. Do not dump every item/bonus onto the loadout overview.
 
 ### C5. Equipment presentation — LOCKED / ACCEPTED DIRECTION
 
-Core equipment functionality must work with slots/cards/icons and cannot depend on expensive character visualization. A lightweight static player avatar/silhouette/illustrated representation may be centered in the equipment view. Full 3D/360-degree viewing and MMO-style character creation are outside core scope.
+The equipped-gear screen is player-centered: a lightweight player model/avatar sits in the center and the approved gear slots surround it. Do not add extra conventional RPG slots merely to fill space.
+
+The **equipped Pet** has a separate visible position near the player model. It is not a normal equipment slot. Tapping the Pet area navigates to the Pets interface, where the active Pet and Pet gear are managed.
 
 ---
 
@@ -157,11 +163,26 @@ When an activity action completes and shows what was received, the notification 
 - avoid moving the underlying page or changing the player's scroll position;
 - queue or aggregate cleanly if several routine activity notifications resolve close together rather than stacking into an unreadable pile.
 
-This rule is specifically for routine activity-completion pop-ups. **Important summaries/events are a different UI class**: Welcome Back/offline-idle settlement, major discoveries, and other significant summaries may use dedicated persistent overlays and may require manual dismissal so important information is not missed.
+Important summaries/events such as Welcome Back/offline-idle settlement, major discoveries, and other significant summaries are a different UI class and may require manual dismissal.
 
 ### D7. Avoid narrating obvious interface behavior — LOCKED / ACCEPTED
 
-Across Skill/subset/activity screens, prefer showing decision-relevant data over explanatory prose that merely restates what the UI already demonstrates. Do not consume screen space explaining that a subset awards the parent Skill's XP, that later activities are linear upgrades, or that a subset has a profile the player can easily infer from displayed values. Use explanatory copy for non-obvious mechanics, requirements, warnings, or meaningful world/lore flavor.
+Across Skill/subset/activity screens, prefer showing decision-relevant data over explanatory prose that merely restates what the UI already demonstrates.
+
+### D8. Active idle-status information — LOCKED / ACCEPTED
+
+While a normal repeating activity is idling, do **not** show a `Next Activity` field. The player already knows the same activity repeats.
+
+The active idle panel should instead show, where applicable:
+
+- XP per action;
+- Pack Points per action;
+- effective XP per hour;
+- effective Pack Points per hour;
+- Time per action;
+- a live current-action progress bar/timer that fills/resets per action.
+
+Hourly figures should reflect the player's current effective setup/modifiers rather than only raw base values.
 
 ---
 
@@ -219,7 +240,7 @@ If advertising is used, prioritize optional rewarded ads, not forced interstitia
 
 ---
 
-## H. Pack/card reveal presentation
+## H. Packs, Raids, and progression-browser presentation
 
 ### H1. Reveal intensity — LOCKED / ACCEPTED DIRECTION
 
@@ -228,6 +249,24 @@ Common vs Uncommon should have minimal reveal differentiation beyond readable ra
 ### H2. Pack/card regional presentation — LOCKED / ACCEPTED
 
 Pack icons and card identities remain tied to their pack tier/type and card identity. Regional unlocks primarily alter surrounding/background presentation rather than replacing universal object grammar.
+
+### H3. Pack-selection information — LOCKED / ACCEPTED
+
+Pack-selection cards should be concise. Each pack should show:
+
+- Pack name;
+- Pack cost;
+- number of cards obtained;
+- its rarity advantage in plain language, such as `Higher chance of Rare cards` or `Higher chance of Legendary cards`;
+- the corresponding probability/percentage difference so players can see how much the chance changes, preserving the useful comparative clarity from the initial prototype pack presentation.
+
+Do not clutter the pack-selection card with unrelated underlying mechanics.
+
+### H4. Raid browser and requirement drill-down — LOCKED / ACCEPTED
+
+The main Raids screen should show **specific Raids** with their Raid name, originating Region, Raid Tier, and player progress/completion status. Region and Tier together communicate world origin and broader progression/difficulty placement.
+
+Selecting a Raid opens its dedicated detail screen. That screen shows the full Raid requirements and evaluates them against the player's current state with clear satisfied/not-satisfied indications, similar to the useful earlier Raids/Inferno requirement presentation. Revealed but ineligible Raids may appear Locked; undiscovered Raids follow their discovery rules rather than simply appearing as Locked.
 
 ---
 
@@ -243,7 +282,7 @@ Future test builds must preserve the accepted first-pass fixes and UI behavior d
 
 ### I3. Current manual UX test priorities — LOCKED / ACCEPTED
 
-Current/next hands-on passes should explicitly evaluate the single persistent scrollable navigation bar (including Bank persistence), Back-control placement, parent Skill → subset mastery-row navigation, concise subset/activity presentation, the standard activity information contract, activity-completion notification placement/auto-dismiss behavior, filter/sort explanations, Locked/Available semantics, Codex → Stats/Card Collection, World/Exploration, Bank/equipment/loadouts, Packs, future-system placement, mobile ergonomics, screen density, unnecessary tap depth, idle-return behavior, and preservation of prior regression fixes.
+Current/next hands-on passes should explicitly evaluate the single persistent scrollable navigation bar (including Bank persistence), Back-control placement, parent Skill → subset mastery-row navigation, concise subset/activity presentation, the standard activity information contract, active idle-status information, activity-completion notification placement/auto-dismiss behavior, filter/sort explanations, Locked/Available semantics, Codex → Stats/Card Collection, World/Exploration preview placement, player-centered equipment + Pet link, compact Loadouts, Packs, Raid progression/requirements, social/trading/showcase flows, mobile ergonomics, screen density, unnecessary tap depth, idle-return behavior, and preservation of prior regression fixes.
 
 ### I4. Automated regression baseline — CURRENT VERIFIED STATE
 
@@ -252,6 +291,29 @@ The v43 structure-fidelity build passed the expanded **1,400-execution regressio
 ### I5. Automatic review-note capture — LOCKED / ACCEPTED PROCESS
 
 During the ongoing product-owner/manual UI review, newly accepted decisions, clarified behavior, and identified bugs should be **added to this Design Proposal Board automatically as they are agreed**, without requiring a separate reminder from the product owner. When a note affects testable behavior, it must also be carried into the living testing scope/coverage in the next implementation/test update. Chat history is not the authoritative storage location for accepted review findings.
+
+### I6. Dummy Friend / social fixture for next test — LOCKED / ACCEPTED TEST REQUIREMENT
+
+The next test build should include at least one clearly identified **dummy Friend/test account** with deterministic behavior and controlled inventory so the social systems can be exercised without a second real account.
+
+The fixture must support testing:
+
+- outgoing Friend Request to the dummy;
+- incoming Friend Request from the dummy;
+- accepting/rejecting Friend Requests;
+- initiating trades in both relevant directions;
+- accepted trades;
+- rejected trades;
+- multiple pending/concurrent offers without one overwriting another;
+- counteroffers;
+- countering a counteroffer;
+- offer timeout/expiration and resulting non-actionable state;
+- confirmation/state reset when terms change;
+- persistence of Friend/trade state across navigation/reload where appropriate;
+- controlled duplicate/card inventory sufficient to exercise actual trade eligibility, last-copy protection, rarity/value restrictions, and other established safeguards;
+- **Showcase testing in both directions**: the player can view the dummy account's configured Showcase, and the dummy fixture can simulate viewing the player's currently selected Showcase so player-side Showcase configuration/visibility can be verified.
+
+The dummy account is test infrastructure, not final player/content data.
 
 ---
 
