@@ -12,8 +12,6 @@ async function fresh(page){
     typeof window.cbHomeGoSkill === 'function'
   );
   await expect(page.locator('#app')).toBeVisible();
-  // Give late enhancement scripts a brief stability window so the caller never
-  // starts evaluating against a document that is still being replaced.
   await page.waitForTimeout(150);
   await page.waitForFunction(() => document.readyState === 'complete' && window.CARDBOUND_VERSION);
 }
@@ -36,16 +34,15 @@ test('app boots and exposes core globals', async ({ page }) => {
   expect(core.version).toBeTruthy();
 });
 
-test('home shows grouped combat and skilling including Sailing', async ({ page }) => {
+test('home shows grouped activities including Sailing', async ({ page }) => {
   await fresh(page);
-  await expect(page.getByText(/Combat Skills/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: /Activities/i })).toBeVisible();
   await expect(page.getByText(/Sailing/i).first()).toBeVisible();
 });
 
-test('Activity > Skilling > Sailing navigation works', async ({ page }) => {
+test('Activity > Sailing category navigation works', async ({ page }) => {
   await fresh(page);
   await page.getByRole('button', { name: /Activity/i }).last().click();
-  await page.getByRole('button', { name: /Skilling/i }).first().click();
   const sailing = page.getByRole('button', { name: /Sailing/i }).first();
   await expect(sailing).toBeVisible();
   await sailing.click();
@@ -109,7 +106,7 @@ test('bank renders equipment and loadout presets', async ({ page }) => {
 
 test('collection supports missing-card search filters', async ({ page }) => {
   await fresh(page);
-  await page.getByRole('button', { name: /Collection/i }).last().click();
+  await page.getByRole('button', { name: /Codex/i }).last().click();
   await expect(page.getByPlaceholder(/Search every card/i)).toBeVisible();
   await expect(page.locator('select').filter({ hasText: /Missing/ }).first()).toBeVisible();
 });

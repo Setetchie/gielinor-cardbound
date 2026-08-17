@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      max-parallel: 9
+      max-parallel: 10
       matrix:
         include:
           - name: prototype-core
@@ -53,6 +53,10 @@ jobs:
             spec: tests/inventory.spec.js
             grep: '.*'
             executions: 50
+          - name: v43-structure
+            spec: tests/v43-structure.spec.js
+            grep: '.*'
+            executions: 400
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -74,7 +78,7 @@ jobs:
           if-no-files-found: warn
 
   acceptance-gate:
-    name: 1,000-execution acceptance gate
+    name: 1,400-execution acceptance gate
     runs-on: ubuntu-latest
     if: always()
     needs: browser-regression
