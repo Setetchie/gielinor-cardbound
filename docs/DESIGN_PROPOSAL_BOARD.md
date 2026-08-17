@@ -20,65 +20,53 @@ This board reconciles the product decisions discussed during the recent architec
 
 Use broad permanent Skills rather than making every specialization its own permanent Skill.
 
-Target hierarchy for non-combat activities:
-
-`Skill → Subset → Activity`
+Target hierarchy for non-combat activities: `Skill → Subset → Activity`.
 
 The parent Skill owns the shared Skill level/XP progression. Subsets do **not** have independent player-facing Skill levels; each subset instead has its own persistent mastery/progression and Region-specific participation where applicable.
 
-Examples:
+Gathering contains subsets such as Woodcutting, Mining, Fishing, and later appropriate gathering specializations. Other broad Skills may gain additional subsets as Regions/Locations are discovered.
 
-- **Gathering** contains subsets such as Woodcutting, Mining, Fishing, and later appropriate gathering specializations.
-- Other broad Skills may gain additional subsets as Regions/Locations are discovered.
-
-**Combat is a deliberate exception to player-selected family/style navigation.** Combat is one broad Skill/category, and the player selects the enemy or encounter rather than selecting Melee, Ranged, or Magic as an activity subset.
-
-Target Combat flow:
-
-`Activities → Combat → Enemy / Encounter → Start Combat`
-
-The equipped weapon/loadout determines the active combat style automatically. Melee, Ranged, Magic, and any future combat-style classifications remain weapon/equipment/combat-calculation metadata used for weaknesses, resistances, bonuses, encounter requirements, and tactical decisions; they are **not separate player-selected Combat activities or permanent Skills**.
-
-Combat equipment must carry explicit style metadata rather than relying on item names. The encounter UI should communicate the style derived from the current equipment and relevant enemy weaknesses/resistances/effectiveness, while allowing the player to deliberately change loadouts before starting. Changing encounters does not auto-equip a preferred style.
+Combat is a deliberate exception to player-selected family/style navigation. Combat is one broad Skill/category, and the player selects the enemy or encounter rather than selecting Melee, Ranged, or Magic as an activity subset. Target flow: `Activities → Combat → Enemy / Encounter → Start Combat`. Equipped weapon/loadout determines active combat style automatically.
 
 ### A2. Region-driven subset discovery — LOCKED / ACCEPTED
 
 Do not unlock every subset in the starting Region. Later Regions/Locations should introduce genuinely new ways to use an existing broad Skill.
 
-The **first subset in each Skill is the baseline/generalist subset**. It should provide a useful, reasonably balanced mix of the Skill's major reward profiles rather than being intentionally poor at one dimension. For Gathering, Woodcutting is the working baseline example: before Mining or other Gathering subsets are discovered, Woodcutting provides a balanced mix of Gathering XP, Pack Points, and Idle Efficiency.
+The **first subset in each Skill is the baseline/generalist subset**. It should provide a useful, reasonably balanced mix of the Skill's major reward profiles. For Gathering, Woodcutting is the working baseline example: before Mining or other Gathering subsets are discovered, Woodcutting provides a balanced mix of Gathering XP, Pack Points, and Idle Efficiency.
 
-Later Regions/Locations unlock new subsets that create **specialized profiles**. A specialized subset should improve meaningfully on one profile while giving up relative performance in one or more others. Example: a Mountain Region may unlock Mining, whose activities can offer substantially stronger Gathering XP than comparable Woodcutting activities while sacrificing Pack Points and/or Idle Efficiency.
+Later Regions/Locations unlock new subsets that create specialized profiles. A specialized subset improves meaningfully on one profile while giving up relative performance in one or more others. A Mountain Region may unlock Mining, whose activities can offer stronger Gathering XP than comparable Woodcutting activities while sacrificing Pack Points and/or Idle Efficiency.
 
-**Specialized subsets are horizontal strategic options, not universal upgrades.** A later subset must not simply become better than the baseline in every major profile because it was discovered later. The baseline subset should remain a meaningful option throughout progression.
-
-Later Regions may do both: add higher-tier/new activities to existing subsets and introduce an entirely new subset/profile. This allows vertical content growth inside a subset without collapsing the horizontal choice between subsets.
-
-A subset learned later may also reveal new activities/interactions in previously discovered Regions/Locations when appropriate.
+Specialized subsets are horizontal strategic options, not universal upgrades. A later subset must not simply become better than the baseline in every major profile. Later Regions may both add higher-tier activities to existing subsets and introduce a new subset/profile.
 
 ### A3. Subset profile communication — LOCKED / ACCEPTED
 
-Do **not** explicitly label subsets with mechanical profile names such as `Pack Point Profile`, `XP Profile`, or `Idle Profile`.
+Do **not** explicitly label subsets with mechanical profile names such as `Pack Point Profile`, `XP Profile`, or `Idle Profile`. Players should learn each subset's strategic profile from actual activity values and comparisons.
 
-Players should learn each subset's strategic profile from the actual activity values and comparisons. Activity rows/cards must clearly expose the relevant outputs used for that choice, such as:
-
-- parent-Skill XP;
-- Pack Points;
-- Idle Efficiency / idle characteristics;
-- other profile-relevant outputs introduced by that Skill.
-
-Sorting must allow those values to be ordered low-to-high or high-to-low where appropriate. Within a subset, later/higher-tier content can naturally outperform earlier content while retaining the subset's broader profile tendencies.
+Do not add explanatory subset descriptions merely stating that a subset provides parent-Skill XP, is a baseline/generalist/specialized profile, offers linear upgrade activities, or otherwise narrates relationships that are obvious from the activity data. Reserve descriptive copy for meaningful lore/flavor or mechanics that cannot reasonably be inferred from the interface.
 
 ### A4. Subset mastery as navigation — LOCKED / ACCEPTED
 
-Do not add a redundant intermediate menu whose only purpose is selecting a subset after the player has already opened its parent Skill.
+Do not add a redundant intermediate menu whose only purpose is selecting a subset after the player has already opened its parent Skill. The parent Skill page shows each unlocked subset as an interactive mastery/progression row or bar. That row communicates subset identity and progression and is itself the link to that subset's activities. Use a clear interaction affordance such as a chevron.
 
-The parent Skill page shows each unlocked subset as an interactive **mastery/progression row or bar**. That row communicates subset identity and progression and is itself the link to that subset's activities. Use a clear interaction affordance such as a chevron so the progression bar does not appear passive.
+Example: `Activities → Gathering → Woodcutting mastery row → Woodcutting Activities`. The activity page returns directly to the parent Skill with `← Back to Gathering`.
 
-Example:
+### A5. Standard activity information contract — LOCKED / ACCEPTED
 
-`Activities → Gathering → Woodcutting mastery row → Woodcutting Activities`
+Every normal comparable activity row/card should use the same core information hierarchy so players can compare activities without learning different layouts.
 
-The activity page then returns directly to the parent Skill with `← Back to Gathering`.
+Mandatory baseline fields where applicable:
+
+- **Activity name** — e.g. Iron Ore;
+- **Level requirement** — using the parent Skill requirement;
+- **Requirement state / lock reason** — clearly state `Requirement not met`, `Binding not obtained`, or each relevant blocker when multiple requirements are unmet;
+- **Parent-Skill XP per action**;
+- **Pack Points per action**;
+- **Idle Efficiency**;
+- **Time per action**.
+
+XP shown on subset activities is the parent Skill's XP (e.g. Gathering XP), not separate Woodcutting/Mining/Fishing Skill XP. Subset progression remains Mastery/Regional Participation.
+
+The same information order should be used across comparable subsets so the reward-profile tradeoffs are immediately visible. Avoid long descriptions explaining that activities award parent-Skill XP or progress linearly; the activity values, requirements, and progression UI should communicate that directly.
 
 ---
 
@@ -86,44 +74,21 @@ The activity page then returns directly to the parent Skill with `← Back to Ga
 
 ### B1. Geography hierarchy — LOCKED / ACCEPTED
 
-Use:
-
-`World → Region → Location → optional Point of Interest`
-
-**Region** is the major progression/theme chapter. **Location** is the player-facing term for named places inside a Region; avoid presenting them as technical “sub-regions.” Points of Interest are optional story/discovery details and should not become another mandatory navigation tier.
+Use `World → Region → Location → optional Point of Interest`. Region is the major progression/theme chapter. Location is the player-facing term for named places inside a Region. Points of Interest are optional story/discovery details and should not become another mandatory navigation tier.
 
 ### B2. Role of Locations — LOCKED / ACCEPTED
 
-Locations must have gameplay value beyond scenery. They can provide world identity/geography, discovery progression, activity origins, creatures/Bindings, encounters/bosses, story/lore, regional/location collection completion, and latent interactions that become usable after later subset/knowledge unlocks.
-
-Repeatable activity navigation remains Skill-first. A player should normally be able to reach an activity through its Skill/subset screen without commuting through World → Region → Location every time.
-
-The World interface instead answers “what is here?” and supports geography, discovery, lore, regional completion, and backtracking opportunities.
+Locations must have gameplay value beyond scenery. Repeatable activity navigation remains Skill-first. The World interface answers “what is here?” and supports geography, discovery, lore, regional completion, and backtracking opportunities.
 
 ### B3. Exploration reveal and Location discovery — LOCKED / ACCEPTED
 
-Progress toward a Region's final Major Exploration must naturally reveal the remaining **core Exploration paths**, even if the player does not complete those paths before pursuing the Major Exploration. The Exploration graph should accomplish this through authored world structure rather than an artificial global reveal.
-
-At/around the frontier reveal, the complete core Exploration structure becomes transparent enough for authoritative core Region completion information. All core paths are revealed, but unvisited destination Location identities can remain unknown.
-
-For a revealed-but-unexplored path:
-
-- the route is visible;
-- the destination remains unidentified until the Exploration is completed;
-- an environmental preview may communicate broad terrain/place character;
-- gameplay content at that Location is not previewed through the route.
-
-At the frontier, the UI may reveal the total number of core Locations even when some destination identities remain unknown. Optional/secret/non-core/future-expansion content remains outside those core totals.
+Progress toward a Region's final Major Exploration must naturally reveal the remaining core Exploration paths, even if the player does not complete those paths before pursuing the Major Exploration. At/around the frontier reveal, the complete core Exploration structure becomes transparent enough for authoritative core Region completion information. All core paths are revealed, but unvisited destination Location identities can remain unknown.
 
 ### B4. Location reveal presentation — LOCKED / ACCEPTED
 
-Completing an Exploration that discovers a Location triggers a dedicated, concise Location reveal rather than only a toast.
+Completing an Exploration that discovers a Location triggers a dedicated, concise Location reveal rather than only a toast. It may show Location name, artwork/environment, short flavor text, and discovered content, but should not become an eligibility/requirements audit. Players traverse the appropriate gameplay menus afterward to determine individual requirements.
 
-The reveal may show Location name, artwork/environment, short flavor text, and the content discovered there. It should **not** become an eligibility/requirements audit. Players traverse the appropriate Activity/Combat/Huntsmanship/etc. menus afterward to determine whether they meet individual requirements.
-
-For content-dense Locations, summarize discovered content by category rather than dumping every item onto the reveal. The category summaries are informational and are **not deep-link shortcuts** into gameplay menus. The reveal may offer `View Location` and `Continue`.
-
-Newly revealed content receives a temporary `NEW` indicator in its normal system menu and the indicator clears when the player views that item/content in the appropriate menu.
+Newly revealed content receives a temporary `NEW` indicator in its normal system menu and the indicator clears when the player views it.
 
 ---
 
@@ -131,21 +96,19 @@ Newly revealed content receives a temporary `NEW` indicator in its normal system
 
 ### C1. Universal activity equipment — LOCKED / ACCEPTED
 
-Equipment is not Combat-only. Major Skills/subsets can have collectible equipment appropriate to their activities. Equipment can affect suitable outcomes such as XP, Pack Points, regional weighting, idle characteristics, activity profiles, subset efficiency, and specialization effects.
+Equipment is not Combat-only. Major Skills/subsets can have collectible equipment appropriate to their activities. Equipment can affect XP, Pack Points, regional weighting, idle characteristics, activity profiles, subset efficiency, and specialization effects.
 
 ### C2. Equipment slots — LOCKED / ACCEPTED DIRECTION
 
-Specialization slots: Head, Body, Legs, Main Hand, Off Hand. Main Hand may be one- or two-handed; two-handed weapons/tools occupy both hand slots. Utility slots: Gloves, Boots, Jewelry. Special/prestige: Cape/back.
-
-Utility items should emphasize horizontal build choices such as XP vs Pack Points, speed, idle duration, regional weighting, rare-event/variance profiles, etc., rather than simply duplicating Skill-specific armor bonuses. Exact bonuses remain open.
+Specialization slots: Head, Body, Legs, Main Hand, Off Hand. Main Hand may be one- or two-handed. Utility slots: Gloves, Boots, Jewelry. Special/prestige: Cape/back. Exact bonuses remain open.
 
 ### C3. Per-Skill equipped loadouts — LOCKED / ACCEPTED
 
-Each broad Skill maintains its own currently equipped loadout. Subsets do not require separate mandatory equipped inventories. Changing subset/activity does not auto-equip gear. Inapplicable bonuses simply do not apply. The player deliberately changes equipment or selects a saved preset.
+Each broad Skill maintains its own currently equipped loadout. Subsets do not require separate mandatory equipped inventories. Changing subset/activity does not auto-equip gear.
 
 ### C4. Saved presets — LOCKED / ACCEPTED
 
-Saved presets can specialize for a Skill, subset, activity, encounter/boss, idle strategy, XP strategy, Pack Point strategy, etc. No automatic equipment optimization/equipping when changing activities. Preset capacity is finite and account-wide; exact capacities/pricing remain balance tasks.
+Saved presets can specialize for a Skill, subset, activity, encounter/boss, idle strategy, XP strategy, Pack Point strategy, etc. Preset capacity is finite and account-wide; exact capacities/pricing remain balance tasks.
 
 ### C5. Equipment presentation — LOCKED / ACCEPTED DIRECTION
 
@@ -159,35 +122,46 @@ Core equipment functionality must work with slots/cards/icons and cannot depend 
 
 Use **one persistent horizontally scrollable primary navigation bar**, rather than splitting primary destinations between an upper and lower navigation bar. Preserve the useful behavior of the current upper bar: players can swipe/scroll horizontally to reach additional destinations without wrapping into another navigation row.
 
-Top-level destinations such as Home, Activities, World/Exploration, Packs, Codex, Bank/Loadouts, Raids, Pets, Ascendants, Community, Settings, and other approved primary destinations belong to this single navigation system. Utility actions such as Notifications may be represented compactly without creating a second primary-navigation tier.
+The primary navigation bar must remain visible and functional on **every top-level destination**. Opening Bank, Codex, Packs, World, Activities, Pets, Settings, or any other top-level page must never remove, replace, hide, or structurally change the primary menu bar. The current behavior where entering Bank can make the menu bar disappear is a **BUG** and must be regression-tested.
 
 ### D2. Drill-down page order — LOCKED / ACCEPTED
 
-Use a predictable hierarchy on drill-down screens:
-
-`Back navigation → Current Skill/subset information → filters/sorts/controls → content`
-
-The Back control must be at the **top of the page**, before Skill information. It should clearly state the destination, e.g. `← Back to Activity Groups` or `← Back to Gathering`.
+Use: `Back navigation → Current Skill/subset information → filters/sorts/controls → content`. The Back control must be at the top of the page, before Skill information, and clearly state its destination.
 
 ### D3. Filters/sorts must explain themselves — LOCKED / ACCEPTED
 
-Every filter, sort, toggle, and view control across Bank, Codex/Card Collection, Activities, Packs, equipment, Pets, World/Exploration, Huntsmanship, Raids, Trading, Stats, and future menus must communicate what it does without requiring experimentation.
-
-Use consistent language and behavior for common concepts. Compact UI may use short descriptors, tooltips/info affordances, expandable explanations, or contextual helper text depending on screen size. Sorting must make direction clear, e.g. `XP — Highest to Lowest` rather than an unexplained symbol alone.
+Every filter, sort, toggle, and view control across Bank, Codex/Card Collection, Activities, Packs, equipment, Pets, World/Exploration, Huntsmanship, Raids, Trading, Stats, and future menus must communicate what it does without requiring experimentation. Sorting direction must be explicit, e.g. `XP — Highest to Lowest` rather than an unexplained symbol alone.
 
 ### D4. Available/Locked status semantics — LOCKED / ACCEPTED
 
-Where content-status filtering applies:
-
 - **All** = all currently revealed content in that menu.
-- **Available** = currently revealed content for which all requirements are satisfied and which can be used/started now.
-- **Locked** = currently revealed content that cannot currently be used because one or more requirements are unmet. This includes unowned required Binding/equipment/unlock conditions and owned/revealed content whose level, mastery, Region progression, equipment, or other prerequisite is not met.
+- **Available** = revealed content for which all requirements are satisfied and which can be used/started now.
+- **Locked** = revealed content that cannot currently be used because one or more requirements are unmet, including an unowned required Binding or an unmet level/mastery/Region/equipment prerequisite.
 
-**Locked does not include genuinely undiscovered/hidden content.** Locked item details should clearly state why the item is locked.
+Locked does not include genuinely undiscovered/hidden content. Locked item details must state why the item is locked.
 
 ### D5. Activity loadout selection — LOCKED / ACCEPTED DIRECTION
 
-Activity selection should expose the currently equipped loadout and let the player deliberately choose/apply a saved preset before starting. Changing activity does not automatically change equipment. Combat shows the style derived from equipment rather than asking for a separate Melee/Ranged/Magic activity choice.
+Activity selection should expose the currently equipped loadout and let the player deliberately choose/apply a saved preset before starting. Changing activity does not automatically change equipment.
+
+### D6. Routine activity-completion pop-ups — LOCKED / ACCEPTED
+
+Routine timed **activity completion/reward notifications** are a lightweight auto-dismiss UI class, separate from important modal summaries.
+
+When an activity action completes and shows what was received, the notification must:
+
+- render at the **top of the visible viewport**, independent of the player's current scroll position;
+- overlay all menus/page content, including the persistent primary navigation bar, so it is never hidden below content and never requires scrolling to see;
+- summarize the rewards received from that completed action;
+- **automatically disappear after a short readable period** without requiring a Continue/Dismiss action;
+- avoid moving the underlying page or changing the player's scroll position;
+- queue or aggregate cleanly if several routine activity notifications resolve close together rather than stacking into an unreadable pile.
+
+This rule is specifically for routine activity-completion pop-ups. **Important summaries/events are a different UI class**: Welcome Back/offline-idle settlement, major discoveries, and other significant summaries may use dedicated persistent overlays and may require manual dismissal so important information is not missed.
+
+### D7. Avoid narrating obvious interface behavior — LOCKED / ACCEPTED
+
+Across Skill/subset/activity screens, prefer showing decision-relevant data over explanatory prose that merely restates what the UI already demonstrates. Do not consume screen space explaining that a subset awards the parent Skill's XP, that later activities are linear upgrades, or that a subset has a profile the player can easily infer from displayed values. Use explanatory copy for non-obvious mechanics, requirements, warnings, or meaningful world/lore flavor.
 
 ---
 
@@ -195,20 +169,11 @@ Activity selection should expose the currently equipped loadout and let the play
 
 ### E1. Codex role — LOCKED / ACCEPTED
 
-The **Codex is the player's permanent record/encyclopedia**, not merely a renamed Collection screen.
-
-The Codex landing page presents high-level summaries and links to at least:
-
-- **Stats** — overall account/game statistics and permanent records;
-- **Card Collection** — collection completion and the permanent discovered-card catalog.
-
-Selecting either opens its own deeper space. Stats can organize deeper records by relevant systems as those systems become functional. Card Collection opens the full collection grid/gallery with appropriate filters/sorts.
+The Codex is the player's permanent record/encyclopedia, not merely a renamed Collection screen. The Codex landing page presents high-level summaries and links to at least **Stats** and **Card Collection**. Selecting either opens its own deeper space.
 
 ### E2. Codex vs Bank — LOCKED / ACCEPTED
 
-`Codex → Card Collection` answers: **What cards have I discovered and how complete is my permanent collection?**
-
-`Bank` answers: **What copies/items do I currently possess and can actually manage/use?**
+`Codex → Card Collection` answers: What cards have I discovered and how complete is my permanent collection? `Bank` answers: What copies/items do I currently possess and can actually manage/use?
 
 Collection requirements are based on unique cards collected. Players cannot shred or trade their last copy of a card, so permanent collection ownership is not lost by normal duplicate-management actions.
 
@@ -230,7 +195,7 @@ The rarer Star Fragment allows the player to select the specific eligible unowne
 
 ### F4. Forge eligibility — EXISTING INTENDED DESIGN / MUST PRESERVE
 
-Currency does not bypass content progression. A card is forgeable only when its established pack/content eligibility requirements have been satisfied. Forge UI should distinguish eligible + unowned, already owned, and locked/ineligible with a clear reason.
+Currency does not bypass content progression. Forge UI should distinguish eligible + unowned, already owned, and locked/ineligible with a clear reason.
 
 ---
 
@@ -238,7 +203,7 @@ Currency does not bypass content progression. A card is forgeable only when its 
 
 ### G1. Core monetization principle — LOCKED / ACCEPTED
 
-Monetization may reduce friction or expand convenience; it should not purchase superior progression efficiency. Do not sell exclusive core activities, stronger cards, improved pack rarity odds, inaccessible equipment power, or direct account-wide progression-rate superiority as part of the accepted convenience model.
+Monetization may reduce friction or expand convenience; it should not purchase superior progression efficiency. Do not sell exclusive core activities, stronger cards, improved pack rarity odds, inaccessible equipment power, or direct account-wide progression-rate superiority.
 
 ### G2. Permanent idle/offline capacity — LOCKED / ACCEPTED DIRECTION
 
@@ -272,32 +237,21 @@ Pack icons and card identities remain tied to their pack tier/type and card iden
 
 Future test builds must preserve the accepted first-pass fixes and UI behavior documented in `v43-first-test-pass-baseline.md`. New structure work is additive; reintroducing an already-fixed first-pass issue is a regression.
 
-The baseline includes bootstrap/navigation stability, single-router ownership, load/save stability, Combat/Activity corrections, Sailing hierarchy/routing and idle rewards, universal idle feedback, pack reveal/mobile results behavior, differentiated pack visuals and NEW feedback, equipment layout, Bank/Collection search/filtering, loadout presets/version handling, imagery consistency, pack safety, and service-worker/cache hygiene.
-
 ### I2. v43 decision/interface coverage is a living test contract — LOCKED / ACCEPTED
 
-`v43-decision-interface-coverage.md` and `v43-testing-navigation-scope.md` are living testing references. Future accepted structural/UI decisions must be added to the board and reflected in the appropriate testing notes/coverage rather than remaining only in chat history.
-
-When a new system is not mechanically complete, its future-facing menu destination may still be represented for navigation/look-and-feel testing, provided placeholder/provisional behavior is clearly distinguished from final mechanics.
+`v43-decision-interface-coverage.md` and `v43-testing-navigation-scope.md` are living testing references. Future accepted structural/UI decisions must be added to the board and reflected in appropriate testing notes/coverage rather than remaining only in chat history.
 
 ### I3. Current manual UX test priorities — LOCKED / ACCEPTED
 
-The next hands-on testing passes should explicitly evaluate:
-
-- the single horizontally scrollable primary navigation bar;
-- Back-control placement and drill-down hierarchy;
-- parent Skill → subset mastery-row navigation;
-- whether activity values naturally communicate baseline vs specialized subset profiles without explicit profile labels;
-- filter/sort explanations and consistent Locked/Available semantics;
-- Codex landing page, Stats, and Card Collection traversal;
-- World/Exploration, Location reveal, and NEW-content discoverability;
-- Bank/equipment/loadouts, Packs, Raids, Pets, Ascendants, Community/Trading/Profile, Notifications, and Settings placement;
-- mobile ergonomics, screen density, unnecessary tap depth, and idle-return behavior;
-- preservation of every previously accepted first-pass regression fix.
+Current/next hands-on passes should explicitly evaluate the single persistent scrollable navigation bar (including Bank persistence), Back-control placement, parent Skill → subset mastery-row navigation, concise subset/activity presentation, the standard activity information contract, activity-completion notification placement/auto-dismiss behavior, filter/sort explanations, Locked/Available semantics, Codex → Stats/Card Collection, World/Exploration, Bank/equipment/loadouts, Packs, future-system placement, mobile ergonomics, screen density, unnecessary tap depth, idle-return behavior, and preservation of prior regression fixes.
 
 ### I4. Automated regression baseline — CURRENT VERIFIED STATE
 
-The v43 structure-fidelity build passed the expanded **1,400-execution regression gate** before being merged to `main`. Future UI changes should extend/update tests where intended navigation changes make old assertions stale, while preserving behavioral coverage rather than simply weakening tests.
+The v43 structure-fidelity build passed the expanded **1,400-execution regression gate** before being merged to `main`. Future UI changes should extend/update tests where intended navigation changes make old assertions stale while preserving behavioral coverage.
+
+### I5. Automatic review-note capture — LOCKED / ACCEPTED PROCESS
+
+During the ongoing product-owner/manual UI review, newly accepted decisions, clarified behavior, and identified bugs should be **added to this Design Proposal Board automatically as they are agreed**, without requiring a separate reminder from the product owner. When a note affects testable behavior, it must also be carried into the living testing scope/coverage in the next implementation/test update. Chat history is not the authoritative storage location for accepted review findings.
 
 ---
 
@@ -364,6 +318,7 @@ These remain intentionally undecided and should not be silently assigned final v
 - universal Fragment tier costs and Star Fragment acquisition rate;
 - final card/pack rarity/tier economy;
 - exact numerical profiles/tradeoffs for baseline and specialized subsets;
+- exact auto-dismiss duration/animation for routine activity-completion notifications;
 - final visual art style and production pipeline;
 - final audio style, music scope, SFX production pipeline, and implementation technology;
 - final mobile packaging technology and deployment infrastructure;
