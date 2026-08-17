@@ -41,12 +41,23 @@ test('original mode renders no third-party image URLs', async ({ page }) => {
 
 test('original terminology is player-facing', async ({ page }) => {
   await freshOriginal(page);
-  const body=(await page.locator('body').innerText());
-  expect(body).toContain('Woodcraft');
+  let body=(await page.locator('body').innerText());
+  expect(body).toContain('Gathering');
   expect(body).toContain('Huntsmanship');
   expect(body).not.toMatch(/Gielinor/i);
   expect(body).not.toMatch(/\bSlayer\b/);
-  expect(body).not.toMatch(/\bWoodcutting\b/);
+  expect(body).not.toMatch(/\bWoodcraft\b/);
+
+  // The locked hierarchy is shared across content modes: Gathering is the
+  // Skill and Woodcutting/Mining/Fishing are subsets rather than renamed or
+  // independent player-facing Skills.
+  await page.getByRole('button',{name:/Venture|Activity/i}).last().click();
+  await page.getByRole('button',{name:/Gathering/i}).first().click();
+  body=await page.locator('body').innerText();
+  expect(body).toContain('Woodcutting');
+  expect(body).toContain('Mining');
+  expect(body).toContain('Fishing');
+  expect(body).not.toMatch(/\bWoodcraft\b/);
 });
 
 test('Huntsmanship starts at level 1 with starter contract', async ({ page }) => {
@@ -66,7 +77,8 @@ test('Huntsmanship starts at level 1 with starter contract', async ({ page }) =>
 test('Greenwake Sailing starter route works', async ({ page }) => {
   await freshOriginal(page);
   await page.getByRole('button',{name:/Venture|Activity/i}).last().click();
-  await page.getByRole('button',{name:/Skilling/i}).first().click();
+  // v43 removed the obsolete Skilling layer. Sailing is now a direct Skill
+  // destination, while its established category hierarchy is preserved.
   await page.getByRole('button',{name:/Sailing/i}).first().click();
   const portTasks=page.getByRole('button',{name:/Port Tasks/i}).first();
   await expect(portTasks).toBeVisible();
@@ -113,7 +125,7 @@ test('Greenwake packs are safe probability distributions', async ({ page }) => {
   }
 });
 
-test('Greenwake next Woodcraft unlock is level 15 Ironbark', async ({ page }) => {
+test('Greenwake next Woodcutting unlock is level 15 Ironbark', async ({ page }) => {
   await freshOriginal(page);
   const next=await page.evaluate(()=>A.filter(a=>a.kind==='Woodcutting'&&(a.reqLevel||1)>1).sort((a,b)=>a.reqLevel-b.reqLevel)[0]);
   expect(next.id).toBe('ironbark_tree');
