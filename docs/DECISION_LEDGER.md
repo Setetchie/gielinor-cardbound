@@ -1,93 +1,89 @@
 # Cardbound Decision Ledger
 
-This ledger is the canonical index of Cardbound product and architecture decisions. It does not replace detailed design documents; it tells contributors which decisions are current, which have been superseded, and which remain open.
+Canonical reconciliation index for Cardbound product and architecture decisions. Detailed source documents retain the decision content; this ledger records authority and conflicts.
 
-Last reconciled: 2026-08-18  
-Owner: Setetchie
+**Owner:** Setetchie
 
-## How to use this ledger
+**Last reconciled:** 2026-08-18
 
-- Add one row for every durable decision or material conflict.
-- Use only `Current`, `Superseded`, or `Open`.
-- A `Current` row is implementation authority unless Setetchie gives a newer explicit instruction.
-- A `Superseded` row must identify its replacement. It remains as history and must not be implemented.
-- An `Open` row must state the question and must not be resolved by assumption.
-- Link to the detailed source and implementation evidence when available.
-- If a source contains mixed current and superseded material, add separate rows rather than assigning one status to the entire document.
-- Update this ledger in the same task that accepts, supersedes, or reopens a decision.
+**Coverage:** Governance and the known conflicts below only. The roughly 300 recovered historical decisions have **not** all been audited.
 
 ## Precedence
 
-When sources conflict:
-
 1. Setetchie's latest explicit instruction for the current task.
-2. A `Current` entry in this ledger.
-3. An accepted entry in `docs/ARCHITECTURE_DECISIONS.md` not marked `Superseded` here.
-4. The newest non-conflicting continuity/handoff record.
-5. Code, tests, and `README.md` as implementation evidence.
-6. Older chats, extracts, and notes as historical context.
+2. Latest explicitly accepted `CURRENT` ledger/current review decision.
+3. `docs/DESIGN_PROPOSAL_BOARD.md`.
+4. Current specialized system document, such as `docs/TRADING_SYSTEM.md`.
+5. `docs/ARCHITECTURE_DECISIONS.md`, `docs/WORLD_BIBLE.md`, and supporting documentation.
+6. Historical handoffs, extractions, chats, and notes.
+7. Code, tests, and `README.md` as implementation evidence, not product authority.
 
-Conflicts that cannot be resolved by this order become `Open` and require Setetchie's decision.
+Newer explicitly accepted decisions override conflicting older text. If this ordering cannot resolve a conflict, add an `OPEN` entry and ask Setetchie.
 
-## Status definitions
+## Statuses
 
-| Status | Meaning | Implementation rule |
+| Status | Meaning | Rule |
 |---|---|---|
-| Current | Accepted and authoritative | May be implemented within the approved task scope |
-| Superseded | Replaced by a newer accepted decision | Do not implement; follow the linked replacement |
-| Open | Unresolved or conflicting | Do not make the product choice; ask Setetchie |
+| `CURRENT` | Accepted and authoritative | May implement within approved scope |
+| `SUPERSEDED` | Replaced historical decision | Preserve and link; do not implement |
+| `OPEN` | Unresolved/conflicting | Ask Setetchie; do not choose |
+| `BALANCE` | Direction exists; tuning is undecided | Do not invent final values |
+| `FUTURE` | Intentionally deferred | Do not implement without approval |
+| `REJECTED` | Explicitly declined | Do not implement unless reopened |
 
-## Current migration and validation decisions
+## Required entry fields
 
-| ID | Status | Decision | Source / evidence | Replaces / notes |
-|---|---|---|---|---|
-| OPS-001 | Current | PR #5 on `agent/v44-ux-test-pass` is the active unmerged v44 test build. Do not merge it without a separate explicit instruction from Setetchie. | PR #5; migration instruction dated 2026-08-18 | Current stop point |
-| OPS-002 | Current | Failed run #74 is the last recorded validation stop. Fix failures, then complete one full 1× validation run. Only a completely green 1× run permits a 50× run. Any failure or later code change resets the gate. | Continuity handoff; migration instruction dated 2026-08-18 | No corrective complete green 1× pass is recorded |
-| OPS-003 | Current | Documentation-only Codex migration work may be added to the active branch, but this task must not change app behavior. | Migration instruction dated 2026-08-18 | Applies to creation of `AGENTS.md` and this ledger |
-| OPS-004 | Current | Before an incomplete task changes chats/tasks or loses context, refresh a Markdown handoff with repository/branch/PR/commit, completed work, exact stop point, validation evidence, open decisions, prohibitions, and the next action. | Setetchie's continuity request; `AGENTS.md` | Address Setetchie by name and warn when continuity is slipping |
-| GOV-001 | Current | This ledger controls decision status; detailed architecture remains in `docs/ARCHITECTURE_DECISIONS.md` unless a ledger entry marks a decision superseded or open. | `AGENTS.md`; this ledger | Prevents old accepted text from silently overriding newer decisions |
+Every durable entry must include: Decision ID; system/category; decision; status; authoritative source; supersedes/superseded by; implementation status/stage where applicable; and notes/open questions. Retain superseded/rejected entries and update the ledger when a decision changes.
 
-## Reconciliation queue
+## Governance and engineering state
 
-The following known conflicts require explicit ledger entries before related implementation work proceeds.
+| ID | System/category | Decision | Status | Authoritative source | Supersession | Implementation/status | Notes/open questions |
+|---|---|---|---|---|---|---|---|
+| GOV-001 | Governance | Repository decision documents outrank chat memory; this ledger controls reconciliation using the precedence above. | `CURRENT` | Setetchie's 2026-08-18 instruction; `AGENTS.md` | Supersedes ad hoc chat reliance | Documented | Detailed sources retain content authority at their tier. |
+| GOV-002 | Testing | Preserve accepted regressions; never weaken tests merely to obtain green. | `CURRENT` | `docs/V44_REVIEW_DECISIONS_AND_STAGE_BOARD.md`; `docs/v43-first-test-pass-baseline.md` | None | Applies to corrections | Stale assertions change only for accepted behavior with equivalent coverage. |
+| OPS-001 | PR state | PR #5 on `agent/v44-ux-test-pass` remains intentionally unmerged; merge requires Setetchie's explicit approval. | `CURRENT` | v44 review board; Setetchie's instruction | None | Current stop | Documentation work does not authorize promotion. |
+| OPS-002 | Validation | Diagnose/patch, run a complete 1× gate, fix and restart if red, and run 50× only after fully green 1×. | `CURRENT` | v44 review board, Testing process/current action state | Supersedes run #74 workflow | Not satisfied | Any later code change resets the gate. |
+| OPS-003 | Validation state | Run #74/ID `32073559950`: five named shards failed and `v43-structure` was cancelled; no corrective green 1× is recorded. | `CURRENT` | v44 review board; `docs/CARDBOUND_NEW_CHAT_HANDOFF_2026-08-18.md` | None | Failure remediation not started here | Failed: `prototype-core`, `v44-ux`, `greenwake-progression`, `greenwake-terminology`, `prototype-ui`. |
 
-| ID | Status | Question / conflict | Historical source | Required next step |
-|---|---|---|---|---|
-| REC-001 | Open | Reconcile all detailed Companion/Pet decisions, including XP, equipment requirements and pack ownership behavior, milestones, duplicate conversion, Codex treatment, and underlying architecture. | Prior decision boards and continuity audit | Inventory each decision and mark it Current, Superseded, or Open |
-| REC-002 | Open | Reconcile older separate Melee/Ranged/Magic progression text with the newer broad Combat category where encounter selection and equipped loadout determine style. | Older decisions; current continuity audit | Add separate current and superseded rows with precise source links |
-| REC-003 | Open | Reconcile the Gloves utility slot in `docs/ARCHITECTURE_DECISIONS.md` with the newer v44 test-set direction that removes Gloves. | `docs/ARCHITECTURE_DECISIONS.md`; v44 decision record | Confirm final slot model with Setetchie, then mark the losing rule Superseded |
+## Reconciled product entries
 
-## Decision record template
+| ID | System/category | Decision | Status | Authoritative source | Supersession | Implementation/status | Notes/open questions |
+|---|---|---|---|---|---|---|---|
+| COMBAT-001 | Skills/Combat | Melee, Ranged, and Magic are separate permanent Skills or player-selected family/subset navigation. | `SUPERSEDED` | Historical prototype/`README.md`; older architecture wording | Superseded by `COMBAT-002` | Legacy internals only | Do not restore the split from old code/prose. |
+| COMBAT-002 | Skills/Combat | Combat is one broad category; player selects an enemy/encounter and equipped weapon/loadout determines style. | `CURRENT` | `docs/DESIGN_PROPOSAL_BOARD.md` A1; v44 review board | Supersedes `COMBAT-001` | Accepted target/test behavior | Styles remain combat concepts, not separate permanent paths. |
+| EQUIP-001 | Equipment | Gloves are an equipment/utility slot. | `SUPERSEDED` | `docs/ARCHITECTURE_DECISIONS.md`, Utility slots | Superseded by `EQUIP-002` | Historical only | Old glove references are non-authoritative. |
+| EQUIP-002 | Equipment | Slots: Head, Body, Legs, Main Hand, Off Hand, Boots, Jewelry, Cape/Back; no Gloves. | `CURRENT` | Design board C2; v44 review board §4 | Supersedes `EQUIP-001` | Accepted v44 structure | Two-handed Main Hand may disable Off Hand. |
+| MON-001 | Monetization/idle | Paid convenience may add offline accumulation capacity, never superior equal-time reward/progression rates or direct XP/hr, Pack Points/hr, speed, odds, or power. | `CURRENT` | Architecture idle guardrails; v44 monetization principle | Supersedes/rejects older paid-rate proposals | Product guardrail | Exact packaging is `MON-002`. |
+| MON-002 | Monetization/idle | Exact idle windows, extensions, limits, and pricing remain tuning work. | `BALANCE` | `docs/ARCHITECTURE_DECISIONS.md` | None | Not finalized | Must obey `MON-001`. |
+| TERM-001 | Terminology | Vault, Bindery, and rarity-specific Essence Fragments are working/historical UI terms. | `SUPERSEDED` | `docs/WORLD_BIBLE.md` §§11–12 | Superseded by `TERM-002` | Historical/world context | Lowercase “vault” may remain visual flavor. |
+| TERM-002 | Terminology/economy | Current UI terms: Bank, Forge, universal normal Fragments, Prismatic Essence, and Star Fragments. | `CURRENT` | Design board E2/F1–F4; v44 review board §5 | Supersedes `TERM-001` | Accepted v44 terminology | Exact costs are balance work. |
+| PET-001 | Pets/Companions | Final XP, milestones, duplicate conversion, Codex treatment, equipment requirements, pack ownership behavior, and architecture require explicit reconciliation. | `OPEN` | Known continuity conflict; partial v43/v44 coverage | None | QA fixtures exist; final design incomplete | Do not promote QA-only names/rates/values. |
+| PET-002 | Pets/DLC | Exact Pet XP curves, milestones, drop rates, DLC price, and rewards are not final. | `BALANCE` | v43 navigation scope/interface coverage | None | Provisional QA only | Does not resolve `PET-001`. |
 
-Copy this section for new detailed entries.
+## Audit queue
 
-### [ID] Short decision title
+This seed is not complete reconciliation. Before changing an unaudited system: inventory relevant accepted-looking statements; create one entry per durable decision/conflict; link supersession chains; return unresolved choices to Setetchie. Priority: full Pet/Companion audit, then systematic review of the remaining recovered decisions. Some historical proposal dates/provenance are still missing.
 
-- **Status:** Current | Superseded | Open
-- **Decision owner:** Setetchie
-- **Decision date:** YYYY-MM-DD
-- **Decision:** One unambiguous statement.
-- **Scope:** Systems, files, stages, or releases affected.
-- **Rationale:** Why the decision was accepted or why it remains open.
-- **Source:** Link or repository path to the authoritative detailed record.
-- **Supersedes:** Prior decision ID(s), or `None`.
-- **Superseded by:** Replacement decision ID, or `None`.
-- **Implementation evidence:** Commit, PR, test run, artifact, or `Not implemented`.
-- **Validation gate:** Required tests and acceptance evidence.
-- **Notes / open questions:** Remaining constraints without silently deciding them.
+## Detailed entry template
 
-## Handoff checkpoint template
+### [Decision ID] Title
 
-Use this in the current Markdown handoff whenever work pauses:
+- **System/category:**
+- **Decision:**
+- **Status:** `CURRENT` | `SUPERSEDED` | `OPEN` | `BALANCE` | `FUTURE` | `REJECTED`
+- **Owner/date:** Setetchie / YYYY-MM-DD or Unknown
+- **Authoritative source:**
+- **Supersedes / superseded by:**
+- **Implementation status/stage and evidence:**
+- **Validation gate:**
+- **Notes/open questions:**
 
-- **Repository:** `Setetchie/gielinor-cardbound`
-- **Branch:** `agent/v44-ux-test-pass`
-- **PR:** #5 (must remain unmerged unless separately authorized)
-- **Latest commit:** [SHA]
-- **Completed:** [work and files]
-- **Current stop point:** [exact next step]
-- **1× gate:** Not run | Failed | Green — [command/run/evidence]
-- **50× gate:** Blocked until complete green 1× | Authorized after green 1× | Result
-- **Open decisions/blockers:** [ledger IDs]
-- **Do not:** Merge PR #5; run 50× before green 1×; infer an Open decision
-- **Next action:** [one concrete action]
+## Handoff checkpoint
+
+- Repository/branch/PR/latest commit
+- Completed work/files and exact stop
+- Complete 1× gate command/result/evidence
+- 50× status (blocked until green 1× unless already authorized)
+- Open decision IDs/blockers
+- Prohibitions: do not merge PR #5; do not run 50× before green 1×; do not infer unresolved decisions
+- One concrete next action

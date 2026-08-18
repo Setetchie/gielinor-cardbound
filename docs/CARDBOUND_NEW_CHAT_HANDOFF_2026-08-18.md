@@ -243,7 +243,7 @@ Preserve/add utilities needed to repeatedly test states without grinding:
 - Routine gameplay remains idle-capable; recurring choice prompts are not required for normal efficiency.
 - Bindings/cards unlock gameplay as well as collection progression.
 - Commercial direction is fully original IP; do not reintroduce RuneScape/Jagex names/assets/dependencies into original mode.
-- Core original terminology includes Binder, Bindings, Codex, Vault, Bindery, Huntsmanship, Ascendants, Perfect Bindings, and the established fragment/forge terminology as defined by the current boards.
+- Current test-facing terminology includes Binder, Bindings, Codex, Bank, Forge, Huntsmanship, Ascendants, Perfect Bindings, universal normal Fragments, Prismatic Essence, and Star Fragments. Older `Vault`, `Bindery`, and `Essence Fragments` wording is historical/working terminology; follow `docs/DECISION_LEDGER.md`.
 - Regions/Locations expand world, Skills/subsets, collection, and presentation; repeatable activities remain Skill-first.
 - Trading remains constrained friend trading, not an open marketplace, and must obey the authoritative `TRADING_SYSTEM.md` rules.
 - Paid expansion ownership must not be bypassed through trading or pack eligibility.
@@ -269,16 +269,13 @@ Preserve/add utilities needed to repeatedly test states without grinding:
 - CI repair was intentionally stopped to create this handoff.
 
 ## Immediate next actions for the new chat
-1. Read this handoff and the authoritative documents listed in Section 1.
-2. Inspect live PR #5 head and current GitHub Actions state.
-3. Pull raw logs for the five failed Run #74 shards.
-4. Identify first actionable/root failure in each and group shared causes.
-5. Patch source behavior when it violates accepted design; update stale tests only where accepted v44 behavior intentionally superseded an old assertion, without reducing coverage.
-6. Run **one complete 1× qualification pass**.
-7. If anything fails, stop, patch, and repeat the full 1× qualification pass.
-8. Only after the 1× pass is completely green, run the required **50× stress/acceptance pass**.
-9. Do not merge/promote PR #5 until the required acceptance gate is green.
-10. After green automated validation, deploy/promote the updated test app and continue hands-on product-owner testing.
+1. Read `AGENTS.md`, `docs/DECISION_LEDGER.md`, this handoff, and the authoritative documents listed in Section 1.
+2. Inspect live PR #5 head and pull raw logs for the five failed Run #74 shards.
+3. Identify first actionable/root failure in each and group shared causes.
+4. Patch source behavior when it violates accepted design; update stale tests only where accepted v44 behavior intentionally superseded an old assertion, without reducing coverage.
+5. Run **one complete 1× qualification pass**. If anything fails, stop, patch, and restart the full 1× pass.
+6. Only after the 1× pass is completely green, run the required **50× stress/acceptance pass**.
+7. Do not merge/promote PR #5 without Setetchie's explicit approval.
 
 ---
 
@@ -293,3 +290,15 @@ QA fixtures and $0 purchases exist to test system behavior, not to lock commerci
 # Handoff rule
 
 When a new accepted design decision, test finding, bug, superseded direction, or stage transition occurs, update the **appropriate authoritative board/document** rather than relying on chat history alone. Update this handoff only when another chat migration/checkpoint is needed.
+
+## Governance migration checkpoint — 2026-08-18
+
+- **Repository/branch/PR:** `Setetchie/gielinor-cardbound`; `agent/v44-ux-test-pass`; PR #5 remains unmerged.
+- **Latest committed baseline:** `08bfb7d` (`docs: scaffold canonical decision ledger`). Governance edits made after this commit are currently uncommitted.
+- **Completed:** Root `AGENTS.md` and `docs/DECISION_LEDGER.md` were aligned with the six-status governance model and explicit document precedence. Known Combat, Gloves, monetized idle-capacity, and terminology conflicts were reconciled; Pet/Companion detail remains open.
+- **Exact stop:** Documentation governance is complete for the requested seed scope; PR #5 failure remediation has not begun.
+- **1× gate:** Not run in this documentation-only task. Run #74 remains the last failed evidence.
+- **50× gate:** Blocked until a complete green 1×.
+- **Open decisions:** `PET-001`; remaining historical decision audit; missing provenance/dates for some older proposals.
+- **Do not:** Change behavior as part of governance; merge PR #5; run 50×; infer unresolved Pet/Companion decisions.
+- **Next action:** After Setetchie's approval, inspect the five failed Run #74 shard logs and diagnose root causes without changing code during the diagnostic pass.
