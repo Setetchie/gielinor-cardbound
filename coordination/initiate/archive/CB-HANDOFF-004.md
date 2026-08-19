@@ -1,4 +1,4 @@
-# Current Initiate Task
+# Archived Initiate Task
 
 - **Task ID:** `CB-HANDOFF-004`
 - **Title:** Create comprehensive Cardbound new-chat handoff
