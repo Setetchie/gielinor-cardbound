@@ -36,13 +36,15 @@ test('app boots and exposes core globals', async ({ page }) => {
 
 test('home shows grouped activities including Sailing', async ({ page }) => {
   await fresh(page);
-  await expect(page.getByRole('button', { name: /Activities/i })).toBeVisible();
-  await expect(page.getByText(/Sailing/i).first()).toBeVisible();
+  await expect(page.locator('.v44-nav').getByRole('button', { name: /Activities/i })).toBeVisible();
+  await expect(page.locator('.v44-grid').getByRole('button', { name: /Activities/i })).toBeVisible();
+  await page.locator('.v44-nav').getByRole('button', { name: /Activities/i }).click();
+  await expect(page.getByRole('button', { name: /Sailing/i }).first()).toBeVisible();
 });
 
 test('Activity > Sailing category navigation works', async ({ page }) => {
   await fresh(page);
-  await page.getByRole('button', { name: /Activity/i }).last().click();
+  await page.locator('.v44-nav').getByRole('button', { name: /Activities/i }).click();
   const sailing = page.getByRole('button', { name: /Sailing/i }).first();
   await expect(sailing).toBeVisible();
   await sailing.click();
@@ -97,18 +99,25 @@ test('next unlock helper finds a higher level activity', async ({ page }) => {
 
 test('bank renders equipment and loadout presets', async ({ page }) => {
   await fresh(page);
-  await page.getByRole('button', { name: /Bank/i }).last().click();
-  await expect(page.getByText('WORN EQUIPMENT', { exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Saved Equipment', exact: true })).toBeVisible();
+  await page.locator('.v44-nav').getByRole('button', { name: /Bank/i }).click();
+  await expect(page.getByText('Equipped', { exact: true })).toBeVisible();
+  for(const slot of ['Head','Body','Legs','Main Hand','Off Hand','Boots','Jewelry','Cape / Back','Pet'])
+    await expect(page.getByText(slot,{exact:true})).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Loadouts', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Gathering Generalist/ })).toBeVisible();
+  await expect(page.getByText('Gloves',{exact:true})).toHaveCount(0);
   const fn = await page.evaluate(() => typeof window.cbSaveLoadoutPreset);
   expect(fn).toBe('function');
 });
 
 test('collection supports missing-card search filters', async ({ page }) => {
   await fresh(page);
-  await page.getByRole('button', { name: /Codex/i }).last().click();
+  await page.locator('.v44-nav').getByRole('button', { name: /Codex/i }).click();
+  await page.getByRole('button', {name:/Card Collection/}).click();
   await expect(page.getByPlaceholder(/Search every card/i)).toBeVisible();
   await expect(page.locator('select').filter({ hasText: /Missing/ }).first()).toBeVisible();
+  await page.locator('select').filter({hasText:/Missing/}).selectOption('missing');
+  await expect(page.locator('.v44-cardtile:not(.missing)')).toHaveCount(0);
 });
 
 test('pack definitions are valid probability distributions', async ({ page }) => {

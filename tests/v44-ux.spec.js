@@ -1,5 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
+const navButton=(page,name)=>page.locator('.v44-nav').getByRole('button',{name});
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
@@ -11,11 +13,12 @@ test('v44 build and one persistent scrollable nav are present', async ({ page })
   await expect(page.locator('.v44-nav')).toBeVisible();
   await expect(page.locator('.v44-nav-scroll')).toHaveCSS('overflow-x', 'auto');
   await expect(page.locator('.tabs')).toBeHidden();
-  await expect(page.getByRole('button', {name:/Store/})).toBeVisible();
+  await expect(navButton(page,/Store/)).toBeVisible();
+  await expect(page.locator('.v44-grid').getByRole('button',{name:/Store/})).toBeVisible();
 });
 
 test('Bank keeps navigation visible and uses specified equipment presentation', async ({ page }) => {
-  await page.getByRole('button', {name:/Bank/}).click();
+  await navButton(page,/Bank/).click();
   await expect(page.locator('.v44-nav')).toBeVisible();
   await expect(page.getByText('Equipped', {exact:true})).toBeVisible();
   for (const name of ['Head','Body','Legs','Main Hand','Off Hand','Boots','Jewelry','Cape / Back','Pet']) await expect(page.getByText(name,{exact:true})).toBeVisible();
@@ -23,7 +26,7 @@ test('Bank keeps navigation visible and uses specified equipment presentation', 
 });
 
 test('Gathering uses mastery rows as subset navigation and concise activity info', async ({ page }) => {
-  await page.getByRole('button', {name:/Activities/}).click();
+  await navButton(page,/Activities/).click();
   await page.getByRole('button', {name:/Gathering/}).click();
   await expect(page.getByText('Woodcutting',{exact:true})).toBeVisible();
   await page.getByText('Woodcutting',{exact:true}).click();
@@ -34,28 +37,29 @@ test('Gathering uses mastery rows as subset navigation and concise activity info
 });
 
 test('Codex has Stats and compact Card Collection with detail pull rates', async ({ page }) => {
-  await page.getByRole('button', {name:/Codex/}).click();
+  await navButton(page,/Codex/).click();
   await expect(page.getByRole('button', {name:/Stats/})).toBeVisible();
   await page.getByRole('button', {name:/Card Collection/}).click();
   await expect(page.locator('.v44-card-grid')).toBeVisible();
   await page.locator('.v44-cardtile').first().click();
-  await expect(page.getByText('Pull rates')).toBeVisible();
-  await expect(page.getByText('Standard',{exact:true})).toBeVisible();
-  await expect(page.getByText('Foil',{exact:true})).toBeVisible();
+  const detail=page.locator('.v44-modal');
+  await expect(detail.getByRole('heading',{name:'Pull rates'})).toBeVisible();
+  await expect(detail.getByText('Standard',{exact:true})).toBeVisible();
+  await expect(detail.getByText('Foil',{exact:true})).toBeVisible();
 });
 
 test('Pet purchase gate deep-links to Store and unlocks immediately', async ({ page }) => {
-  await page.getByRole('button', {name:/Pets/}).click();
+  await navButton(page,/Pets/).click();
   await expect(page.getByText('Pet Expansion not purchased')).toBeVisible();
   await page.getByRole('button', {name:/Unlock in Store/}).click();
   await expect(page.getByText('Store • QA Purchases')).toBeVisible();
   await page.locator('.v44-product.selected').getByRole('button', {name:/Test Purchase/}).click();
-  await page.getByRole('button', {name:/Pets/}).click();
+  await navButton(page,/Pets/).click();
   await expect(page.getByText(/Test source:/)).toBeVisible();
 });
 
 test('Huntsmanship fixture exposes tracking stalking hunt and special hunt', async ({ page }) => {
-  await page.getByRole('button', {name:/Activities/}).click();
+  await navButton(page,/Activities/).click();
   await page.getByRole('button', {name:/Huntsmanship/}).click();
   await expect(page.getByRole('button', {name:'Track'}).first()).toBeVisible();
   await expect(page.getByRole('button', {name:'Stalk'})).toBeVisible();
@@ -65,7 +69,7 @@ test('Huntsmanship fixture exposes tracking stalking hunt and special hunt', asy
 });
 
 test('dummy social fixture supports friend, trade, counter, timeout and showcases', async ({ page }) => {
-  await page.getByRole('button', {name:/Community/}).click();
+  await navButton(page,/Community/).click();
   await expect(page.getByText(/Test Ranger/)).toBeVisible();
   await expect(page.getByRole('button', {name:/Send Friend Request/})).toBeVisible();
   await page.getByRole('button', {name:'trading'}).click();
@@ -75,19 +79,19 @@ test('dummy social fixture supports friend, trade, counter, timeout and showcase
 });
 
 test('Store has free QA purchases and Forge currency developer controls', async ({ page }) => {
-  await page.getByRole('button', {name:/Store/}).click();
+  await navButton(page,/Store/).click();
   await expect(page.getByText('Pet Expansion',{exact:true})).toBeVisible();
   await expect(page.getByText('Star Fragment',{exact:true})).toBeVisible();
   await expect(page.getByText('Premium Upgrade',{exact:true})).toBeVisible();
   await expect(page.getByText(/Daily Focus/).first()).toBeVisible();
-  await page.getByRole('button', {name:/Settings/}).click();
+  await navButton(page,/Settings/).click();
   await page.getByRole('button', {name:/Grant Forge Test Currencies/}).click();
-  await page.getByRole('button', {name:/Store/}).click();
+  await navButton(page,/Store/).click();
   await expect(page.getByText('10',{exact:true})).toBeVisible();
 });
 
 test('Ascendant test minigame and notification bell are testable', async ({ page }) => {
-  await page.getByRole('button', {name:/Ascendants/}).click();
+  await navButton(page,/Ascendants/).click();
   await page.getByRole('button', {name:/Play Test Minigame/}).click();
   await expect(page.getByRole('button', {name:'Steady'})).toBeVisible();
   await page.locator('.v44-bell').click();
