@@ -4,7 +4,7 @@ Canonical reconciliation index for Cardbound product and architecture decisions.
 
 **Owner:** Setetchie
 
-**Last reconciled:** 2026-08-18
+**Last reconciled:** 2026-08-19
 
 **Coverage:** Governance and the known conflicts below only. The roughly 300 recovered historical decisions have **not** all been audited.
 
@@ -60,6 +60,12 @@ Every durable entry must include: Decision ID; system/category; decision; status
 | TERM-002 | Terminology/economy | Current UI terms: Bank, Forge, universal normal Fragments, Prismatic Essence, and Star Fragments. | `CURRENT` | Design board E2/F1–F4; v44 review board §5 | Supersedes `TERM-001` | Accepted v44 terminology | Exact costs are balance work. |
 | PET-001 | Pets/Companions | Final XP, milestones, duplicate conversion, Codex treatment, equipment requirements, pack ownership behavior, and architecture require explicit reconciliation. | `OPEN` | Known continuity conflict; partial v43/v44 coverage | None | QA fixtures exist; final design incomplete | Do not promote QA-only names/rates/values. |
 | PET-002 | Pets/DLC | Exact Pet XP curves, milestones, drop rates, DLC price, and rewards are not final. | `BALANCE` | v43 navigation scope/interface coverage | None | Provisional QA only | Does not resolve `PET-001`. |
+| TEST-001 | Testing sequence | After the next architecture-stable owner build, Setetchie completes another hands-on app-testing pass before sustained original-IP/content production. | `CURRENT` | Setetchie's 2026-08-19 instruction | Refines the release roadmap | Planned after Stage 0 build publication | Publication remains a protected explicit boundary. |
+| ALPHA-001 | Friends & Family entry gate | Friends & Family testing begins only after the test build has zero prohibited player-facing RuneScape/OSRS/Jagex-derived content or third-party game assets, multiple complete original Regions, the complete selected alpha card/Pack scope with appropriate pools, and a mostly fleshed-out Pet Expansion. | `CURRENT` | Setetchie's 2026-08-19 instruction; `docs/TESTING_RELEASE_MARKETING_ROADMAP.md` | Supersedes the earlier plan to test externally immediately after the first UI/UX pass | Pre-alpha production target | Exact counts and balance remain unresolved; the gate itself is accepted. |
+| REGION-001 | Original Regions | Multiple original Regions must be designed end-to-end for Friends & Family, spanning Exploration, Locations, Skill/subset content, activities, progression, encounters, rewards, and regional presentation. | `CURRENT` | Setetchie's 2026-08-19 instruction | None | Planned after owner testing | Exact number/roster/order/themes are `OPEN`; “multiple” means more than one. |
+| CONTENT-001 | Cards/Packs | Every card and Pack selected for the Friends & Family build must be developed with explicit acquisition/progression roles and appropriate eligible Pack pools. | `CURRENT` | Setetchie's 2026-08-19 instruction | None | Scope definition and production pending | Exact catalog size, Pack roster, pools, distributions, and cadence remain `OPEN`/`BALANCE`. |
+| PET-003 | Pet Expansion | The Pet Expansion must be mostly fleshed out and included in proper internal/Friends & Family testing rather than remaining only a thin QA fixture. | `CURRENT` | Setetchie's 2026-08-19 instruction | Advances the target beyond the v44 QA fixture without resolving `PET-001`/`PET-002` | Full design reconciliation required before implementation | Acquisition, progression, equipment, bonuses, Codex treatment, gating, roster, values, and price still require explicit resolution. |
+| ART-001 | Original visuals | Original image design should proceed gradually alongside IP/content production; no third-party-derived game art may remain in the Friends & Family build. Owned original placeholders may be used where the Friends & Family art-finality threshold has not yet been set. | `CURRENT` | Setetchie's 2026-08-19 instruction; IP conversion ground rules | None | Visual Bible/art pipeline pending | Exact final-versus-placeholder threshold remains `OPEN`. |
 
 ## Audit queue
 
