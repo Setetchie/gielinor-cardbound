@@ -233,4 +233,10 @@ These decisions should influence the architecture reconciliation and later data/
 - **R4:** content registration should represent Skill, family, tier, Activity Binding, equipment applicability, equipment-slot role, utility profile, and activity profiles as data rather than proliferating specialized runtime modules.
 - **R6 original-content vertical slice:** use the broad Skill/family architecture, universal equipment direction, prestige-slot direction, lightweight presentation hierarchy, convenience-monetization guardrail, and Daily Focus direction as target product structure.
 
+### R2 routing ownership
+
+**Status: Implemented architecture boundary**
+
+The core UI router is the single destination registry and resolver. Home, Bank, and Collection/Codex page bodies register through `cbRegisterPage`; later accepted presentation layers replace a destination through the same interface. Unknown destinations resolve to Home. Feature layers must not create a competing page map or bypass the core resolver.
+
 All implementation remains subject to targeted regression testing and the full acceptance gate at stage boundaries.

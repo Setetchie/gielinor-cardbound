@@ -122,3 +122,20 @@ test('NEW content marker can be added and clears when viewed', async ({ page }) 
   const count = await page.locator('[data-cb-content-id="system:huntsmanship"] .cb-v43-new').count();
   expect(count).toBe(0);
 });
+
+test('core router owns deterministic Home Bank and Collection destination resolution', async ({ page }) => {
+  await fresh(page);
+  const routing = await page.evaluate(() => ({
+    registered: cbRegisteredPages(),
+    home: typeof cbResolvePage('Home'),
+    bank: typeof cbResolvePage('Bank'),
+    collection: typeof cbResolvePage('Collection'),
+    fallbackIsHome: cbResolvePage('missing-route') === cbResolvePage('Home')
+  }));
+  for (const destination of ['Home', 'Bank', 'Collection'])
+    expect(routing.registered).toContain(destination);
+  expect(routing.home).toBe('function');
+  expect(routing.bank).toBe('function');
+  expect(routing.collection).toBe('function');
+  expect(routing.fallbackIsHome).toBe(true);
+});
