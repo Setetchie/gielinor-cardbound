@@ -2,8 +2,8 @@
 
 - **Task ID:** `CB-PR5-STRESS50-003`
 - **Title:** Run authorized 50× PR #5 stress/repetition validation
-- **State:** `IN_PROGRESS`
-- **Owner:** `CODEX`
+- **State:** `COMPLETE`
+- **Owner:** `CHATGPT`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
 - **Updated:** 2026-08-18
@@ -60,3 +60,7 @@ Update `coordination/shared/WORKFLOW_STATE.md`, return ownership to `CHATGPT`, c
 ## Success condition
 
 The task is complete when the full intended 50× stress/repetition gate has run and its result is recorded. A green result does not itself authorize merge; ownership returns to ChatGPT/Setetchie for review.
+
+## Completion
+
+Completed by Codex on 2026-08-18 at the required failure stop. Result: `coordination/results/CB-PR5-STRESS50-003.md`. Five shards completed green (650 executions); `greenwake-terminology` hung without an assertion failure or completion summary, so the remaining gate was stopped and is not green.
