@@ -239,4 +239,10 @@ These decisions should influence the architecture reconciliation and later data/
 
 The core UI router is the single destination registry and resolver. Home, Bank, and Collection/Codex page bodies register through `cbRegisterPage`; later accepted presentation layers replace a destination through the same interface. Unknown destinations resolve to Home. Feature layers must not create a competing page map or bypass the core resolver.
 
+### R3 idle settlement ownership
+
+**Status: Implemented architecture boundary**
+
+`cbIdleEngine` is the single owner of idle scheduling, settlement entry, and foreground-resume dispatch. The historical `settleIdle`, `startIdle`, and `stopIdle` functions remain compatibility APIs for existing inline handlers and tests. Presentation layers may configure cadence and gain feedback through the engine, but must not add independent settlement intervals or visibility listeners. Reward calculations, offline caps, save fields, and activity eligibility remain behavior owned by the existing settlement functions until separately accepted changes replace them.
+
 All implementation remains subject to targeted regression testing and the full acceptance gate at stage boundaries.
