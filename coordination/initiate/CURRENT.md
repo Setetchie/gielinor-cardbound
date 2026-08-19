@@ -2,7 +2,7 @@
 
 - **Task ID:** `CB-PR5-WFGREP-002`
 - **Title:** Repair stale 50× workflow selectors and verify stress-gate readiness
-- **State:** `READY`
+- **State:** `IN_PROGRESS`
 - **Owner:** `CODEX`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
@@ -21,7 +21,7 @@ Correct the two stale workflow grep labels identified after the verified green 3
 
 ## Required execution
 
-1. Claim this task according to the coordination protocol.
+1. Claim this task according to the coordination protocol. Claimed by Codex on 2026-08-18.
 2. Inspect the workflow definitions before editing.
 3. Correct only the stale selectors/grep labels corresponding to:
    - old `Activity > Skilling` versus the current Sailing-routing test name;

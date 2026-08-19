@@ -6,7 +6,7 @@
 - **Pull request:** #5, intentionally unmerged
 - **Committed baseline:** `31062a0` (`docs: establish Cardbound decision governance for Codex`)
 - **Current task ID:** `CB-PR5-WFGREP-002`
-- **Current state:** `READY`
+- **Current state:** `IN_PROGRESS`
 - **Current owner:** `CODEX`
 - **Codex execution permission:** Granted for the workflow-selector repair task defined in `coordination/initiate/CURRENT.md`.
 - **Historical CI evidence:** GitHub Actions run #74 failed `prototype-core`, `v44-ux`, `greenwake-progression`, `greenwake-terminology`, and `prototype-ui`; `v43-structure` was cancelled after its own bootstrap incompatibility and timeout.
@@ -17,4 +17,4 @@
 - **Merge permission:** NO.
 - **Synchronization:** GitHub is the ChatGPT ↔ Codex bridge. Every Codex task begins with branch/status/fetch and a safe fast-forward pull when needed, and ends with a structured result committed and pushed unless explicitly prohibited.
 - **Last coordination result:** `coordination/results/CB-PR5-RUN74-001.md`.
-- **Next action/owner:** CODEX executes `CB-PR5-WFGREP-002`, writes its result, returns ownership to CHATGPT, and stops before any 50× run.
+- **Next action/owner:** CODEX is correcting and validating only the two stale workflow selectors, then will write/push the result, return ownership to CHATGPT, and stop before any 50× run.
