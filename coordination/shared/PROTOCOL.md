@@ -91,7 +91,7 @@ When a task completes:
 4. Copy its final content to `coordination/initiate/archive/<TASK_ID>.md`.
 5. Save authorized task output and coordination/result records in the shared local checkout. ChatGPT can read them there immediately.
 6. Commit or push only when required by the task or explicitly requested by Setetchie. GitHub publication is independent of completing the local handoff.
-7. Replace `CURRENT.md` only when a new task is deliberately issued. Never silently start the next task.
+7. Replace `CURRENT.md` only when a new task is deliberately issued. Setetchie's standing instruction permits automatic continuation when the durable roadmap and current evidence leave exactly one safe, in-scope next step. Record that step as a new task before acting. Pause when multiple materially different paths exist or when the next action crosses a protected boundary.
 
 For an authorized tester-build publication task, completion additionally requires recording the pushed commit, hosted test URL, visible build/version, deployment result, and a basic phone-access smoke check when available. Do not report a tester build as published merely because it works from local files.
 
@@ -100,6 +100,8 @@ When a task is superseded, preserve its envelope and result in the relevant arch
 ## Conflict and safety rules
 
 - Setetchie retains product and merge authority.
+- After each implementation task reaches a completely green full 1× gate, create and complete a fresh full 50× gate before proceeding to later development. Do not combine partial runs. This standing validation instruction does not authorize application/test changes, merge, push, or publication.
+- Do not request redundant approval for the only logical, reversible, in-scope next step. Continue it automatically after recording its task envelope. This standing delegation does not authorize resolving `OPEN`/`BALANCE`/`FUTURE` product decisions, merging, publishing a tester build, destructive history/filesystem operations, spending money, contacting people, or materially expanding scope.
 - `docs/DECISION_LEDGER.md` controls product-decision precedence.
 - Never infer approval, ownership transfer, merge permission, or permission to cross a validation gate.
 - Do not combine unrelated implementation with a documentation-only coordination task.

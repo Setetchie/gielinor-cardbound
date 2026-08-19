@@ -3,8 +3,14 @@
 const STYLES=['Melee','Ranged','Magic'];
 if(!window.cbCoreUi)window.cbCoreUi={activityRoot:null,skill:null};
 if(!window.cbCoreSailing)window.cbCoreSailing={category:null};
-const pageRenderers={};
-window.cbRegisterPage=function(name,renderer){if(name&&typeof renderer==='function')pageRenderers[name]=renderer};
+const pageRenderers=Object.create(null);
+window.cbRegisterPage=function(name,renderer){
+  if(!name||typeof renderer!=='function')return false;
+  pageRenderers[name]=renderer;
+  return true;
+};
+window.cbResolvePage=function(name){return pageRenderers[name]||pageRenderers.Home};
+window.cbRegisteredPages=function(){return Object.freeze(Object.keys(pageRenderers))};
 const styleIcon=st=>st==='Melee'?'⚔️':st==='Ranged'?'🏹':'✨';
 const equippedStyle=()=>B[s.equipped.weapon]?.combatStyle||'Melee';
 const img=(c,cls='cb-activity-icon')=>typeof cardImage==='function'?cardImage(c,cls):(typeof cb2Img==='function'?cb2Img(c,cls):`<span class="icon">${c.icon||'?'}</span>`);
@@ -30,12 +36,12 @@ function activityCore(){const r=cbCoreUi.activityRoot;if(!r)return activityRoot(
 const packLooks={Beginner:{icon:'📜',sigil:'I',name:'Beginner',tag:'Adventurer Cache'},Bronze:{icon:'🛡️',sigil:'B',name:'Bronze',tag:'Forged Booster'},Rune:{icon:'💠',sigil:'R',name:'Rune',tag:'Runic Booster'},Dragon:{icon:'🐉',sigil:'D',name:'Dragon',tag:'Dragonfire Booster'},Raid:{icon:'👑',sigil:'★',name:'Raid',tag:'Ancient Raid Relic'}};
 function storeCore(){return `<div class="panel pack-banner"><span class="eyebrow">PACK SHOP</span><h2>Choose your booster</h2><p class="muted">Every tier has its own visual identity, with higher tiers becoming progressively more prestigious.</p></div><div class="cbcore-pack-grid">${Object.entries(packs).map(([n,p])=>{const m=packLooks[n]||packLooks.Beginner;return `<div class="cbcore-pack pack-${n}"><div class="cbcore-pack-icon"><span class="pack-sigil">${m.sigil}</span><span class="pack-symbol">${m.icon}</span></div><span class="eyebrow">${m.tag}</span><h3>${m.name} Pack</h3><div class="muted">${p.n} cards • ${p.cost.toLocaleString()} pts<br>Legendary ${p.o[4]}%</div><button class="primary wide" onclick="openPack('${n}')">Buy & Open</button></div>`}).join('')}</div>`}
 const legacyBank=bank,legacyCollection=collection,legacyForge=forge;
-pageRenderers.Home=homeCore;
-pageRenderers.Activity=activityCore;
-pageRenderers.Packs=storeCore;
-pageRenderers.Bank=legacyBank;
-pageRenderers.Collection=(typeof cbCollection==='function'?cbCollection:legacyCollection);
-pageRenderers.Forge=legacyForge;
-render=function(){const tabs=['Home','Activity','Packs','Bank','Collection','Forge'],renderer=pageRenderers[s.tab]||pageRenderers.Home;document.getElementById('app').innerHTML=`<div class="app"><div class="top"><div class="brand">⚔️ <b>Gielinor: Cardbound</b></div><div class="wallet"><span class="pill">🪙 ${s.points.toLocaleString()} points</span><span class="pill">💥 Power ${Math.round(power())}</span><span class="pill">🃏 ${C.filter(c=>own(c.id)).length}/${C.length}</span></div></div><div class="content">${renderer()}</div><div class="tabs"><div>${tabs.map(t=>`<button class="tab ${s.tab===t?'active':''}" onclick="nav('${t}')">${{Home:'🏠',Activity:'⚔️',Packs:'🎁',Bank:'🏦',Collection:'🃏',Forge:'🔥'}[t]}<br>${t}</button>`).join('')}</div></div></div>`};
+cbRegisterPage('Home',homeCore);
+cbRegisterPage('Activity',activityCore);
+cbRegisterPage('Packs',storeCore);
+cbRegisterPage('Bank',legacyBank);
+cbRegisterPage('Collection',typeof cbCollection==='function'?cbCollection:legacyCollection);
+cbRegisterPage('Forge',legacyForge);
+render=function(){const tabs=['Home','Activity','Packs','Bank','Collection','Forge'],renderer=cbResolvePage(s.tab);document.getElementById('app').innerHTML=`<div class="app"><div class="top"><div class="brand">⚔️ <b>Gielinor: Cardbound</b></div><div class="wallet"><span class="pill">🪙 ${s.points.toLocaleString()} points</span><span class="pill">💥 Power ${Math.round(power())}</span><span class="pill">🃏 ${C.filter(c=>own(c.id)).length}/${C.length}</span></div></div><div class="content">${renderer()}</div><div class="tabs"><div>${tabs.map(t=>`<button class="tab ${s.tab===t?'active':''}" onclick="nav('${t}')">${{Home:'🏠',Activity:'⚔️',Packs:'🎁',Bank:'🏦',Collection:'🃏',Forge:'🔥'}[t]}<br>${t}</button>`).join('')}</div></div></div>`};
 cbCoreUi.activityRoot=null;cbCoreUi.skill=null;cbCoreSailing.category=null;save();render();
 })();

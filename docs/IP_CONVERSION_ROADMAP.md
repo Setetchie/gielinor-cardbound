@@ -22,9 +22,9 @@ This roadmap is a production checklist, not a legal clearance opinion.
 
 - [x] Establish 50x browser regression baseline.
 - [x] Consolidate Activity + Sailing navigation/rendering.
-- [ ] Consolidate Home/Bank/Collection routing.
-- [ ] Consolidate idle settlement/progress.
-- [ ] Consolidate content registration into data-focused modules.
+- [x] Consolidate Home/Bank/Collection routing.
+- [x] Consolidate idle settlement/progress.
+- [x] Consolidate content registration into data-focused modules.
 
 Reason: separating content data from UI/gameplay logic makes the IP conversion dramatically safer.
 
@@ -65,18 +65,18 @@ Each entry should track:
 
 Checklist:
 
-- [ ] inventory all cards in `C`/`B`;
-- [ ] inventory all activities in `A`;
-- [ ] inventory equipment;
-- [ ] inventory monsters/bosses;
-- [ ] inventory resources and skilling nodes;
-- [ ] inventory Sailing facilities/actions;
-- [ ] inventory gods/allegiance content;
-- [ ] inventory raids/gauntlets/encounter sequences;
-- [ ] inventory pack names/rarities;
-- [ ] inventory UI terminology;
-- [ ] inventory external image/asset URLs;
-- [ ] inventory remaining RuneScape/Jagex terms in source files.
+- [x] inventory all cards in `C`/`B`;
+- [x] inventory all activities in `A`;
+- [x] inventory equipment;
+- [x] inventory monsters/bosses;
+- [x] inventory resources and skilling nodes;
+- [x] inventory Sailing facilities/actions;
+- [x] inventory gods/allegiance content;
+- [x] inventory raids/gauntlets/encounter sequences;
+- [x] inventory pack names/rarities;
+- [x] inventory UI terminology;
+- [x] inventory external image/asset URLs;
+- [x] inventory remaining RuneScape/Jagex terms in source files.
 
 ## Stage 3 — Original content database
 
@@ -152,6 +152,8 @@ approved
 ```
 
 Every production asset must have provenance recorded.
+
+Art development proceeds gradually alongside original content production: establish the visual grammar first, then create and review representative Region, card, creature, equipment, resource, Pet, and Pack assets before scaling each family. Friends & Family may use owned original placeholders where final polish is incomplete, but must not receive third-party-derived assets or imagery.
 
 ## Stage 5 — Gameplay differentiation
 
@@ -270,7 +272,25 @@ A commercial beta cannot ship until all are true:
 
 1. Finish architecture cleanup from Stage 0.
 2. Generate the complete conversion ledger automatically from the current content database/source tree.
-3. Design the first original vertical slice: starter equipment + starter creatures + Woodcraft/Mining/Fishing + first Sailing activities.
-4. Replace the prototype content for that vertical slice behind a development flag.
-5. Run 50x regression and compare progression pacing.
-6. Expand conversion domain-by-domain until no legacy player-facing content remains.
+3. Publish an architecture-stable owner build and complete Setetchie's next hands-on app-testing pass.
+4. Reconcile the final original-content production scope from those findings, including the initial Region roster, alpha card catalog, Pack catalog/pools, and Pet Expansion contract.
+5. Design the first original vertical slice: starter equipment + starter creatures + Woodcraft/Mining/Fishing + first Sailing activities.
+6. Establish the Visual Bible and begin representative image designs alongside that slice.
+7. Replace the prototype content for that vertical slice behind a development flag and verify stable save-ID migration.
+8. Expand the original data/content domain-by-domain into multiple complete Regions.
+9. Develop every card and Pack intended for Friends & Family with explicit acquisition sources and validated eligible pools.
+10. Flesh out the Pet Expansion sufficiently for full acquisition/progression/equipment/bonus/purchase-gate testing.
+11. Remove all remaining legacy player-facing content and third-party-derived assets; pass the automated IP/asset audit.
+12. Freeze and validate the Friends & Family build with focused, full 1×, and approved repetition testing before inviting external testers.
+
+## Friends & Family original-content target
+
+Friends & Family testing is an original-content alpha gate, not an IP-conversion work session. Entry requires multiple end-to-end original Regions, the full card and Pack scope selected for that build, appropriate Pack pools, a mostly fleshed-out Pet Expansion, and zero prohibited player-facing RuneScape/OSRS/Jagex-derived content or third-party game assets.
+
+Still to resolve before scope freeze:
+
+- exact number, order, names, themes, and mechanical profiles of the initial Regions;
+- exact alpha card count and per-Region/domain distribution;
+- exact Pack roster, pool boundaries, rarity distributions, and acquisition cadence;
+- final Pet Expansion architecture, roster, progression, equipment, bonuses, sources, entitlement details, and balance;
+- which images must be final versus owned original placeholders for Friends & Family.

@@ -11,9 +11,26 @@ This roadmap defines how the project should progress from internal prototype rev
 - Fix true functional regressions separately from subjective design feedback.
 - Legacy RuneScape-derived names, icons, art, and terminology are placeholders to be removed through the original-IP conversion, World Bible, and Visual Bible work.
 
+After the next published architecture-stable build, Setetchie completes another hands-on app-testing pass. Findings from that pass are triaged before the project enters sustained original-IP/content production.
+
 ## 2. Friends & Family Alpha
 
-**Target:** after the first approved UI/UX change pass, when the core loop is stable enough that testers are not mostly reporting known prototype problems.
+**Target:** only after the product-owner test pass and the pre-alpha original-content gate below. Friends & Family should evaluate a coherent original game, not a RuneScape-derived conversion prototype or a mostly empty framework.
+
+### Pre-alpha original-content gate
+
+Before inviting Friends & Family:
+
+- remove all RuneScape/OSRS/Jagex-derived player-facing names, terminology, imagery, external assets, encounter identities, item ladders, locations, deities, pack identities, and other recognizable content from the test build;
+- pass the automated prohibited-term and third-party-asset audit with no player-facing violations;
+- fully design and implement multiple original Regions end-to-end, including Exploration, Locations, Skills/subsets, activities, progression, encounters, rewards, equipment/resources, and regional presentation;
+- define the complete card catalog intended for this alpha scope and implement every included card with its source, rarity, role, progression relationship, and appropriate pack pool;
+- define every included Pack's identity, unlock/source, cost/reward contract, slot count, rarity distribution, eligible pools, and duplicate/Perfect behavior;
+- bring the Pet Expansion to a mostly fleshed-out, internally coherent, testable state covering acquisition, progression, active/equipped behavior, Pet Equipment, bonuses, Codex/collection treatment, purchase gating, and relevant content sources;
+- replace temporary third-party art with owned original art or clearly controlled original placeholders, while progressively establishing card, creature, equipment, resource, Region, Pet, and Pack visual systems;
+- complete focused, full 1×, and approved repetition/acceptance testing for the frozen Friends & Family build.
+
+The exact number and roster of Regions, total card count, Pack count/pool sizes, final Pet balance, and art-finality threshold must be set on the content boards before production scope is frozen. “Multiple Regions” means more than one; no exact count is inferred here.
 
 - Begin with approximately 5–10 trusted testers who were not involved in designing the interface.
 - Prefer a dedicated test distribution/channel rather than making the main development URL the long-term external-test endpoint.
@@ -29,6 +46,8 @@ This roadmap defines how the project should progress from internal prototype rev
 - Include a mix of idle/incremental players, TCG/collection players, RuneScape-adjacent players, mobile players, and people without those backgrounds.
 - Move toward a controlled test environment with version identification, feedback/reporting, analytics, and the ability to isolate test data from production data.
 - Evaluate onboarding completion, return behavior, session cadence, activity choices, pack earning/opening, progression bottlenecks, economy behavior, and failure/confusion points.
+
+The original vertical slice is now a prerequisite and production proving ground for Friends & Family rather than a later external-test milestone. Closed Alpha expands beyond Friends & Family after the multi-Region original-content build demonstrates a coherent core loop.
 
 ## 4. Closed Beta
 
@@ -133,14 +152,17 @@ If the product continues to follow the accepted monetization architecture, marke
 1. R2 complete / product-owner test build.
 2. Product-owner UI/UX review board.
 3. Approved UI/UX implementation pass.
-4. Friends & Family Alpha test build (5–10).
-5. R3/R4 architecture progression.
-6. World Bible + Visual Bible / final game identity work.
-7. Original vertical slice.
-8. Closed Alpha (approximately 25–100).
-9. Native mobile packaging + store-account preparation.
-10. TestFlight / Google Play closed testing.
-11. Larger Closed Beta.
-12. Public beta / soft launch.
-13. Full store launch.
-14. Scaled creator/paid marketing based on retention evidence.
+4. R3/R4 architecture completion and conversion ledger.
+5. Product-owner architecture-stable app test.
+6. World Bible + Visual Bible / original naming and art-system work.
+7. First original vertical slice.
+8. Expand to multiple complete original Regions, alpha card catalog/Pack pools, and mostly fleshed-out Pet Expansion.
+9. Automated IP/asset audit clean and frozen Friends & Family build validated.
+10. Friends & Family Alpha test build (approximately 5–10).
+11. Closed Alpha expansion (approximately 25–100).
+12. Native mobile packaging + store-account preparation.
+13. TestFlight / Google Play closed testing.
+14. Larger Closed Beta.
+15. Public beta / soft launch.
+16. Full store launch.
+17. Scaled creator/paid marketing based on retention evidence.

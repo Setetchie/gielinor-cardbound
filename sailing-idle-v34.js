@@ -117,8 +117,7 @@ function liveIdleTick(){
 }
 
 for(const key of ['cb34SailingIdleTimer','cb35SailingIdleTimer','cb36IdleTimer','cb37IdleTimer'])if(window[key])clearInterval(window[key]);
-window.cb37IdleTimer=setInterval(liveIdleTick,500);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)liveIdleTick()});
-window.addEventListener('focus',liveIdleTick);
+window.cb37IdleTimer=cbIdleEngine.configure({cadence:500,tick:liveIdleTick,resume:liveIdleTick});
+window.addEventListener('focus',()=>cbIdleEngine.resume());
 render();
 })();

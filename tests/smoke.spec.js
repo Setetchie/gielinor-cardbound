@@ -146,3 +146,24 @@ test('save survives a reload', async ({ page }) => {
   const pts = await page.evaluate(() => s.points);
   expect(pts).toBe(123456);
 });
+
+test('one idle engine owns settlement scheduling while legacy APIs remain compatible', async ({ page }) => {
+  await fresh(page);
+  const result = await page.evaluate(() => {
+    const a = A.find(x => x.id === 'normal_tree') || A.find(x => x.kind === 'Woodcutting');
+    s.owned[a.id] = Math.max(1, s.owned[a.id] || 0);
+    s.skills[a.kind] = Math.max(s.skills[a.kind] || 1, 99);
+    s.idle = { activityId: a.id, lastTick: Date.now() - cycleSeconds(a) * 2100, totalPoints: 0 };
+    const gained = cbIdleEngine.settle(false);
+    return {
+      engine: cbIdleEngine.snapshot(),
+      gained,
+      legacy: [typeof settleIdle, typeof startIdle, typeof stopIdle]
+    };
+  });
+  expect(result.engine.cadence).toBe(500);
+  expect(result.engine.hasTimer).toBe(true);
+  expect(result.gained.cycles).toBeGreaterThanOrEqual(2);
+  expect(result.gained.points).toBeGreaterThan(0);
+  expect(result.legacy).toEqual(['function', 'function', 'function']);
+});

@@ -14,6 +14,45 @@ const packs={Beginner:{cost:500,n:3,o:[75,20,4.5,.5,0]},Bronze:{cost:1500,n:5,o:
 const blankEq=()=>Object.fromEntries(SLOT_ORDER.map(k=>[k,null]));
 const D={points:3000,owned:{bronze_sword:1,bronze_axe:1,bronze_pick:1,net:1,goblin:1,normal_tree:1,copper_rock:1,shrimp_spot:1},fragments:Object.fromEntries(R.map(r=>[r,0])),equipped:{...blankEq(),weapon:'bronze_sword',tool:'bronze_axe'},skills:{Combat:1,Woodcutting:1,Mining:1,Fishing:1},xp:{Combat:0,Woodcutting:0,Mining:0,Fishing:0},tab:'Home',packs:0,actions:0,idle:{activityId:null,lastTick:null,totalPoints:0}};
 let s;try{const old=JSON.parse(localStorage.cardbound||'{}');s=Object.assign(structuredClone(D),old);const migrated=blankEq();if(old.equipped){if(old.equipped.weapon)migrated.weapon=old.equipped.weapon;if(old.equipped.tool)migrated.tool=old.equipped.tool;if(old.equipped.armor)migrated.body=old.equipped.armor;if(old.equipped.accessory){const c=B[old.equipped.accessory];migrated[c?.slot||'neck']=old.equipped.accessory}for(const k of SLOT_ORDER)if(old.equipped[k])migrated[k]=old.equipped[k]}s.equipped=migrated;s.fragments=Object.assign({},D.fragments,s.fragments||{});s.idle=Object.assign({},D.idle,s.idle||{});}catch{s=structuredClone(D)}
+const cbContentSources=new Map();
+function cbContentMetadata(entry,source){
+  const kind=entry.kind||entry.reqSkill||null;
+  return {
+    id:entry.id,source:source||'legacy',type:entry.type||null,
+    skill:entry.reqSkill||kind,family:entry.activityFamily||entry.sailingCategory||kind,
+    tier:entry.tier??entry.reqLevel??null,activityBinding:entry.activityBinding||entry.id,
+    equipment:{applicability:entry.equipmentApplicability||kind,slotRole:entry.slot||null,utilityProfile:entry.utilityProfile||null},
+    activityProfile:entry.activityProfile||null
+  };
+}
+const cbContentRegistry=window.cbContentRegistry={
+  cards:C,activities:A,cardById:B,packs,
+  registerCard(card,{source='legacy',initializeOwnership=true}={}){
+    if(!card?.id)throw new Error('Content card id is required');
+    const existing=B[card.id];
+    if(!existing){C.push(card);B[card.id]=card;}
+    const registered=existing||card;
+    if(initializeOwnership&&s.owned[registered.id]==null)s.owned[registered.id]=0;
+    if(initializeOwnership&&s.foils&&s.foils[registered.id]==null)s.foils[registered.id]=0;
+    if(!cbContentSources.has(registered.id))cbContentSources.set(registered.id,source);
+    return registered;
+  },
+  registerActivity(activity,{source='legacy',registerCard=true,initializeOwnership=true}={}){
+    const registered=registerCard?this.registerCard(activity,{source,initializeOwnership}):activity;
+    if(!registered?.id)throw new Error('Content activity id is required');
+    if(!A.some(item=>item.id===registered.id))A.push(registered);
+    if(!cbContentSources.has(registered.id))cbContentSources.set(registered.id,source);
+    return registered;
+  },
+  registerPack(id,definition,{replace=false}={}){
+    if(!id||!definition)throw new Error('Content pack id and definition are required');
+    if(packs[id]&&!replace)return packs[id];
+    packs[id]=definition;return packs[id];
+  },
+  metadata(id){const entry=B[id]||A.find(item=>item.id===id);return entry?cbContentMetadata(entry,cbContentSources.get(id)):null;},
+  snapshot(){return {cards:C.length,activities:A.length,packs:Object.keys(packs).length,cardIds:C.map(c=>c.id),activityIds:A.map(a=>a.id),packIds:Object.keys(packs)};}
+};
+C.forEach(card=>cbContentSources.set(card.id,'core'));
 let bankFilters={type:'All',rarity:'All',status:'All',sort:'Name'};
 const own=id=>s.owned[id]||0,save=()=>localStorage.cardbound=JSON.stringify(s),power=()=>5+Object.values(s.equipped).filter(Boolean).reduce((n,id)=>n+(B[id]?.power||0),0),need=a=>Math.max(1,Math.ceil(a.diff/2));
 function roll(o){let x=Math.random()*100,n=0;for(let i=0;i<o.length;i++){n+=o[i];if(x<n)return R[i]}return R[0]}
@@ -24,6 +63,23 @@ function cycleSeconds(a){return Math.max(4,Math.min(30,Math.round((a.kind==='Com
 function settleIdle(show){if(!s.idle.activityId||!s.idle.lastTick)return {points:0,cycles:0};const a=A.find(x=>x.id===s.idle.activityId);if(!a||!own(a.id)){s.idle={activityId:null,lastTick:null,totalPoints:s.idle.totalPoints||0};save();return {points:0,cycles:0}}const now=Date.now(),elapsed=Math.min(now-s.idle.lastTick,8*60*60*1000),cycles=Math.floor(elapsed/(cycleSeconds(a)*1000));if(cycles<1)return {points:0,cycles:0};const pts=cycles*rewardFor(a),xpGain=cycles*Math.max(2,Math.round(a.base/2));s.points+=pts;s.actions+=cycles;xp(a.kind,xpGain);s.idle.totalPoints=(s.idle.totalPoints||0)+pts;s.idle.lastTick+=cycles*cycleSeconds(a)*1000;save();if(show&&pts)toast(`While away: +${pts.toLocaleString()} points • ${cycles} actions`);return {points:pts,cycles}}
 function startIdle(id){const a=A.find(x=>x.id===id);if(!a||!own(id))return;if(s.skills[a.kind]<need(a))return toast(`${a.kind} level ${need(a)} required`);settleIdle(false);s.idle={activityId:id,lastTick:Date.now(),totalPoints:s.idle.totalPoints||0};save();render();toast(`Now idling ${a.name}`)}
 function stopIdle(){const a=A.find(x=>x.id===s.idle.activityId);const g=settleIdle(false);s.idle.activityId=null;s.idle.lastTick=null;save();render();toast(`${a?.name||'Activity'} stopped${g.points?` • +${g.points.toLocaleString()} points`:''}`)}
+const cbIdleEngine=window.cbIdleEngine={
+  cadence:0,timer:null,tickHandler:null,resumeHandler:null,
+  settle(show=false){return settleIdle(show)},
+  start(id){return startIdle(id)},
+  stop(){return stopIdle()},
+  configure({cadence,tick,resume}){
+    if(this.timer)clearInterval(this.timer);
+    this.cadence=cadence;
+    this.tickHandler=tick;
+    this.resumeHandler=resume||tick;
+    this.timer=setInterval(()=>this.tick(),cadence);
+    return this.timer;
+  },
+  tick(){return typeof this.tickHandler==='function'?this.tickHandler():undefined},
+  resume(){return typeof this.resumeHandler==='function'?this.resumeHandler():undefined},
+  snapshot(){return {cadence:this.cadence,hasTimer:!!this.timer,activeId:s.idle?.activityId||null}}
+};
 function openPack(n){settleIdle(false);let p=packs[n];if(s.points<p.cost)return toast('Not enough points');s.points-=p.cost;s.packs++;let q=[];for(let i=0;i<p.n;i++){let r=roll(p.o),pool=C.filter(c=>c.rarity===r),c=pool[Math.floor(Math.random()*pool.length)];add(c.id);q.push({...c,count:own(c.id)})}save();render();showPackOpening(n,q)}
 function showPackOpening(name,cards){let idx=0,revealed=false;const m=document.createElement('div');m.className='modal pack-modal';document.body.append(m);function draw(){const c=cards[idx],remaining=cards.length-idx-1;m.innerHTML=`<div class="pack-stage"><div class="pack-topline"><b>${name} Pack</b><span>${idx+1}/${cards.length}</span></div><div class="stack-wrap" id="packTap">${Array.from({length:Math.min(4,remaining)}).map((_,i)=>`<div class="card-back ghost" style="transform:translate(${(i+1)*4}px,${-(i+1)*4}px) rotate(${(i%2?1:-1)*(i+1)}deg);z-index:${i}"></div>`).join('')}<div class="reveal-card ${revealed?'revealed':''} ${c.rarity}" style="z-index:10"><div class="card-face back-face"><div class="rune-mark">⚔️</div><div>GIELINOR</div><small>CARDBOUND</small><div class="tap-hint">Tap to reveal</div></div><div class="card-face front-face"><div class="rarity-tag">${c.rarity}</div><div class="big-icon">${c.icon}</div><h2>${c.name}</h2><div class="card-type">${c.type}${c.slot?` • ${SLOT_LABELS[c.slot]}`:''}</div>${c.power?`<div class="statline">Power +${c.power}</div>`:''}<div class="ownedline">Owned ×${c.count}</div><div class="tap-hint">${idx===cards.length-1?'Tap for results':'Tap for next card'}</div></div></div></div><div class="pack-progress">${cards.map((_,i)=>`<span class="${i<idx?'done':i===idx?'current':''}"></span>`).join('')}</div><button class="secondary" onclick="document.querySelector('.pack-modal')?.remove()">Skip opening</button></div>`;m.querySelector('#packTap').onclick=()=>{if(!revealed){revealed=true;draw();return}if(idx<cards.length-1){idx++;revealed=false;draw()}else results()}}function results(){m.innerHTML=`<div class="pack-results"><h2>${name} Pack Results</h2><div class="results-grid">${cards.map(c=>`<div class="result-card ${c.rarity}"><div class="icon">${c.icon}</div><b>${c.name}</b><div class="muted">${c.rarity} • ${c.type}<br>Owned ×${c.count}</div></div>`).join('')}</div><button class="primary wide" onclick="this.closest('.modal').remove()">Add to Bank</button></div>`}draw()}
 function act(id){let a=A.find(x=>x.id===id);if(!own(id))return;if(s.skills[a.kind]<need(a))return toast(`${a.kind} level ${need(a)} required`);const n=rewardFor(a);s.points+=n;s.actions++;xp(a.kind,Math.max(2,Math.round(a.base/2)));save();render();toast(`+${n} points`)}
@@ -41,4 +97,4 @@ const bank=()=>{const arr=filteredBank(),dupes=C.reduce((n,c)=>n+Math.max(0,own(
 const collection=()=>`<div class="panel"><div class="section-head"><div><h2>Collection</h2><span class="muted">One copy is always preserved when shredding.</span></div><button class="danger" onclick="shredAllDuplicates()">Shred All Duplicates</button></div></div><div class="grid">${C.map(c=>`<div class="card ${c.rarity} ${own(c.id)?'':'locked'}"><div class="icon">${c.icon}</div><b>${own(c.id)?c.name:'???'}</b><div class="muted">${c.rarity} • ${c.type}${c.slot?` • ${SLOT_LABELS[c.slot]}`:''} • x${own(c.id)}</div>${own(c.id)>1?`<button class="danger" onclick="shred('${c.id}')">Shred duplicate</button>`:''}</div>`).join('')}</div>`;
 const forge=()=>`<div class="panel"><h2>Fragment Forge</h2><span class="muted">10 same-rarity fragments craft a random card in your chosen category.</span></div>${R.map(r=>`<div class="panel"><h3>${r}: ${s.fragments[r]} fragments</h3><select id="${r}"><option>Any</option><option>Equipment</option><option>Weapon</option><option>Armor</option><option>Accessory</option><option>Ammo</option><option>Tool</option><option>Monster</option><option>Boss</option><option>Skilling</option></select> <button onclick="craft('${r}',document.getElementById('${r}').value)">Craft • 10</button></div>`).join('')}<div class="panel"><button onclick="s.points+=10000;save();render()">Developer +10,000 points</button> <button class="danger" onclick="if(confirm('Reset save?')){localStorage.removeItem('cardbound');location.reload()}">Reset</button></div>`;
 function render(){let pages={Home:home,Activity:activities,Packs:store,Bank:bank,Collection:collection,Forge:forge},tabs=['Home','Activity','Packs','Bank','Collection','Forge'];document.getElementById('app').innerHTML=`<div class="app"><div class="top"><div class="brand">⚔️ <b>Gielinor: Cardbound</b></div><div class="wallet"><span class="pill">🪙 ${s.points.toLocaleString()} points</span><span class="pill">💥 Power ${power()}</span><span class="pill">🃏 ${C.filter(c=>own(c.id)).length}/${C.length}</span></div></div><div class="content">${pages[s.tab]()}</div><div class="tabs"><div>${tabs.map(t=>`<button class="tab ${s.tab===t?'active':''}" onclick="nav('${t}')">${{Home:'🏠',Activity:'⚔️',Packs:'🎁',Bank:'🏦',Collection:'🃏',Forge:'🔥'}[t]}<br>${t}</button>`).join('')}</div></div></div>`}
-const away=settleIdle(false);save();render();if(away.points)setTimeout(()=>toast(`While away: +${away.points.toLocaleString()} points • ${away.cycles} actions`),250);setInterval(()=>{if(s.idle.activityId){const g=settleIdle(false);if(g.cycles)render()}},30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&s.idle.activityId){const g=settleIdle(false);if(g.cycles){render();toast(`Idle progress: +${g.points.toLocaleString()} points`)}}});
+const away=cbIdleEngine.settle(false);save();render();if(away.points)setTimeout(()=>toast(`While away: +${away.points.toLocaleString()} points • ${away.cycles} actions`),250);cbIdleEngine.configure({cadence:30000,tick:()=>{if(s.idle.activityId){const g=cbIdleEngine.settle(false);if(g.cycles)render()}},resume:()=>{if(s.idle.activityId){const g=cbIdleEngine.settle(false);if(g.cycles){render();toast(`Idle progress: +${g.points.toLocaleString()} points`)}}}});document.addEventListener('visibilitychange',()=>{if(!document.hidden)cbIdleEngine.resume()});

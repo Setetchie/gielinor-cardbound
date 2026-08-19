@@ -16,17 +16,17 @@ Use the ledger statuses exactly: `CURRENT`, `SUPERSEDED`, `OPEN`, `BALANCE`, `FU
 - Treat code/tests as implementation evidence, not product authority. Never weaken tests merely to obtain green; change stale assertions only for accepted behavior while preserving equivalent coverage.
 - Never merge a PR without Setetchie's explicit approval.
 
-## Current engineering stop point
+## Current engineering stage
 
-- Branch `agent/v44-ux-test-pass`; PR #5 remains intentionally unmerged.
-- Failed run #74 is the historical CI stop: `prototype-core`, `v44-ux`, `greenwake-progression`, `greenwake-terminology`, and `prototype-ui` failed; `v43-structure` was cancelled after an independent bootstrap incompatibility and timeout.
-- An uncommitted corrective application/test diff from the preceding task is present, with a reported complete local 1× result of 37/37 green. The 50× gate has not run.
-- Current mailbox task `CB-PR5-RUN74-001` is `READY` and owned by `CHATGPT`; Codex must not extend, validate further, commit, discard, or merge that repair until ownership and the next gate are explicitly assigned.
-- Governance documentation may change without changing app behavior. The branch is not acceptance-verified or release-ready until the remaining approved gates and review are complete.
+- PR #5 was merged into `main` as `cfcfb0299cb129802cada186e2eeee7d2cd36640` after complete local and GitHub validation.
+- GitHub Pages publishes the verified v44 tester build from `main` at `https://setetchie.github.io/gielinor-cardbound/`.
+- The active development branch is recorded in `coordination/shared/WORKFLOW_STATE.md`; do not rely on older handoffs for live branch or task state.
+- The ordered next development stage is R2 / Stage 0 architecture cleanup, beginning with Home/Bank/Collection routing consolidation.
+- Setetchie's standing instruction permits automatic continuation when exactly one safe, reversible, in-scope next step exists. It does not waive protected approval boundaries for product decisions, merges, tester publication, destructive actions, or scope expansion.
 
 ## Mandatory validation sequence
 
-For corrective work: diagnose → patch → complete 1× validation → if red, fix and restart the complete 1× → only after a completely green 1×, run 50× repetition/stress validation. Any later code change resets the gate. Record command, commit, result, and evidence. Never run 50× speculatively.
+For implementation/corrective work: diagnose → patch → complete 1× validation → if red, fix and restart the complete 1× → only after a completely green 1×, run a fresh complete 50× repetition/stress validation before proceeding to the next development task. Any later application/test code change resets both gates. Never combine partial runs. Record commands, commit/worktree identity, totals, duration, hangs, retries, and process evidence. Setetchie's 2026-08-19 standing instruction authorizes this required post-1× gate through a correctly scoped mailbox task; it does not authorize merge, push, publication, or test weakening.
 
 ## Continuity
 

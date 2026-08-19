@@ -233,4 +233,22 @@ These decisions should influence the architecture reconciliation and later data/
 - **R4:** content registration should represent Skill, family, tier, Activity Binding, equipment applicability, equipment-slot role, utility profile, and activity profiles as data rather than proliferating specialized runtime modules.
 - **R6 original-content vertical slice:** use the broad Skill/family architecture, universal equipment direction, prestige-slot direction, lightweight presentation hierarchy, convenience-monetization guardrail, and Daily Focus direction as target product structure.
 
+### R2 routing ownership
+
+**Status: Implemented architecture boundary**
+
+The core UI router is the single destination registry and resolver. Home, Bank, and Collection/Codex page bodies register through `cbRegisterPage`; later accepted presentation layers replace a destination through the same interface. Unknown destinations resolve to Home. Feature layers must not create a competing page map or bypass the core resolver.
+
+### R3 idle settlement ownership
+
+**Status: Implemented architecture boundary**
+
+`cbIdleEngine` is the single owner of idle scheduling, settlement entry, and foreground-resume dispatch. The historical `settleIdle`, `startIdle`, and `stopIdle` functions remain compatibility APIs for existing inline handlers and tests. Presentation layers may configure cadence and gain feedback through the engine, but must not add independent settlement intervals or visibility listeners. Reward calculations, offline caps, save fields, and activity eligibility remain behavior owned by the existing settlement functions until separately accepted changes replace them.
+
+### R4 content registration boundary
+
+**Status: Implemented architecture boundary**
+
+`cbContentRegistry` is the stable data-focused interface for registering cards, activities, and packs while retaining the live legacy `C`, `A`, `B`, and `packs` structures as identity-compatible aliases. Registration is ID-deduplicated and may initialize existing ownership/foil maps without changing IDs, content, balance, load order, or save fields. Its metadata view represents Skill, family, tier, Activity Binding, equipment applicability/slot/utility roles, and activity profiles without requiring presentation or gameplay modules to own parallel indexes. Sailing is the first representative content domain migrated through the boundary; later domain conversion should migrate remaining historical direct mutations incrementally rather than create another registry.
+
 All implementation remains subject to targeted regression testing and the full acceptance gate at stage boundaries.
