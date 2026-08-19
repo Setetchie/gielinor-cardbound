@@ -14,12 +14,12 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      max-parallel: 10
+      max-parallel: 11
       matrix:
         include:
           - name: prototype-core
             spec: tests/smoke.spec.js
-            grep: 'app boots|home shows|Activity > Skilling'
+            grep: 'app boots|home shows|Activity > Sailing'
             executions: 150
           - name: prototype-progression
             spec: tests/smoke.spec.js
@@ -47,7 +47,7 @@ jobs:
             executions: 100
           - name: greenwake-content
             spec: tests/original.spec.js
-            grep: 'Greenwake packs|Greenwake next Woodcraft'
+            grep: 'Greenwake packs|Greenwake next Woodcutting'
             executions: 100
           - name: ip-inventory
             spec: tests/inventory.spec.js
@@ -57,13 +57,18 @@ jobs:
             spec: tests/v43-structure.spec.js
             grep: '.*'
             executions: 400
+          - name: v44-ux
+            spec: tests/v44-ux.spec.js
+            grep: '.*'
+            executions: 100
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm install
-      - run: npx playwright install --with-deps chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
       - name: Run ${{ matrix.name }} regression 50x
         run: npm run test:e2e -- ${{ matrix.spec }} --grep "${{ matrix.grep }}"
       - name: Summarize ${{ matrix.name }} results
@@ -78,7 +83,7 @@ jobs:
           if-no-files-found: warn
 
   acceptance-gate:
-    name: 1,400-execution acceptance gate
+    name: 1,500-execution acceptance gate
     runs-on: ubuntu-latest
     if: always()
     needs: browser-regression

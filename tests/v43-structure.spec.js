@@ -9,7 +9,7 @@ async function fresh(page){
   });
   await page.reload();
   await page.waitForLoadState('load');
-  await page.waitForFunction(() => window.CARDBOUND_VERSION === 'v43' && window.cbGatheringV43 && typeof window.cbV43Activity === 'function' && typeof window.cbV43World === 'function');
+  await page.waitForFunction(() => window.CARDBOUND_VERSION && window.cbGatheringV43 && typeof window.cbV43Activity === 'function' && typeof window.cbV43World === 'function' && typeof window.cbV44Activity === 'function');
   await expect(page.locator('#app')).toBeVisible();
 }
 
@@ -20,14 +20,10 @@ async function openTab(page, tab){
 
 test('v43 home exposes intended top-level structure', async ({ page }) => {
   await fresh(page);
-  await expect(page.getByRole('button', { name: /Activities/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /World & Exploration/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Region Packs/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Bank & Loadouts/i })).toBeVisible();
-  // Match the authored Home card specifically; the utility bar also contains a
-  // Raids destination and its emoji is part of the accessible name.
-  await expect(page.getByRole('button', { name: /Raids.*Preparation checklists/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Community.*Friends/i })).toBeVisible();
+  const nav=page.locator('.v44-nav');
+  for(const name of [/Activities/i,/World/i,/Packs/i,/Codex/i,/Bank/i,/Raids/i,/Community/i])
+    await expect(nav.getByRole('button',{name})).toBeVisible();
+  await expect(page.locator('.v44-grid').getByRole('button',{name:/Activities/i})).toBeVisible();
 });
 
 test('Gathering is one parent Skill with subset mastery and participation', async ({ page }) => {
@@ -59,27 +55,26 @@ test('Gathering is one parent Skill with subset mastery and participation', asyn
 test('Gathering menu presents subsets rather than independent Skills', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'Activity');
-  await page.evaluate(() => cbV43Activity('Gathering'));
-  await expect(page.getByRole('heading', { name: 'Gathering', exact: true })).toBeVisible();
-  await expect(page.getByText(/PARENT SKILL/i)).toBeVisible();
+  await page.evaluate(() => cbV44Activity('Gathering'));
+  await expect(page.getByRole('heading', { level: 2, name: 'Gathering', exact: true })).toBeVisible();
+  await expect(page.getByText(/Shared Skill XP/i)).toBeVisible();
   for (const subset of ['Woodcutting','Mining','Fishing']) await expect(page.getByRole('button', { name: new RegExp(subset, 'i') })).toBeVisible();
-  await page.evaluate(() => cbV43Activity('Woodcutting'));
-  await expect(page.getByText(/GATHERING SUBSET/i)).toBeVisible();
-  await expect(page.getByText(/Global subset mastery/i)).toBeVisible();
-  await expect(page.getByText(/Greenwake participation/i)).toBeVisible();
+  await page.evaluate(() => cbV44Activity('Woodcutting'));
+  await expect(page.getByRole('button',{name:/Back to Gathering/i})).toBeVisible();
+  await expect(page.getByText(/XP \/ action/i).first()).toBeVisible();
 });
 
 test('World and Exploration preserve Region and Location roles', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'World');
   await expect(page.getByRole('heading', { name: /World & Exploration/i })).toBeVisible();
-  await expect(page.getByText(/not routine travel requirements/i)).toBeVisible();
-  await page.evaluate(() => cbV43World('location'));
-  await expect(page.getByRole('heading', { name: /Known Locations/i })).toBeVisible();
-  await expect(page.getByText(/Environmental preview only/i)).toBeVisible();
-  await page.evaluate(() => cbV43World('exploration'));
-  await expect(page.getByText(/Activities cannot be switched until this Exploration completes/i)).toBeVisible();
-  await expect(page.getByText(/ACTIVE EVENT PREVIEW/i)).toBeVisible();
+  await expect(page.getByRole('heading',{name:/World & Exploration/i})).toBeVisible();
+  await page.evaluate(() => cbV44World('locations'));
+  await expect(page.getByRole('heading', { name: /Greenwake Locations/i })).toBeVisible();
+  await expect(page.getByText(/Route revealed/i)).toBeVisible();
+  await page.evaluate(() => cbV44World('explore'));
+  await expect(page.getByText(/Cannot cancel between checkpoints/i)).toBeVisible();
+  await expect(page.getByText(/Exploration Preview/i)).toBeVisible();
 });
 
 test('future systems have reachable dedicated homes', async ({ page }) => {
@@ -100,11 +95,12 @@ test('future systems have reachable dedicated homes', async ({ page }) => {
 test('Codex is the collection-facing destination while Bank remains equipment-facing', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'Collection');
-  await expect(page.locator('.tabs')).toContainText(/Codex/i);
+  await expect(page.locator('.v44-nav')).toContainText(/Codex/i);
+  await page.getByRole('button',{name:/Card Collection/i}).click();
   await expect(page.getByPlaceholder(/Search every card/i)).toBeVisible();
   await openTab(page, 'Bank');
-  await expect(page.getByText('WORN EQUIPMENT', { exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Saved Equipment', exact: true })).toBeVisible();
+  await expect(page.getByText('Equipped', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Loadouts', exact: true })).toBeVisible();
 });
 
 test('Settings exposes pack, idle, notification and privacy controls', async ({ page }) => {

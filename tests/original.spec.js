@@ -42,8 +42,10 @@ test('original mode renders no third-party image URLs', async ({ page }) => {
 test('original terminology is player-facing', async ({ page }) => {
   await freshOriginal(page);
   let body=(await page.locator('body').innerText());
-  expect(body).toContain('Gathering');
-  expect(body).toContain('Huntsmanship');
+  expect(body).toContain('Activities');
+  expect(body).toContain('Bank');
+  expect(body).not.toMatch(/\bVentures\b/);
+  expect(body).not.toMatch(/\bVault\b/);
   expect(body).not.toMatch(/Gielinor/i);
   expect(body).not.toMatch(/\bSlayer\b/);
   expect(body).not.toMatch(/\bWoodcraft\b/);
@@ -51,7 +53,8 @@ test('original terminology is player-facing', async ({ page }) => {
   // The locked hierarchy is shared across content modes: Gathering is the
   // Skill and Woodcutting/Mining/Fishing are subsets rather than renamed or
   // independent player-facing Skills.
-  await page.getByRole('button',{name:/Venture|Activity/i}).last().click();
+  await page.locator('.v44-nav').getByRole('button',{name:/Activities/i}).click();
+  await expect(page.getByRole('button',{name:/Huntsmanship/i})).toBeVisible();
   await page.getByRole('button',{name:/Gathering/i}).first().click();
   body=await page.locator('body').innerText();
   expect(body).toContain('Woodcutting');
@@ -76,7 +79,7 @@ test('Huntsmanship starts at level 1 with starter contract', async ({ page }) =>
 
 test('Greenwake Sailing starter route works', async ({ page }) => {
   await freshOriginal(page);
-  await page.getByRole('button',{name:/Venture|Activity/i}).last().click();
+  await page.locator('.v44-nav').getByRole('button',{name:/Activities/i}).click();
   // v43 removed the obsolete Skilling layer. Sailing is now a direct Skill
   // destination, while its established category hierarchy is preserved.
   await page.getByRole('button',{name:/Sailing/i}).first().click();
