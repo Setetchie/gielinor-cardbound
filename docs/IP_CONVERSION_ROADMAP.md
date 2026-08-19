@@ -23,7 +23,7 @@ This roadmap is a production checklist, not a legal clearance opinion.
 - [x] Establish 50x browser regression baseline.
 - [x] Consolidate Activity + Sailing navigation/rendering.
 - [x] Consolidate Home/Bank/Collection routing.
-- [ ] Consolidate idle settlement/progress.
+- [x] Consolidate idle settlement/progress.
 - [ ] Consolidate content registration into data-focused modules.
 
 Reason: separating content data from UI/gameplay logic makes the IP conversion dramatically safer.
