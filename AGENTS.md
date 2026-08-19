@@ -19,9 +19,10 @@ Use the ledger statuses exactly: `CURRENT`, `SUPERSEDED`, `OPEN`, `BALANCE`, `FU
 ## Current engineering stop point
 
 - Branch `agent/v44-ux-test-pass`; PR #5 remains intentionally unmerged.
-- Failed run #74 is the last recorded stop. No corrective complete green 1× pass is recorded.
-- Failed: `prototype-core`, `v44-ux`, `greenwake-progression`, `greenwake-terminology`, `prototype-ui`; `v43-structure` was cancelled.
-- Governance documentation may change without changing app behavior. The branch is not acceptance-verified or release-ready.
+- Failed run #74 is the historical CI stop: `prototype-core`, `v44-ux`, `greenwake-progression`, `greenwake-terminology`, and `prototype-ui` failed; `v43-structure` was cancelled after an independent bootstrap incompatibility and timeout.
+- An uncommitted corrective application/test diff from the preceding task is present, with a reported complete local 1× result of 37/37 green. The 50× gate has not run.
+- Current mailbox task `CB-PR5-RUN74-001` is `READY` and owned by `CHATGPT`; Codex must not extend, validate further, commit, discard, or merge that repair until ownership and the next gate are explicitly assigned.
+- Governance documentation may change without changing app behavior. The branch is not acceptance-verified or release-ready until the remaining approved gates and review are complete.
 
 ## Mandatory validation sequence
 
@@ -30,3 +31,27 @@ For corrective work: diagnose → patch → complete 1× validation → if red, 
 ## Continuity
 
 Before incomplete/context-sensitive work changes tasks, refresh the ledger and a Markdown handoff with repository, branch, PR, commit, changes, exact stop, validation evidence, unresolved decisions, prohibitions, and one next action. Address Setetchie by name. If continuity slips—forgotten decisions, repeated questions, contradictions, lost branch/PR/test state, repetition, fragmentation, or failure to use Setetchie's name—warn Setetchie and recommend a new task using the refreshed handoff.
+
+## Persistent ChatGPT ↔ Codex coordination mailbox
+
+Repository mailbox files are durable coordination authority and GitHub is the synchronization bridge between ChatGPT and Codex. At the beginning of every Codex task in this repository, before planning, editing, testing, or committing:
+
+1. Confirm the current branch and run `git status`.
+2. Fetch the configured upstream. Compare local/upstream divergence and changed paths before pulling.
+3. If upstream is ahead and a clean fast-forward cannot overwrite or conflict with local work, pull with fast-forward-only semantics. If histories diverge, no upstream exists, or remote changes overlap local changes, stop and report instead of resetting, rebasing, stashing, discarding, or auto-resolving. A fetch with no upstream commits to integrate satisfies synchronization; do not run a needless pull.
+4. Read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, and `coordination/initiate/CURRENT.md` completely when the latter exists.
+5. Reconcile the task ID, state, owner, approval gates, allowed scope, prohibitions, and repository state with the user's current instruction. The user's latest explicit instruction from Setetchie may create/update a mailbox task, but do not otherwise infer an ownership transfer or approval.
+
+Task state is exactly `READY`, `IN_PROGRESS`, or `COMPLETE`. Ownership is exactly `CHATGPT`, `CODEX`, `SETETCHIE`, or `UNASSIGNED`.
+
+- `READY`: specified but not begun. Codex may claim it only when owner is `CODEX` and all approval gates are satisfied.
+- `IN_PROGRESS`: claimed by the named owner. Before making task changes, Codex must update the initiate file and shared workflow state to `IN_PROGRESS`, retaining the same task ID.
+- `COMPLETE`: all authorized work and required validation are finished, or the requested diagnostic/reporting stop has been reached. Completion requires a structured result file.
+- A task owned by `CHATGPT`, `SETETCHIE`, or `UNASSIGNED` is not executable by Codex. Report the ownership gate and do not begin it.
+- If chat and mailbox conflict, stop mutating, preserve evidence, address Setetchie by name, and request reconciliation. Product authority still follows the decision ledger.
+
+Every Codex task, including documentation-only, diagnostic, blocked, or no-op tasks, must write or update `coordination/results/<TASK_ID>.md` before its final response. Use the result structure defined by the protocol. Update `coordination/shared/WORKFLOW_STATE.md` with the exact stop, validation evidence, and next owner/action.
+
+After completing the result and workflow state, commit and push the authorized task output and coordination records to the current GitHub branch unless Setetchie explicitly says not to. Keep application commits separate from coordination/result commits when practical. Stage explicit paths so unrelated work is never included. Ordinary synchronization never authorizes merge, force-push, rebase, reset, destructive conflict resolution, 50× testing, or a product decision. Unless explicitly instructed otherwise, return task ownership to `CHATGPT` on completion.
+
+On `COMPLETE`, archive the final initiate record at `coordination/initiate/archive/<TASK_ID>.md`. Results remain at their stable path and may be snapshotted under `coordination/results/archive/` only when superseded. Never overwrite history for a different task ID. Do not put secrets, raw credentials, or large generated logs in the mailbox.
