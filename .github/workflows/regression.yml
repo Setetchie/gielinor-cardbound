@@ -67,7 +67,8 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npx playwright install --with-deps chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
       - name: Run ${{ matrix.name }} regression 50x
         run: npm run test:e2e -- ${{ matrix.spec }} --grep "${{ matrix.grep }}"
       - name: Summarize ${{ matrix.name }} results
