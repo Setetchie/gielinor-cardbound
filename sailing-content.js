@@ -1,7 +1,7 @@
 // Sailing expansion: facility-gated OSRS-inspired Sailing progression.
 (function(){
 if(s.skills.Sailing==null)s.skills.Sailing=1;if(s.xp.Sailing==null)s.xp.Sailing=0;
-const addCard=c=>{if(!B[c.id]){C.push(c);B[c.id]=c;}if(s.owned[c.id]==null)s.owned[c.id]=0;};
+const addCard=c=>cbContentRegistry.registerCard(c,{source:'sailing-content'});
 const facility=(id,name,rarity,level,icon='⚓',category='Facility')=>({id,name,type:'Sailing Facility',slot:null,rarity,icon,power:0,reqSkill:'Sailing',reqLevel:level,sailingCategory:category});
 const boats=[
  facility('sail_raft','Raft','Common',1,'🛶','Boat'),
@@ -43,7 +43,7 @@ const acts=[
  action('sail_combat_rune','Ship Combat — Rune Cannon','Combat',80,'Epic',80,10,['sail_cannon_rune'],'💥'),
  action('sail_combat_dragon','Ship Combat — Dragon Cannon','Combat',92,'Legendary',100,9,['sail_cannon_dragon'],'🔥')
 ];
-for(const a of acts){addCard(a);if(!A.some(x=>x.id===a.id))A.push(a);}
+for(const a of acts)cbContentRegistry.registerActivity(a,{source:'sailing-content'});
 // Guarantee a viable Sailing start for old and new saves.
 for(const id of ['sail_raft','sail_port_tasks','sail_charting'])if(!own(id))s.owned[id]=1;
 window.cbSailingCategories=['Port Tasks','Charting','Salvaging','Trawling','Combat','Trials'];

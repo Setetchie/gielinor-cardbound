@@ -139,3 +139,36 @@ test('core router owns deterministic Home Bank and Collection destination resolu
   expect(routing.collection).toBe('function');
   expect(routing.fallbackIsHome).toBe(true);
 });
+
+test('content registry preserves legacy indexes and exposes data-focused metadata', async ({ page }) => {
+  await fresh(page);
+  const registry = await page.evaluate(() => {
+    const before = cbContentRegistry.snapshot();
+    const sailing = B.sail_port_tasks;
+    const duplicate = cbContentRegistry.registerActivity(sailing, { source: 'architecture-test' });
+    const after = cbContentRegistry.snapshot();
+    return {
+      sameCards: cbContentRegistry.cards === C,
+      sameActivities: cbContentRegistry.activities === A,
+      sameIndex: cbContentRegistry.cardById === B,
+      samePacks: cbContentRegistry.packs === packs,
+      duplicateIdentity: duplicate === sailing,
+      countsStable: before.cards === after.cards && before.activities === after.activities,
+      metadata: cbContentRegistry.metadata('sail_port_tasks')
+    };
+  });
+  expect(registry.sameCards).toBe(true);
+  expect(registry.sameActivities).toBe(true);
+  expect(registry.sameIndex).toBe(true);
+  expect(registry.samePacks).toBe(true);
+  expect(registry.duplicateIdentity).toBe(true);
+  expect(registry.countsStable).toBe(true);
+  expect(registry.metadata).toMatchObject({
+    id: 'sail_port_tasks',
+    source: 'sailing-content',
+    skill: 'Sailing',
+    family: 'Port Tasks',
+    tier: 1,
+    activityBinding: 'sail_port_tasks'
+  });
+});

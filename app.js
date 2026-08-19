@@ -14,6 +14,45 @@ const packs={Beginner:{cost:500,n:3,o:[75,20,4.5,.5,0]},Bronze:{cost:1500,n:5,o:
 const blankEq=()=>Object.fromEntries(SLOT_ORDER.map(k=>[k,null]));
 const D={points:3000,owned:{bronze_sword:1,bronze_axe:1,bronze_pick:1,net:1,goblin:1,normal_tree:1,copper_rock:1,shrimp_spot:1},fragments:Object.fromEntries(R.map(r=>[r,0])),equipped:{...blankEq(),weapon:'bronze_sword',tool:'bronze_axe'},skills:{Combat:1,Woodcutting:1,Mining:1,Fishing:1},xp:{Combat:0,Woodcutting:0,Mining:0,Fishing:0},tab:'Home',packs:0,actions:0,idle:{activityId:null,lastTick:null,totalPoints:0}};
 let s;try{const old=JSON.parse(localStorage.cardbound||'{}');s=Object.assign(structuredClone(D),old);const migrated=blankEq();if(old.equipped){if(old.equipped.weapon)migrated.weapon=old.equipped.weapon;if(old.equipped.tool)migrated.tool=old.equipped.tool;if(old.equipped.armor)migrated.body=old.equipped.armor;if(old.equipped.accessory){const c=B[old.equipped.accessory];migrated[c?.slot||'neck']=old.equipped.accessory}for(const k of SLOT_ORDER)if(old.equipped[k])migrated[k]=old.equipped[k]}s.equipped=migrated;s.fragments=Object.assign({},D.fragments,s.fragments||{});s.idle=Object.assign({},D.idle,s.idle||{});}catch{s=structuredClone(D)}
+const cbContentSources=new Map();
+function cbContentMetadata(entry,source){
+  const kind=entry.kind||entry.reqSkill||null;
+  return {
+    id:entry.id,source:source||'legacy',type:entry.type||null,
+    skill:entry.reqSkill||kind,family:entry.activityFamily||entry.sailingCategory||kind,
+    tier:entry.tier??entry.reqLevel??null,activityBinding:entry.activityBinding||entry.id,
+    equipment:{applicability:entry.equipmentApplicability||kind,slotRole:entry.slot||null,utilityProfile:entry.utilityProfile||null},
+    activityProfile:entry.activityProfile||null
+  };
+}
+const cbContentRegistry=window.cbContentRegistry={
+  cards:C,activities:A,cardById:B,packs,
+  registerCard(card,{source='legacy',initializeOwnership=true}={}){
+    if(!card?.id)throw new Error('Content card id is required');
+    const existing=B[card.id];
+    if(!existing){C.push(card);B[card.id]=card;}
+    const registered=existing||card;
+    if(initializeOwnership&&s.owned[registered.id]==null)s.owned[registered.id]=0;
+    if(initializeOwnership&&s.foils&&s.foils[registered.id]==null)s.foils[registered.id]=0;
+    if(!cbContentSources.has(registered.id))cbContentSources.set(registered.id,source);
+    return registered;
+  },
+  registerActivity(activity,{source='legacy',registerCard=true,initializeOwnership=true}={}){
+    const registered=registerCard?this.registerCard(activity,{source,initializeOwnership}):activity;
+    if(!registered?.id)throw new Error('Content activity id is required');
+    if(!A.some(item=>item.id===registered.id))A.push(registered);
+    if(!cbContentSources.has(registered.id))cbContentSources.set(registered.id,source);
+    return registered;
+  },
+  registerPack(id,definition,{replace=false}={}){
+    if(!id||!definition)throw new Error('Content pack id and definition are required');
+    if(packs[id]&&!replace)return packs[id];
+    packs[id]=definition;return packs[id];
+  },
+  metadata(id){const entry=B[id]||A.find(item=>item.id===id);return entry?cbContentMetadata(entry,cbContentSources.get(id)):null;},
+  snapshot(){return {cards:C.length,activities:A.length,packs:Object.keys(packs).length,cardIds:C.map(c=>c.id),activityIds:A.map(a=>a.id),packIds:Object.keys(packs)};}
+};
+C.forEach(card=>cbContentSources.set(card.id,'core'));
 let bankFilters={type:'All',rarity:'All',status:'All',sort:'Name'};
 const own=id=>s.owned[id]||0,save=()=>localStorage.cardbound=JSON.stringify(s),power=()=>5+Object.values(s.equipped).filter(Boolean).reduce((n,id)=>n+(B[id]?.power||0),0),need=a=>Math.max(1,Math.ceil(a.diff/2));
 function roll(o){let x=Math.random()*100,n=0;for(let i=0;i<o.length;i++){n+=o[i];if(x<n)return R[i]}return R[0]}
