@@ -2,7 +2,7 @@
 
 - **Task ID:** `CB-PR5-STRESS50-003`
 - **Title:** Run authorized 50× PR #5 stress/repetition validation
-- **State:** `READY`
+- **State:** `IN_PROGRESS`
 - **Owner:** `CODEX`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
@@ -21,7 +21,7 @@ Run the authorized 50× stress/repetition validation now that the complete 1× g
 
 ## Required execution
 
-1. Claim this task according to the coordination protocol and mark it `IN_PROGRESS`.
+1. Claim this task according to the coordination protocol and mark it `IN_PROGRESS`. Claimed by Codex on 2026-08-18.
 2. Confirm the current branch, worktree, remote divergence, and preserved corrective diff before testing.
 3. Confirm the 1× evidence remains the verified 37/37 complete gate and the workflow selector repair is present.
 4. Run the intended full 50× stress/repetition validation using the repository's authoritative workflow/test configuration.
