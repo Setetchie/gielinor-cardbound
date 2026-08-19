@@ -19,7 +19,7 @@ jobs:
         include:
           - name: prototype-core
             spec: tests/smoke.spec.js
-            grep: 'app boots|home shows|Activity > Skilling'
+            grep: 'app boots|home shows|Activity > Sailing'
             executions: 150
           - name: prototype-progression
             spec: tests/smoke.spec.js
@@ -47,7 +47,7 @@ jobs:
             executions: 100
           - name: greenwake-content
             spec: tests/original.spec.js
-            grep: 'Greenwake packs|Greenwake next Woodcraft'
+            grep: 'Greenwake packs|Greenwake next Woodcutting'
             executions: 100
           - name: ip-inventory
             spec: tests/inventory.spec.js
