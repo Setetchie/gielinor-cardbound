@@ -2,8 +2,8 @@
 
 - **Task ID:** `CB-PR5-WFGREP-002`
 - **Title:** Repair stale 50× workflow selectors and verify stress-gate readiness
-- **State:** `IN_PROGRESS`
-- **Owner:** `CODEX`
+- **State:** `COMPLETE`
+- **Owner:** `CHATGPT`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
 - **Updated:** 2026-08-18
@@ -55,3 +55,7 @@ Update `coordination/shared/WORKFLOW_STATE.md`, return ownership to `CHATGPT`, c
 - Application behavior changes: **NO**.
 - Weakening/removing behavioral coverage: **NO**.
 - Force-push/reset/rebase/discard unrelated work: **NO**.
+
+## Completion
+
+Completed by Codex on 2026-08-18. Result: `coordination/results/CB-PR5-WFGREP-002.md`. Both stale selectors were corrected and proven to select the intended tests. No 50× run was started.
