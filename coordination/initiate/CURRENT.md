@@ -1,73 +1,57 @@
 # Current Initiate Task
 
-- **Task ID:** `CB-PR5-RUN74-001`
-- **Title:** PR #5 / run #74 corrective review and 1× verification
-- **State:** `COMPLETE`
-- **Owner:** `CHATGPT`
+- **Task ID:** `CB-PR5-WFGREP-002`
+- **Title:** Repair stale 50× workflow selectors and verify stress-gate readiness
+- **State:** `READY`
+- **Owner:** `CODEX`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
 - **Updated:** 2026-08-18
 - **Repository:** `Setetchie/gielinor-cardbound`
 - **Branch:** `agent/v44-ux-test-pass`
 - **PR:** #5, unmerged
-- **Baseline commit:** `c8c4985`
 
 ## Authority
 
-Read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, `docs/DECISION_LEDGER.md`, `docs/V44_REVIEW_DECISIONS_AND_STAGE_BOARD.md`, `docs/v44-ux-test-contract.md`, `docs/v43-first-test-pass-baseline.md`, and the current handoff before execution.
+Read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, `coordination/results/CB-PR5-RUN74-001.md`, and the current v43/v44 testing documentation before execution.
 
 ## Objective
 
-Review the existing uncommitted PR #5 corrective application/test diff, confirm it matches the approved run #74 root-cause repair scope, and verify that the reported green 37/37 local run constitutes the complete required 1× validation gate.
-
-## Confirmed repair scope
-
-- Sailing routing under Activities.
-- Compact v44 Card Collection search and ownership filtering.
-- Current Activities/Bank terminology in original mode.
-- Scoped persistent-navigation selectors and accepted Activities-first placement.
-- Current Equipped/loadout assertions.
-- Current-build-compatible v43 behavioral fixture.
+Correct the two stale workflow grep labels identified after the verified green 37/37 1× gate so the future 50× stress workflow includes the intended renamed tests.
 
 ## Required execution
 
-1. Follow the repository coordination protocol and claim this task by marking it `IN_PROGRESS`. Claimed by Codex on 2026-08-18.
-2. Inspect the existing uncommitted corrective diff before changing anything.
-3. Confirm each application/test change maps to the approved run #74 diagnosis and does not introduce unrelated product behavior.
-4. Verify whether the reported `37/37` local result is the complete intended 1× Cardbound validation gate.
-5. If the 37/37 run is incomplete, run the missing 1× coverage.
-6. If any required 1× check fails, diagnose the first/root failure, make the minimum correct fix, and restart a fresh complete 1× validation.
-7. Do not weaken behavioral coverage merely to obtain green results.
-8. Do not run the 50× repetition/stress gate in this task.
+1. Claim this task according to the coordination protocol.
+2. Inspect the workflow definitions before editing.
+3. Correct only the stale selectors/grep labels corresponding to:
+   - old `Activity > Skilling` versus the current Sailing-routing test name;
+   - old `Greenwake next Woodcraft` versus the current Woodcutting-unlock test name.
+4. Preserve the existing behavioral coverage and shard structure; do not remove tests or broaden selectors merely to force matches.
+5. Confirm the corrected workflow selects the intended tests.
+6. Run `git diff --check` and any lightweight selector/workflow validation needed to prove the fix.
+7. Do not modify application behavior in this task.
+8. Do not run the 50× stress gate yet.
 9. Do not merge PR #5.
-10. Do not commit/push the application repair changes unless the coordination protocol or this task explicitly requires a result snapshot; preserve application work for ChatGPT/Setetchie review after the verified 1× result.
+10. Do not commit/push the existing uncommitted application/test repair diff as part of this workflow-only task.
 
 ## Required result
 
-Write `coordination/results/CB-PR5-RUN74-001.md` with:
+Write `coordination/results/CB-PR5-WFGREP-002.md` containing:
 
-- task status;
-- branch and PR state;
-- files in the corrective diff;
-- application fixes reviewed;
-- test/fixture changes reviewed and why they are legitimate;
-- whether 37/37 is the complete 1× gate;
-- focused and full 1× validation results by shard/suite where applicable;
-- warnings/flakiness;
-- unresolved issues or product questions;
-- `git diff --stat` summary;
-- worktree/commit/push state;
+- exact workflow file(s) changed;
+- old and new selectors/labels;
+- proof the intended tests are selected;
+- validation performed;
+- worktree/application-diff preservation status;
+- whether the 50× gate is now ready to be authorized;
 - exact recommended next action.
 
-Update `coordination/shared/WORKFLOW_STATE.md`, return ownership to `CHATGPT`, commit/push the coordination result, and stop.
+Update `coordination/shared/WORKFLOW_STATE.md`, return ownership to `CHATGPT`, commit/push only the workflow/coordination changes appropriate to this task, and stop.
 
 ## Gates and prohibitions
 
 - 50× authorization: **NO**.
 - Merge permission: **NO**.
-- Product/design assumptions beyond documented accepted behavior: **NO**.
+- Application behavior changes: **NO**.
+- Weakening/removing behavioral coverage: **NO**.
 - Force-push/reset/rebase/discard unrelated work: **NO**.
-
-## Completion
-
-Completed by Codex on 2026-08-18. Result: `coordination/results/CB-PR5-RUN74-001.md`. The repair diff was reviewed and the complete 1× evidence verified; application changes remain uncommitted for ChatGPT/Setetchie review.
