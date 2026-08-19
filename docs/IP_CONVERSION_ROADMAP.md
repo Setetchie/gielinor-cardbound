@@ -22,7 +22,7 @@ This roadmap is a production checklist, not a legal clearance opinion.
 
 - [x] Establish 50x browser regression baseline.
 - [x] Consolidate Activity + Sailing navigation/rendering.
-- [ ] Consolidate Home/Bank/Collection routing.
+- [x] Consolidate Home/Bank/Collection routing.
 - [ ] Consolidate idle settlement/progress.
 - [ ] Consolidate content registration into data-focused modules.
 
