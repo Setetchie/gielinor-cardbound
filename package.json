@@ -2,7 +2,8 @@
   "name": "gielinor-cardbound",
   "private": true,
   "scripts": {
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "generate:ip-ledger": "node scripts/generate-ip-conversion.js"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0"
