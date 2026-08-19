@@ -2,7 +2,7 @@
 
 - **Task ID:** `CB-PR5-RUN74-001`
 - **Title:** PR #5 / run #74 corrective review and 1× verification
-- **State:** `READY`
+- **State:** `IN_PROGRESS`
 - **Owner:** `CODEX`
 - **Requester:** Setetchie
 - **Created:** 2026-08-18
@@ -31,7 +31,7 @@ Review the existing uncommitted PR #5 corrective application/test diff, confirm 
 
 ## Required execution
 
-1. Follow the repository coordination protocol and claim this task by marking it `IN_PROGRESS`.
+1. Follow the repository coordination protocol and claim this task by marking it `IN_PROGRESS`. Claimed by Codex on 2026-08-18.
 2. Inspect the existing uncommitted corrective diff before changing anything.
 3. Confirm each application/test change maps to the approved run #74 diagnosis and does not introduce unrelated product behavior.
 4. Verify whether the reported `37/37` local result is the complete intended 1× Cardbound validation gate.
