@@ -100,6 +100,7 @@ When a task is superseded, preserve its envelope and result in the relevant arch
 ## Conflict and safety rules
 
 - Setetchie retains product and merge authority.
+- After each implementation task reaches a completely green full 1× gate, create and complete a fresh full 50× gate before proceeding to later development. Do not combine partial runs. This standing validation instruction does not authorize application/test changes, merge, push, or publication.
 - Do not request redundant approval for the only logical, reversible, in-scope next step. Continue it automatically after recording its task envelope. This standing delegation does not authorize resolving `OPEN`/`BALANCE`/`FUTURE` product decisions, merging, publishing a tester build, destructive history/filesystem operations, spending money, contacting people, or materially expanding scope.
 - `docs/DECISION_LEDGER.md` controls product-decision precedence.
 - Never infer approval, ownership transfer, merge permission, or permission to cross a validation gate.

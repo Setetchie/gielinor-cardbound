@@ -26,7 +26,7 @@ Use the ledger statuses exactly: `CURRENT`, `SUPERSEDED`, `OPEN`, `BALANCE`, `FU
 
 ## Mandatory validation sequence
 
-For corrective work: diagnose → patch → complete 1× validation → if red, fix and restart the complete 1× → only after a completely green 1×, run 50× repetition/stress validation. Any later code change resets the gate. Record command, commit, result, and evidence. Never run 50× speculatively.
+For implementation/corrective work: diagnose → patch → complete 1× validation → if red, fix and restart the complete 1× → only after a completely green 1×, run a fresh complete 50× repetition/stress validation before proceeding to the next development task. Any later application/test code change resets both gates. Never combine partial runs. Record commands, commit/worktree identity, totals, duration, hangs, retries, and process evidence. Setetchie's 2026-08-19 standing instruction authorizes this required post-1× gate through a correctly scoped mailbox task; it does not authorize merge, push, publication, or test weakening.
 
 ## Continuity
 
