@@ -47,6 +47,7 @@ At minimum include:
 15. Important source-of-truth project documents and which newer documents supersede stale prototype decisions.
 16. Any active automations/tasks that matter to continuity.
 17. Instructions for validating repository state before making new changes.
+18. Whether the GitHub-hosted testing app needs publication, its current URL/build/version, and whether phone/external-tester access was verified.
 
 Avoid copying obsolete chat discussion merely for completeness. Prefer the current accepted state and explicitly flag known stale/conflicting documentation.
 
@@ -55,7 +56,7 @@ Avoid copying obsolete chat discussion merely for completeness. Prefer the curre
 Every handoff Markdown file must tell the next chat to:
 
 1. Read the handoff first.
-2. Pull/check the latest repository state before assuming the handoff is still current.
+2. Check the shared local repository and coordination mailbox at `C:\Studio_Dev\gielinor-cardbound` before assuming the handoff is still current; do not require a GitHub pull solely for handoff synchronization.
 3. Use repository source-of-truth documents for accepted project decisions.
 4. Continue the current milestone rather than restarting design from scratch.
 5. Preserve the distinction between bugs, review proposals, accepted decisions, open balance questions, and later creative milestones.
@@ -63,6 +64,10 @@ Every handoff Markdown file must tell the next chat to:
 7. When the new chat itself becomes large/slow/risky, warn the user and create/update the next handoff Markdown file before migration.
 
 This final requirement makes the protocol self-perpetuating across future project chats.
+
+## Coordination versus tester hosting
+
+Use `C:\Studio_Dev\gielinor-cardbound` and its `coordination` mailbox for ChatGPT ↔ Codex task handoffs. Keep the playable testing app hosted through GitHub for Setetchie and future external testers. A handoff must distinguish local completion from a published test build; publishing requires explicit task authorization plus a recorded commit, deployment result, visible version/build, test URL, and access check.
 
 ## Source-of-truth references
 

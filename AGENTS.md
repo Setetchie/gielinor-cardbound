@@ -34,11 +34,13 @@ Before incomplete/context-sensitive work changes tasks, refresh the ledger and a
 
 ## Persistent ChatGPT ↔ Codex coordination mailbox
 
-Repository mailbox files are durable coordination authority and GitHub is the synchronization bridge between ChatGPT and Codex. At the beginning of every Codex task in this repository, before planning, editing, testing, or committing:
+Repository mailbox files in `C:\Studio_Dev\gielinor-cardbound\coordination` are the durable coordination authority and the shared local checkout is the synchronization bridge between ChatGPT and Codex. Both assistants can read and write this directory directly. GitHub remains the source-control, PR, and CI remote, but it is not required to transfer handoffs. At the beginning of every Codex task in this repository, before planning, editing, testing, or committing:
+
+The playable testing app remains GitHub-hosted so Setetchie and outside testers can use a shared URL. Any task whose deliverable is a new or updated tester-visible build must explicitly authorize the required commit/push or deployment action and must record the published branch/build, deployment result, visible version, and test URL. Local files are not a substitute for publishing a tester build.
 
 1. Confirm the current branch and run `git status`.
-2. Fetch the configured upstream. Compare local/upstream divergence and changed paths before pulling.
-3. If upstream is ahead and a clean fast-forward cannot overwrite or conflict with local work, pull with fast-forward-only semantics. If histories diverge, no upstream exists, or remote changes overlap local changes, stop and report instead of resetting, rebasing, stashing, discarding, or auto-resolving. A fetch with no upstream commits to integrate satisfies synchronization; do not run a needless pull.
+2. Read the shared local mailbox directly; do not fetch or pull merely to exchange a task or result between ChatGPT and Codex.
+3. Fetch or pull the configured upstream only when the assigned work needs current remote branch, PR, or CI state. Before integrating upstream changes, compare divergence and changed paths. Fast-forward only when it cannot overwrite or conflict with local work; otherwise stop and report instead of resetting, rebasing, stashing, discarding, or auto-resolving.
 4. Read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, and `coordination/initiate/CURRENT.md` completely when the latter exists.
 5. Reconcile the task ID, state, owner, approval gates, allowed scope, prohibitions, and repository state with the user's current instruction. The user's latest explicit instruction from Setetchie may create/update a mailbox task, but do not otherwise infer an ownership transfer or approval.
 
@@ -52,6 +54,6 @@ Task state is exactly `READY`, `IN_PROGRESS`, or `COMPLETE`. Ownership is exactl
 
 Every Codex task, including documentation-only, diagnostic, blocked, or no-op tasks, must write or update `coordination/results/<TASK_ID>.md` before its final response. Use the result structure defined by the protocol. Update `coordination/shared/WORKFLOW_STATE.md` with the exact stop, validation evidence, and next owner/action.
 
-After completing the result and workflow state, commit and push the authorized task output and coordination records to the current GitHub branch unless Setetchie explicitly says not to. Keep application commits separate from coordination/result commits when practical. Stage explicit paths so unrelated work is never included. Ordinary synchronization never authorizes merge, force-push, rebase, reset, destructive conflict resolution, 50× testing, or a product decision. Unless explicitly instructed otherwise, return task ownership to `CHATGPT` on completion.
+After completing the result and workflow state, save them in the shared local directory so ChatGPT can read them immediately. Commit and push authorized task output only when the task or Setetchie explicitly requires it; a local handoff never requires a GitHub push. Keep application commits separate from coordination/result commits when practical. Stage explicit paths so unrelated work is never included. Ordinary synchronization never authorizes merge, force-push, rebase, reset, destructive conflict resolution, 50× testing, or a product decision. Unless explicitly instructed otherwise, return task ownership to `CHATGPT` on completion.
 
 On `COMPLETE`, archive the final initiate record at `coordination/initiate/archive/<TASK_ID>.md`. Results remain at their stable path and may be snapshotted under `coordination/results/archive/` only when superseded. Never overwrite history for a different task ID. Do not put secrets, raw credentials, or large generated logs in the mailbox.

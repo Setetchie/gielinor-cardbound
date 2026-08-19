@@ -10,9 +10,11 @@
 
 Upload or reference this file in the new chat and say:
 
-> Continue Cardbound development from this handoff. First inspect PR #5, the current Design Proposal Board, v44 UX Test Contract, Architecture Decisions, Trading System, World Bible, and Testing/Release/Marketing Roadmap in the connected GitHub repository. Do not assume CI is green. Preserve the testing rule that every future validation cycle must pass one complete 1× test pass before any 50× repetition/stress pass is allowed.
+> Continue Cardbound development from this handoff. First inspect the shared checkout at `C:\Studio_Dev\gielinor-cardbound`, including the local coordination mailbox, current Design Proposal Board, v44 UX Test Contract, Architecture Decisions, Trading System, World Bible, and Testing/Release/Marketing Roadmap. Inspect GitHub only for remote PR #5 or CI facts that are needed. Do not assume CI is green. Preserve the testing rule that every future validation cycle must pass one complete 1× test pass before any 50× repetition/stress pass is allowed.
 
-The GitHub repository is authoritative for current code. This handoff is a checkpoint and index to the authoritative boards/documents.
+The shared checkout at `C:\Studio_Dev\gielinor-cardbound` is the immediate authority for current local code and handoff state. GitHub remains authoritative for published remote branch, PR, and CI state. This handoff is a checkpoint and index to the authoritative boards/documents.
+
+The testing app remains GitHub-hosted for phone access and future external testers. Local completion does not mean the tester build is published. A test-build publication task must explicitly authorize the required commit/push or deployment and record the hosted URL, commit, visible version/build, deployment result, and access verification.
 
 ---
 
@@ -270,7 +272,7 @@ Preserve/add utilities needed to repeatedly test states without grinding:
 
 ## Immediate next actions for the new chat
 1. Read `AGENTS.md`, `docs/DECISION_LEDGER.md`, this handoff, and the authoritative documents listed in Section 1.
-2. Inspect live PR #5 head and pull raw logs for the five failed Run #74 shards.
+2. Inspect the local branch and mailbox first, then inspect live PR #5 and retrieve raw logs for the five failed Run #74 shards only as needed.
 3. Identify first actionable/root failure in each and group shared causes.
 4. Patch source behavior when it violates accepted design; update stale tests only where accepted v44 behavior intentionally superseded an old assertion, without reducing coverage.
 5. Run **one complete 1× qualification pass**. If anything fails, stop, patch, and restart the full 1× pass.
@@ -294,11 +296,11 @@ When a new accepted design decision, test finding, bug, superseded direction, or
 ## Governance migration checkpoint — 2026-08-18
 
 - **Repository/branch/PR:** `Setetchie/gielinor-cardbound`; `agent/v44-ux-test-pass`; PR #5 remains unmerged.
-- **Latest committed baseline:** `08bfb7d` (`docs: scaffold canonical decision ledger`). Governance edits made after this commit are currently uncommitted.
-- **Completed:** Root `AGENTS.md` and `docs/DECISION_LEDGER.md` were aligned with the six-status governance model and explicit document precedence. Known Combat, Gloves, monetized idle-capacity, and terminology conflicts were reconciled; Pet/Companion detail remains open.
-- **Exact stop:** Documentation governance is complete for the requested seed scope; PR #5 failure remediation has not begun.
-- **1× gate:** Not run in this documentation-only task. Run #74 remains the last failed evidence.
-- **50× gate:** Blocked until a complete green 1×.
+- **Latest committed baseline:** `31062a0` (`docs: establish Cardbound decision governance for Codex`). The corrective application/test diff is intentionally uncommitted pending Setetchie's review.
+- **Completed:** The run #74 root causes were repaired: preserved Sailing routing, compact Card Collection search/ownership filtering, current Activities/Bank terminology in original mode, scoped navigation/detail selectors, accepted Activities-first page placement, v44 Equipped/loadout assertions, and current-build v43 compatibility coverage. Preserved Settings and NEW-marker regression behavior was also restored when focused validation exposed those compatibility gaps.
+- **Exact stop:** The complete 1× gate is green. Stop before 50× and wait for Setetchie's explicit approval.
+- **1× gate:** `npx playwright test --config=playwright.1x.config.js` against baseline `31062a0` plus the six-file corrective diff: **37/37 passed in 17.4s** on 2026-08-18. This all-tests-once run is a superset of every workflow shard selection.
+- **50× gate:** Not run; awaiting Setetchie's explicit approval.
 - **Open decisions:** `PET-001`; remaining historical decision audit; missing provenance/dates for some older proposals.
-- **Do not:** Change behavior as part of governance; merge PR #5; run 50×; infer unresolved Pet/Companion decisions.
-- **Next action:** After Setetchie's approval, inspect the five failed Run #74 shard logs and diagnose root causes without changing code during the diagnostic pass.
+- **Do not:** Merge PR #5; run 50× without explicit approval; infer unresolved Pet/Companion decisions; change code without resetting the 1× gate.
+- **Next action:** Setetchie reviews the green 1× result and decides whether to authorize the 50× stress gate.

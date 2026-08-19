@@ -75,6 +75,8 @@ The current phase is **not** final content balancing. It is a deeper interface/n
 
 ## Current engineering status
 
+The playable testing app remains hosted through GitHub for Setetchie and future external testers. ChatGPT ↔ Codex handoffs use the shared local directory, but tester-build updates require an explicitly authorized GitHub publication/deployment task with the hosted URL, pushed commit, visible build/version, deployment result, and phone-access verification recorded.
+
 PR #5 remains **unmerged**.
 
 Latest inspected workflow: **Cardbound Regression run #74 / run ID `32073559950`**.
@@ -111,7 +113,7 @@ The product owner asked to **stop the current actions** and move to a new chat. 
 
 ## Next action in the new chat
 
-Ask GitHub for the current PR #5 head and latest workflow state, then inspect the raw logs for the five failed run #74 jobs. Identify the first actionable failure/root cause in each. Patch the real regressions and update only stale assertions that conflict with accepted v44 behavior. Then run the mandatory **1× full pass**. Only after that is 100% green should the 50× validation run begin.
+Inspect the shared checkout at `C:\Studio_Dev\gielinor-cardbound` and its local coordination mailbox first. Query GitHub only for current PR #5 or workflow/CI state that is not available locally, then inspect the raw logs for the five failed run #74 jobs. Identify the first actionable failure/root cause in each. Patch the real regressions and update only stale assertions that conflict with accepted v44 behavior. Then run the mandatory **1× full pass**. Only after that is 100% green should the 50× validation run begin.
 
 ## Stage/progress snapshot
 

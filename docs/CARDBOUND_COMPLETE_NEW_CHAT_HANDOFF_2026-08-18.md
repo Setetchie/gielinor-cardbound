@@ -6,7 +6,7 @@ Setetchie, this is the comprehensive continuation checkpoint for a new ChatGPT o
 
 Paste or attach this file, then use this instruction:
 
-> Continue Cardbound from `docs/CARDBOUND_COMPLETE_NEW_CHAT_HANDOFF_2026-08-18.md`. Address me as Setetchie. Before doing any work, confirm the branch and worktree, fetch and safely fast-forward only when possible, then read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, `coordination/initiate/CURRENT.md`, `docs/DECISION_LEDGER.md`, and the authority documents relevant to the assigned task. Preserve all unrelated local work. Do not merge PR #5, force-push, reset, rebase, discard changes, invent product decisions, or cross a validation gate without explicit approval. The complete 1× gate is green, but the 50× gate is incomplete and PR #5 is not merge-ready. Follow the current GitHub-synchronized mailbox task and stop at its stated boundary.
+> Continue Cardbound from `C:\Studio_Dev\gielinor-cardbound\docs\CARDBOUND_COMPLETE_NEW_CHAT_HANDOFF_2026-08-18.md`. Address me as Setetchie. Before doing any work, confirm the branch and worktree, then read `AGENTS.md`, `coordination/shared/PROTOCOL.md`, `coordination/shared/WORKFLOW_STATE.md`, `coordination/initiate/CURRENT.md`, `docs/DECISION_LEDGER.md`, and the authority documents relevant to the assigned task directly from the shared local checkout. Fetch or pull GitHub only when remote branch, PR, or CI state is needed. Preserve all unrelated local work. Do not merge PR #5, force-push, reset, rebase, discard changes, invent product decisions, or cross a validation gate without explicit approval. The complete 1× gate is green, but the 50× gate is incomplete and PR #5 is not merge-ready. Follow the current local mailbox task and stop at its stated boundary.
 
 ## Executive status
 
@@ -22,7 +22,7 @@ Paste or attach this file, then use this instruction:
 - **Complete 1× gate:** green, 37/37 Playwright tests in 17.4 seconds
 - **50× gate:** incomplete; 650 confirmed passes, then the `greenwake-terminology` repetition hung without an assertion failure or final summary
 - **Exact blocker:** a fresh, complete 50× gate has not finished successfully across every required shard
-- **Next owner after this handoff:** `CHATGPT`, pending a new GitHub mailbox task and Setetchie’s approval
+- **Next owner after this handoff:** `CHATGPT`, pending a new local mailbox task and Setetchie’s approval
 
 The branch/upstream relationship and commit are locally verifiable. PR #5’s open/unmerged status is durable repository-recorded state; this handoff task could not independently refresh PR metadata because the GitHub CLI was unavailable and unauthenticated web lookup did not expose the private/current PR context.
 
@@ -39,18 +39,20 @@ The branch/upstream relationship and commit are locally verifiable. PR #5’s op
 9. Never merge PR #5 without Setetchie’s explicit approval.
 10. Do not reset, rebase, stash, discard, overwrite, or force-push unrelated work automatically.
 
-## GitHub coordination protocol
+## Shared local coordination protocol
 
-GitHub is the automatic synchronization bridge between ChatGPT and Codex. The local repository is Codex’s engineering workspace.
+The shared local checkout at `C:\Studio_Dev\gielinor-cardbound` is the synchronization bridge between ChatGPT and Codex and is Codex’s engineering workspace. GitHub remains the source-control, PR, and CI remote.
+
+The playable testing app remains hosted through GitHub so Setetchie and future external testers can reach the same build from their phones. Do not treat a locally working `index.html` as a published tester build. Any task to update the testing app must explicitly authorize commit/push or deployment and record the hosted URL, pushed commit, visible build/version, deployment result, and phone-access smoke check.
 
 The intended cycle is:
 
-`ChatGPT → GitHub initiate task → Codex fetches/pulls safely → Codex works/tests locally → Codex writes result → Codex commits/pushes result → ChatGPT reviews → next task`
+`ChatGPT writes local initiate task → Codex reads it locally → Codex works/tests locally → Codex writes local result/state → ChatGPT reviews locally → next task`
 
 Before every Cardbound task, Codex must:
 
 1. Confirm the current branch and run `git status`.
-2. Fetch the configured upstream.
+2. Read the shared local coordination mailbox; fetch the configured upstream only if the task needs current remote branch, PR, or CI state.
 3. Compare local/upstream divergence and changed paths.
 4. Pull with fast-forward-only semantics only if safe. If history diverges or remote changes conflict with local work, stop and report rather than resolving destructively.
 5. Read, in order:
@@ -59,7 +61,7 @@ Before every Cardbound task, Codex must:
    - `coordination/shared/WORKFLOW_STATE.md`
    - `coordination/initiate/CURRENT.md`
 6. Execute only a task that is `READY`, owned by `CODEX`, and past every approval gate.
-7. Claim it as `IN_PROGRESS`, retaining the same task ID, and push the claim before implementation.
+7. Claim it as `IN_PROGRESS`, retaining the same task ID, and save the claim locally before implementation.
 
 Every task—including documentation-only, diagnostic, blocked, or no-op work—must finish with:
 
@@ -67,7 +69,7 @@ Every task—including documentation-only, diagnostic, blocked, or no-op work—
 - an updated `coordination/shared/WORKFLOW_STATE.md`;
 - a `COMPLETE` initiate record archived at `coordination/initiate/archive/<TASK_ID>.md`;
 - ownership normally returned to `CHATGPT`;
-- authorized commits pushed to the current branch.
+- any commits or pushes explicitly authorized by the task, with local handoff completion independent of publication.
 
 Automatic synchronization never grants permission to merge, force-push, reset, rebase, discard work, invent decisions, authorize 50×, or infer merge approval.
 
@@ -382,4 +384,4 @@ A new task is correctly oriented only if it can state all of the following befor
 - unrelated local work must be preserved;
 - the next action requires a new approved mailbox task.
 
-If any of that context is missing or contradicted, stop, refresh this handoff and the mailbox state from GitHub, and ask Setetchie to reconcile the task before changing the repository.
+If any of that context is missing or contradicted, stop, refresh this handoff and mailbox state from the shared local checkout, query GitHub only if remote PR/CI facts are relevant, and ask Setetchie to reconcile the task before changing the repository.
