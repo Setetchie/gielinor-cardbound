@@ -34,17 +34,21 @@ test('app boots and exposes core globals', async ({ page }) => {
   expect(core.version).toBeTruthy();
 });
 
-test('home shows grouped activities including Sailing', async ({ page }) => {
+test('home shows grouped activities with Sailing under Travel', async ({ page }) => {
   await fresh(page);
   await expect(page.locator('.v44-nav').getByRole('button', { name: /Activities/i })).toBeVisible();
   await expect(page.locator('.v44-grid').getByRole('button', { name: /Activities/i })).toBeVisible();
   await page.locator('.v44-nav').getByRole('button', { name: /Activities/i }).click();
+  await page.getByRole('button',{name:/Skilling/i}).click();
+  await page.getByRole('button',{name:/Travel/i}).click();
   await expect(page.getByRole('button', { name: /Sailing/i }).first()).toBeVisible();
 });
 
 test('Activity > Sailing category navigation works', async ({ page }) => {
   await fresh(page);
   await page.locator('.v44-nav').getByRole('button', { name: /Activities/i }).click();
+  await page.getByRole('button',{name:/Skilling/i}).click();
+  await page.getByRole('button',{name:/Travel/i}).click();
   const sailing = page.getByRole('button', { name: /Sailing/i }).first();
   await expect(sailing).toBeVisible();
   await sailing.click();
@@ -103,8 +107,8 @@ test('bank renders equipment and loadout presets', async ({ page }) => {
   await expect(page.getByText('Equipped', { exact: true })).toBeVisible();
   for(const slot of ['Head','Body','Legs','Main Hand','Off Hand','Boots','Jewelry','Cape / Back','Pet'])
     await expect(page.getByText(slot,{exact:true})).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Loadouts', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Gathering Generalist/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Saved Loadouts', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Save Current/ })).toBeVisible();
   await expect(page.getByText('Gloves',{exact:true})).toHaveCount(0);
   const fn = await page.evaluate(() => typeof window.cbSaveLoadoutPreset);
   expect(fn).toBe('function');
@@ -114,7 +118,7 @@ test('collection supports missing-card search filters', async ({ page }) => {
   await fresh(page);
   await page.locator('.v44-nav').getByRole('button', { name: /Codex/i }).click();
   await page.getByRole('button', {name:/Card Collection/}).click();
-  await expect(page.getByPlaceholder(/Search every card/i)).toBeVisible();
+  await expect(page.getByPlaceholder(/Search cards/i)).toBeVisible();
   await expect(page.locator('select').filter({ hasText: /Missing/ }).first()).toBeVisible();
   await page.locator('select').filter({hasText:/Missing/}).selectOption('missing');
   await expect(page.locator('.v44-cardtile:not(.missing)')).toHaveCount(0);

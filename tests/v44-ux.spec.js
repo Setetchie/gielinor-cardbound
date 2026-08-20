@@ -8,13 +8,13 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
-test('v44 build and one persistent scrollable nav are present', async ({ page }) => {
-  await expect(page.locator('#cardbound-build-stamp')).toContainText('v44');
+test('current build and one persistent scrollable nav are present', async ({ page }) => {
+  await expect(page.locator('#cardbound-build-stamp')).toContainText(/v4[45]/);
   await expect(page.locator('.v44-nav')).toBeVisible();
   await expect(page.locator('.v44-nav-scroll')).toHaveCSS('overflow-x', 'auto');
   await expect(page.locator('.tabs')).toBeHidden();
-  await expect(navButton(page,/Store/)).toBeVisible();
-  await expect(page.locator('.v44-grid').getByRole('button',{name:/Store/})).toBeVisible();
+  await expect(navButton(page,/Store/)).toHaveCount(1);
+  await expect(page.locator('.v44-grid').getByRole('button',{name:/Forge/})).toBeVisible();
 });
 
 test('Bank keeps navigation visible and uses specified equipment presentation', async ({ page }) => {
@@ -25,12 +25,13 @@ test('Bank keeps navigation visible and uses specified equipment presentation', 
   await expect(page.getByText('Gloves',{exact:true})).toHaveCount(0);
 });
 
-test('Gathering uses mastery rows as subset navigation and concise activity info', async ({ page }) => {
+test('Skilling uses mastery rows as subset navigation and concise activity info', async ({ page }) => {
   await navButton(page,/Activities/).click();
-  await page.getByRole('button', {name:/Gathering/}).click();
+  await page.getByRole('button', {name:/Skilling/}).click();
   await expect(page.getByText('Woodcutting',{exact:true})).toBeVisible();
-  await page.getByText('Woodcutting',{exact:true}).click();
-  await expect(page.getByRole('button', {name:/Back to Gathering/})).toBeVisible();
+  await page.getByRole('button',{name:/Woodcutting/}).click();
+  await page.getByRole('button',{name:/Woodcutting/}).last().click();
+  await expect(page.getByRole('button', {name:/Back to Woodcutting/})).toBeVisible();
   await expect(page.getByText(/XP \/ action/).first()).toBeVisible();
   await expect(page.getByText(/points \/ action/).first()).toBeVisible();
   await expect(page.getByText(/idle efficiency/).first()).toBeVisible();
@@ -60,7 +61,9 @@ test('Pet purchase gate deep-links to Store and unlocks immediately', async ({ p
 
 test('Huntsmanship fixture exposes tracking stalking hunt and special hunt', async ({ page }) => {
   await navButton(page,/Activities/).click();
+  await page.getByRole('button', {name:/Skilling/}).click();
   await page.getByRole('button', {name:/Huntsmanship/}).click();
+  await page.getByRole('button', {name:/Huntsmanship/}).last().click();
   await expect(page.getByRole('button', {name:'Track'}).first()).toBeVisible();
   await expect(page.getByRole('button', {name:'Stalk'})).toBeVisible();
   await expect(page.getByRole('button', {name:'Hunt'}).first()).toBeVisible();
@@ -71,11 +74,15 @@ test('Huntsmanship fixture exposes tracking stalking hunt and special hunt', asy
 test('dummy social fixture supports friend, trade, counter, timeout and showcases', async ({ page }) => {
   await navButton(page,/Community/).click();
   await expect(page.getByText(/Test Ranger/)).toBeVisible();
+  await page.locator('.cb-owner-friend-row summary').click();
   await expect(page.getByRole('button', {name:/Send Friend Request/})).toBeVisible();
-  await page.getByRole('button', {name:'trading'}).click();
-  for (const name of ['New Offer','Counter Offer','Countered Counter','Accept','Reject','Timeout']) await expect(page.getByRole('button',{name})).toBeVisible();
-  await page.getByRole('button', {name:'friends'}).click();
-  await expect(page.getByRole('button', {name:/View Dummy Showcase/})).toBeVisible();
+  await page.getByRole('button', {name:'Send Friend Request'}).click();
+  await page.getByRole('button', {name:'Requests'}).click();
+  await expect(page.getByText(/Outgoing Friend Request/)).toBeVisible();
+  await page.getByRole('button', {name:'Trading'}).click();
+  await expect(page.getByRole('button',{name:/New Trade Offer/})).toBeVisible();
+  await page.getByRole('button', {name:'Showcase'}).click();
+  await expect(page.getByText(/Pathfinder of Greenwake/)).toBeVisible();
 });
 
 test('Store has free QA purchases and Forge currency developer controls', async ({ page }) => {

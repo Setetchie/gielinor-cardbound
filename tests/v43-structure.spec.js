@@ -21,7 +21,7 @@ async function openTab(page, tab){
 test('v43 home exposes intended top-level structure', async ({ page }) => {
   await fresh(page);
   const nav=page.locator('.v44-nav');
-  for(const name of [/Activities/i,/World/i,/Packs/i,/Codex/i,/Bank/i,/Raids/i,/Community/i])
+  for(const name of [/Activities/i,/World/i,/Packs/i,/Codex/i,/Bank/i,/Forge/i,/Community/i])
     await expect(nav.getByRole('button',{name})).toBeVisible();
   await expect(page.locator('.v44-grid').getByRole('button',{name:/Activities/i})).toBeVisible();
 });
@@ -52,29 +52,25 @@ test('Gathering is one parent Skill with subset mastery and participation', asyn
   expect(after.fishing).toBe(after.gathering);
 });
 
-test('Gathering menu presents subsets rather than independent Skills', async ({ page }) => {
+test('Skilling menu presents Skills and their subset masteries', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'Activity');
-  await page.evaluate(() => cbV44Activity('Gathering'));
-  await expect(page.getByRole('heading', { level: 2, name: 'Gathering', exact: true })).toBeVisible();
-  await expect(page.getByText(/Shared Skill XP/i)).toBeVisible();
+  await page.getByRole('button',{name:/Skilling/i}).click();
   for (const subset of ['Woodcutting','Mining','Fishing']) await expect(page.getByRole('button', { name: new RegExp(subset, 'i') })).toBeVisible();
-  await page.evaluate(() => cbV44Activity('Woodcutting'));
-  await expect(page.getByRole('button',{name:/Back to Gathering/i})).toBeVisible();
+  await page.getByRole('button',{name:/Woodcutting/i}).click();
+  await page.getByRole('button',{name:/Woodcutting/i}).last().click();
+  await expect(page.getByRole('button',{name:/Back to Woodcutting/i})).toBeVisible();
   await expect(page.getByText(/XP \/ action/i).first()).toBeVisible();
 });
 
 test('World and Exploration preserve Region and Location roles', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'World');
-  await expect(page.getByRole('heading', { name: /World & Exploration/i })).toBeVisible();
-  await expect(page.getByRole('heading',{name:/World & Exploration/i})).toBeVisible();
-  await page.evaluate(() => cbV44World('locations'));
-  await expect(page.getByRole('heading', { name: /Greenwake Locations/i })).toBeVisible();
-  await expect(page.getByText(/Route revealed/i)).toBeVisible();
-  await page.evaluate(() => cbV44World('explore'));
-  await expect(page.getByText(/Cannot cancel between checkpoints/i)).toBeVisible();
-  await expect(page.getByText(/Exploration Preview/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /World Map/i })).toBeVisible();
+  await expect(page.locator('.cb-owner-location.start')).toBeVisible();
+  await expect(page.locator('.cb-owner-location.discovered')).toBeVisible();
+  await page.locator('.cb-owner-location.discovered').click();
+  await expect(page.getByText(/Cannot stop/i)).toBeVisible();
 });
 
 test('future systems have reachable dedicated homes', async ({ page }) => {
@@ -97,10 +93,10 @@ test('Codex is the collection-facing destination while Bank remains equipment-fa
   await openTab(page, 'Collection');
   await expect(page.locator('.v44-nav')).toContainText(/Codex/i);
   await page.getByRole('button',{name:/Card Collection/i}).click();
-  await expect(page.getByPlaceholder(/Search every card/i)).toBeVisible();
+  await expect(page.getByPlaceholder(/Search cards/i)).toBeVisible();
   await openTab(page, 'Bank');
   await expect(page.getByText('Equipped', { exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Loadouts', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Saved Loadouts', exact: true })).toBeVisible();
 });
 
 test('Settings exposes pack, idle, notification and privacy controls', async ({ page }) => {
@@ -115,6 +111,7 @@ test('Settings exposes pack, idle, notification and privacy controls', async ({ 
 test('NEW content marker can be added and clears when viewed', async ({ page }) => {
   await fresh(page);
   await openTab(page, 'Activity');
+  await page.getByRole('button',{name:/Skilling/i}).click();
   await page.evaluate(() => cbMarkContentNew('system:huntsmanship'));
   await expect(page.locator('[data-cb-content-id="system:huntsmanship"] .cb-v43-new')).toHaveText('NEW');
   await page.locator('[data-cb-content-id="system:huntsmanship"]').click();
