@@ -13,7 +13,7 @@
     const selected=s.idle&&s.idle.activityId===a.id;
     const req=(a.reqCards||[]).map(id=>B[id]?.name||id).join(', ');
     let pts='?', secs='?'; try{pts=rewardFor(a);secs=cycleSeconds(a)}catch{}
-    return `<div class="cb2-activity-card ${a.rarity||'Common'} ${unlocked?'':'locked'} ${selected?'idle-selected':''}" data-cb-content-id="activity:${a.id}">${img(a)}<div class="cb2-grow"><b>${a.name}</b><div class="muted">Sailing ${a.reqLevel||1} • ${pts} pts • ${secs}s${req?`<br>Facility: ${req}`:''}<br>${!unlocked?'Activity Binding required':meets?'Ready':'Missing facility/level requirement'}</div></div><div class="cb2-actions"><button ${unlocked&&meets?'':'disabled'} onclick="act('${a.id}')">Once</button><button ${unlocked&&meets?'':'disabled'} class="${selected?'danger':'primary'}" onclick="${selected?'stopIdle()':`startIdle('${a.id}')`}">${selected?'Stop':'Idle'}</button></div></div>`;
+    return `<div class="cb2-activity-card ${a.rarity||'Common'} ${unlocked?'':'locked'} ${selected?'idle-selected':''}" data-cb-content-id="activity:${a.id}">${img(a)}<div class="cb2-grow"><b>${a.name}</b><div class="muted">Requires Sailing Level ${a.reqLevel||1} • ${pts} pts / action • ${secs}s / action${req?`<br>Facility: ${req}`:''}<br>${!unlocked?'Activity Binding required':meets?'Ready':'Missing facility/level requirement'}</div></div><div class="cb2-actions"><button ${unlocked&&meets?'':'disabled'} class="${selected?'danger':'primary'}" onclick="${selected?'stopIdle()':`startIdle('${a.id}')`}">${selected?'Stop':'Idle'}</button></div></div>`;
   }
   function draw(){
     if(!active||s.tab!=='Activity')return;
